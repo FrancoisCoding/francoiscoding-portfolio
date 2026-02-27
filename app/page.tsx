@@ -1,9 +1,22 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { BriefcaseBusiness, Sparkles, Target } from 'lucide-react';
 
 import { CompaniesSection } from '@/components/home/companies-section';
 import { HeroSection } from '@/components/home/hero-section';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+export const metadata: Metadata = {
+  title: 'Home',
+  description:
+    'Senior Full Stack Engineer portfolio featuring FinanceFlow, enterprise delivery, and contact options.',
+  openGraph: {
+    title: 'Isaiah Francois | Senior Full Stack Engineer',
+    description:
+      'Explore featured work including FinanceFlow, company experience, and direct contact details.',
+    url: '/',
+  },
+};
 
 const recruiterHighlights = [
   {

@@ -1,5 +1,19 @@
+import type { Metadata } from 'next';
+
 import { ContactForm } from '@/components/contact/contact-form';
 import { ContactMethods } from '@/components/contact/contact-methods';
+
+export const metadata: Metadata = {
+  title: 'Contact',
+  description:
+    'Contact Isaiah Francois by email, phone, or a spam-protected message form.',
+  openGraph: {
+    title: 'Contact | Isaiah Francois',
+    description:
+      'Reach out for opportunities, collaboration, and role discussions.',
+    url: '/contact',
+  },
+};
 
 export default function ContactPage() {
   return (

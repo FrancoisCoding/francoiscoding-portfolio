@@ -1,8 +1,20 @@
 import { Download } from 'lucide-react';
+import type { Metadata } from 'next';
 
 import { Button } from '@/components/ui/button';
 
 const resumePath = '/isaiah-francois-resume.pdf';
+
+export const metadata: Metadata = {
+  title: 'Resume',
+  description:
+    'Embedded resume viewer and direct resume download for Isaiah Francois.',
+  openGraph: {
+    title: 'Resume | Isaiah Francois',
+    description: 'View or download the resume for Isaiah Francois.',
+    url: '/resume',
+  },
+};
 
 export default function ResumePage() {
   return (

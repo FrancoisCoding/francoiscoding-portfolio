@@ -1,8 +1,22 @@
+import type { Metadata } from 'next';
+
 import { ProjectCard } from '@/components/projects/project-card';
 import { projectsData } from '@/lib/projects-data';
 
 const featuredProject = projectsData.find((project) => project.featured);
 const secondaryProjects = projectsData.filter((project) => !project.featured);
+
+export const metadata: Metadata = {
+  title: 'Projects',
+  description:
+    'Featured projects led by Isaiah Francois, including FinanceFlow and private enterprise initiatives.',
+  openGraph: {
+    title: 'Projects | Isaiah Francois',
+    description:
+      'Problem-to-impact case studies, technical stack summaries, and links to featured work.',
+    url: '/projects',
+  },
+};
 
 export default function ProjectsPage() {
   return (

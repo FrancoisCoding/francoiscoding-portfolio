@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { ArrowUpRight } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +9,18 @@ import { projectsData } from '@/lib/projects-data';
 const financeFlowProject = projectsData.find(
   (project) => project.slug === 'financeflow',
 );
+
+export const metadata: Metadata = {
+  title: 'FinanceFlow Case Study',
+  description:
+    'Case study breakdown of FinanceFlow covering problem, solution, impact, and delivery stack.',
+  openGraph: {
+    title: 'FinanceFlow Case Study | Isaiah Francois',
+    description:
+      'A concise case study walkthrough for FinanceFlow, a featured product project.',
+    url: '/projects/financeflow',
+  },
+};
 
 export default function FinanceFlowCaseStudyPage() {
   if (!financeFlowProject) {

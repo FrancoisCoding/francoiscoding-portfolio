@@ -1,3 +1,17 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'About',
+  description:
+    'Background, engineering philosophy, and collaboration style for Isaiah Francois.',
+  openGraph: {
+    title: 'About | Isaiah Francois',
+    description:
+      'Learn about Isaiah Francois, a Senior Full Stack Engineer focused on scalable delivery.',
+    url: '/about',
+  },
+};
+
 export default function AboutPage() {
   return (
     <section className="py-16">

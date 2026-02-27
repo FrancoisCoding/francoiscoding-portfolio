@@ -1,5 +1,19 @@
+import type { Metadata } from 'next';
+
 import { Badge } from '@/components/ui/badge';
 import { companyExperience } from '@/lib/company-experience';
+
+export const metadata: Metadata = {
+  title: 'Experience',
+  description:
+    'Timeline of company experience spanning Disney, Department of Defense, and MassVirtual.',
+  openGraph: {
+    title: 'Experience | Isaiah Francois',
+    description:
+      'Company timeline and engineering delivery highlights across enterprise and regulated environments.',
+    url: '/experience',
+  },
+};
 
 export default function ExperiencePage() {
   return (

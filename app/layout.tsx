@@ -4,6 +4,7 @@ import { Manrope, Sora } from 'next/font/google';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { ThemeProvider } from '@/components/providers/theme-provider';
+import { siteConfig } from '@/lib/site-config';
 import './globals.css';
 
 const displayFont = Sora({
@@ -17,9 +18,36 @@ const bodyFont = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: 'Isaiah Francois | Senior Full Stack Engineer',
+  metadataBase: new URL(siteConfig.siteUrl),
+  title: {
+    default: 'Isaiah Francois | Senior Full Stack Engineer',
+    template: '%s | Isaiah Francois',
+  },
   description:
     'Portfolio of Isaiah Francois, Senior Full Stack Engineer with 8+ years building high-impact products.',
+  openGraph: {
+    title: 'Isaiah Francois | Senior Full Stack Engineer',
+    description:
+      'Portfolio of Isaiah Francois, Senior Full Stack Engineer with 8+ years building high-impact products.',
+    type: 'website',
+    url: '/',
+    siteName: 'Isaiah Francois Portfolio',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'Isaiah Francois portfolio preview',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Isaiah Francois | Senior Full Stack Engineer',
+    description:
+      'Portfolio of Isaiah Francois, Senior Full Stack Engineer with 8+ years building high-impact products.',
+    images: ['/opengraph-image'],
+  },
 };
 
 export default function RootLayout({
