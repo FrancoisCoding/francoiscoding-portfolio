@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { BriefcaseBusiness, Sparkles, Target } from 'lucide-react';
 
+import { CompaniesSection } from '@/components/home/companies-section';
 import { HeroSection } from '@/components/home/hero-section';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -57,27 +58,22 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+      <CompaniesSection />
       <section
-        id="companies"
-        aria-labelledby="companies-heading"
+        id="contact-cta"
         className="rounded-2xl border border-black/10 bg-white/60 p-6 backdrop-blur-sm dark:border-white/15 dark:bg-white/5"
       >
-        <h2
-          id="companies-heading"
-          className="font-display text-2xl font-semibold text-slate-950 dark:text-white"
-        >
-          Companies
+        <h2 className="font-display text-2xl font-semibold text-slate-950 dark:text-white">
+          Ready to Connect?
         </h2>
         <p className="mt-2 text-slate-600 dark:text-slate-300">
-          Detailed cinematic company banners are available in the next section
-          of the build. You can already review the full timeline on the
-          experience page.
+          Open the contact page for direct email and phone details.
         </p>
         <Link
-          href="/experience"
+          href="/contact"
           className="mt-4 inline-flex text-sm font-semibold text-[var(--brand)] underline-offset-4 hover:underline"
         >
-          Open Experience Timeline
+          Go to Contact
         </Link>
       </section>
     </div>
