@@ -32,8 +32,11 @@ export function ContactForm() {
 
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? '';
   const isCaptchaConfigured = Boolean(turnstileSiteKey);
+  const isCaptchaBypassed =
+    !isCaptchaConfigured && process.env.NODE_ENV !== 'production';
   const canSubmit =
-    isCaptchaConfigured && turnstileToken.length > 0 && !isSubmitting;
+    (isCaptchaConfigured ? turnstileToken.length > 0 : isCaptchaBypassed) &&
+    !isSubmitting;
 
   const formValidationResult = useMemo(
     () => contactFormSchema.safeParse(formValues),
@@ -60,7 +63,7 @@ export function ContactForm() {
       fieldErrors.message = flattenedErrors.message?.[0];
     }
 
-    if (!turnstileToken) {
+    if (isCaptchaConfigured && !turnstileToken) {
       fieldErrors.turnstileToken = 'Please complete spam verification.';
     }
 
@@ -78,7 +81,7 @@ export function ContactForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formValues,
-          turnstileToken,
+          turnstileToken: turnstileToken || 'development-bypass-token',
         }),
       });
 
@@ -209,7 +212,8 @@ export function ContactForm() {
         ) : (
           <p className="text-xs text-amber-700 dark:text-amber-300">
             Turnstile is not configured. Add `NEXT_PUBLIC_TURNSTILE_SITE_KEY` to
-            enable form submission.
+            enable production-grade spam protection. Dev mode allows validation
+            and local testing.
           </p>
         )}
 
