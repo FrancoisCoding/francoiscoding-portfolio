@@ -1,10 +1,19 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { BriefcaseBusiness, Sparkles, Target } from 'lucide-react';
 
-import { CompaniesSection } from '@/components/home/companies-section';
-import { HeroSection } from '@/components/home/hero-section';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+const HeroSection = dynamic(() =>
+  import('@/components/home/hero-section').then((module) => module.HeroSection),
+);
+
+const CompaniesSection = dynamic(() =>
+  import('@/components/home/companies-section').then(
+    (module) => module.CompaniesSection,
+  ),
+);
 
 export const metadata: Metadata = {
   title: 'Home',

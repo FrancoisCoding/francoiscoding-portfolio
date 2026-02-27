@@ -3,6 +3,7 @@
 import { ArrowRight, Github } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
 import { siteConfig } from '@/lib/site-config';
@@ -78,6 +79,16 @@ export function HeroSection() {
               {tag}
             </span>
           ))}
+        </div>
+        <div className="overflow-hidden rounded-2xl border border-black/10 bg-white/70 p-3 shadow-xl shadow-black/5 dark:border-white/15 dark:bg-white/5">
+          <Image
+            src="/financeflow-preview.svg"
+            alt="FinanceFlow product preview"
+            width={1200}
+            height={720}
+            priority
+            className="h-auto w-full rounded-xl"
+          />
         </div>
       </motion.div>
     </section>
