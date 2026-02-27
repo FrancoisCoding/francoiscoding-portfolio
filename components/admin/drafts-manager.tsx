@@ -137,6 +137,19 @@ export function DraftsManager() {
     onError: (error: Error) => setStatusMessage(error.message),
   });
 
+  const sendDraftMutation = useMutation({
+    mutationFn: async (draftId: string) =>
+      adminFetchJson(`/api/admin/drafts/${draftId}/send`, {
+        method: 'POST',
+      }),
+    onSuccess: () => {
+      setStatusMessage('Approved draft sent.');
+      queryClient.invalidateQueries({ queryKey: ['admin-drafts-approved'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-drafts-queued'] });
+    },
+    onError: (error: Error) => setStatusMessage(error.message),
+  });
+
   const leads = leadsQuery.data?.leads ?? [];
   const templates = templatesQuery.data?.templates ?? [];
   const queuedDrafts = draftsQuery.data?.drafts ?? [];
@@ -322,9 +335,26 @@ export function DraftsManager() {
         {approvedDrafts.map((draft) => (
           <div
             key={draft.id}
-            className="rounded-md border border-black/10 bg-white/80 p-3 text-sm dark:border-white/10 dark:bg-slate-950/50"
+            className="space-y-2 rounded-md border border-black/10 bg-white/80 p-3 text-sm dark:border-white/10 dark:bg-slate-950/50"
           >
-            {draft.subject}
+            <p className="font-semibold">{draft.subject}</p>
+            <p className="text-xs text-slate-600 dark:text-slate-300">
+              {draft.lead.company} - {draft.lead.personName}
+            </p>
+            <Button
+              size="sm"
+              onClick={() => sendDraftMutation.mutate(draft.id)}
+              disabled={sendDraftMutation.isPending}
+            >
+              {sendDraftMutation.isPending ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                'Send'
+              )}
+            </Button>
           </div>
         ))}
         {approvedDrafts.length === 0 ? (
