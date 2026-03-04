@@ -1,12 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 import { useIsHydrated } from '@/hooks/use-is-hydrated';
 import { siteConfig } from '@/lib/site-config';
@@ -16,8 +11,7 @@ const heroHighlights = ['7+ years of experience'];
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const isHydrated = useIsHydrated();
-  const shouldReduceMotion = useReducedMotion();
-  const canAnimate = isHydrated && !shouldReduceMotion;
+  const canAnimate = isHydrated;
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start'],
@@ -93,11 +87,11 @@ export function HeroSection() {
               <span className="relative inline-flex h-2.5 w-2.5 items-center justify-center">
                 <span
                   aria-hidden="true"
-                  className={`absolute h-2.5 w-2.5 rounded-full bg-emerald-300/35 blur-[2px] ${canAnimate ? 'status-light-glow' : ''}`}
+                  className="status-light-glow absolute h-2.5 w-2.5 rounded-full bg-emerald-300/35 blur-[2px]"
                 />
                 <span
                   aria-hidden="true"
-                  className={`relative h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_10px_rgba(74,222,128,0.84)] ${canAnimate ? 'status-light-core' : ''}`}
+                  className="status-light-core relative h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_10px_rgba(74,222,128,0.84)]"
                 />
               </span>
               <span>Available for work</span>

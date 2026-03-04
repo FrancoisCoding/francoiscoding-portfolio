@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -58,8 +58,7 @@ export function SiteHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
   const isHydrated = useIsHydrated();
-  const shouldReduceMotion = useReducedMotion();
-  const canAnimate = isHydrated && !shouldReduceMotion;
+  const canAnimate = isHydrated;
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -127,7 +126,7 @@ export function SiteHeader() {
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
                   className={cn(
-                    'inline-flex min-h-10 items-center rounded-xl border px-3.5 text-[0.72rem] font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
+                    'inline-flex min-h-10 items-center rounded-xl border px-3.5 text-[0.72rem] font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
                     isActive
                       ? 'border-white/12 bg-white text-slate-950 shadow-[0_14px_32px_rgba(255,255,255,0.06)]'
                       : 'border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white/92 hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.11),rgba(255,255,255,0.05))]',
@@ -143,7 +142,7 @@ export function SiteHeader() {
           <motion.button
             type="button"
             onClick={() => setIsMenuOpen((currentValue) => !currentValue)}
-            className="group inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white/92 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.11),rgba(255,255,255,0.05))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+            className="group inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white/92 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.11),rgba(255,255,255,0.05))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
             aria-expanded={isMenuOpen}
             aria-controls="site-header-menu"
             aria-label={
@@ -151,7 +150,7 @@ export function SiteHeader() {
             }
             whileHover={
               canAnimate
-                ? { scale: 1.04, y: -0.5, rotate: isMenuOpen ? 90 : 2 }
+                ? { scale: 1.05, y: -1, rotate: isMenuOpen ? 90 : 3 }
                 : undefined
             }
             whileTap={canAnimate ? { scale: 0.95 } : undefined}
@@ -167,7 +166,7 @@ export function SiteHeader() {
             }
             transition={
               canAnimate
-                ? { type: 'spring', stiffness: 380, damping: 26, mass: 0.42 }
+                ? { type: 'spring', stiffness: 420, damping: 22, mass: 0.4 }
                 : undefined
             }
           >
@@ -200,12 +199,20 @@ export function SiteHeader() {
                     const isActive = link.match(pathname);
 
                     return (
-                      <motion.div key={link.label} variants={menuItemVariants}>
+                      <motion.div
+                        key={link.label}
+                        variants={menuItemVariants}
+                        whileHover={canAnimate ? { x: 6 } : undefined}
+                        transition={{
+                          duration: 0.28,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
+                      >
                         <Link
                           href={link.href}
                           onClick={() => setIsMenuOpen(false)}
                           className={cn(
-                            'group inline-flex min-h-11 w-full items-center rounded-xl border px-4 text-sm font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out hover:translate-x-[3px] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
+                            'group inline-flex min-h-11 w-full items-center rounded-xl border px-4 text-sm font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.13),rgba(255,255,255,0.07))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
                             isActive
                               ? 'border-white/10 bg-white text-slate-950'
                               : 'border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.11),rgba(255,255,255,0.05))]',
@@ -231,6 +238,11 @@ export function SiteHeader() {
                         <motion.div
                           key={link.label}
                           variants={menuItemVariants}
+                          whileHover={canAnimate ? { x: 6 } : undefined}
+                          transition={{
+                            duration: 0.28,
+                            ease: [0.22, 1, 0.36, 1],
+                          }}
                         >
                           <a
                             href={link.href}
@@ -245,11 +257,11 @@ export function SiteHeader() {
                                 ? undefined
                                 : 'noreferrer'
                             }
-                            className="group inline-flex min-h-11 w-full items-center justify-between rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.035))] px-4 text-sm font-medium text-white transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out hover:translate-x-[3px] hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.05))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+                            className="group inline-flex min-h-11 w-full items-center justify-between rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.035))] px-4 text-sm font-medium text-white transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.06))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
                           >
                             {link.label}
                             <span
-                              className="text-white/50 transition-transform duration-200 ease-in-out group-hover:translate-x-0.5"
+                              className="text-white/50 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1"
                               aria-hidden="true"
                             >
                               ↗
@@ -260,15 +272,23 @@ export function SiteHeader() {
                     }
 
                     return (
-                      <motion.div key={link.label} variants={menuItemVariants}>
+                      <motion.div
+                        key={link.label}
+                        variants={menuItemVariants}
+                        whileHover={canAnimate ? { x: 6 } : undefined}
+                        transition={{
+                          duration: 0.28,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
+                      >
                         <Link
                           href={link.href}
                           onClick={() => setIsMenuOpen(false)}
-                          className="group inline-flex min-h-11 w-full items-center justify-between rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.035))] px-4 text-sm font-medium text-white transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out hover:translate-x-[3px] hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.05))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+                          className="group inline-flex min-h-11 w-full items-center justify-between rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.035))] px-4 text-sm font-medium text-white transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.06))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
                         >
                           {link.label}
                           <span
-                            className="text-white/50 transition-transform duration-200 ease-in-out group-hover:translate-x-0.5"
+                            className="text-white/50 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1"
                             aria-hidden="true"
                           >
                             →
@@ -352,9 +372,11 @@ const menuItemVariants = {
   open: {
     opacity: 1,
     y: 0,
+    x: 0,
   },
   closed: {
     opacity: 0,
     y: -6,
+    x: -10,
   },
 };
