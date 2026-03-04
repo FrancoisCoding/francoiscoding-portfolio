@@ -57,78 +57,52 @@ body {
 }
 
 .status-light-core {
-  animation: status-light-core 2.2s steps(1, end) infinite;
+  animation: status-light-core 1.35s steps(1, end) infinite;
 }
 
 .status-light-glow {
-  animation: status-light-glow 2.2s steps(1, end) infinite;
+  animation: status-light-glow 1.35s steps(1, end) infinite;
 }
 
 @keyframes status-light-core {
   0%,
-  18%,
-  42%,
+  30%,
+  52%,
+  74%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
 
-  19%,
   31%,
-  43%,
-  55% {
-    opacity: 0;
-    transform: scale(0.82);
-  }
-
-  32%,
   41%,
-  56%,
-  68% {
-    opacity: 1;
-    transform: scale(1.04);
-  }
-
-  69%,
-  82% {
+  53%,
+  63%,
+  75%,
+  85% {
     opacity: 0;
-    transform: scale(0.86);
-  }
-
-  83%,
-  99% {
-    opacity: 1;
-    transform: scale(1);
+    transform: scale(0.78);
   }
 }
 
 @keyframes status-light-glow {
   0%,
-  18%,
-  42%,
+  30%,
+  52%,
+  74%,
   100% {
-    opacity: 0.65;
-    transform: scale(1.2);
+    opacity: 0.8;
+    transform: scale(1.25);
   }
 
-  19%,
   31%,
-  43%,
-  55%,
-  69%,
-  82% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-
-  32%,
   41%,
-  56%,
-  68%,
-  83%,
-  99% {
-    opacity: 0.55;
-    transform: scale(1.28);
+  53%,
+  63%,
+  75%,
+  85% {
+    opacity: 0;
+    transform: scale(0.72);
   }
 }
 

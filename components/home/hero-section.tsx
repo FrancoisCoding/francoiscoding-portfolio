@@ -49,7 +49,7 @@ export function HeroSection() {
           className="space-y-9"
         >
           <div className="space-y-4">
-            <h1 className="font-display text-[clamp(2.55rem,4.1vw,4.15rem)] leading-[0.98] font-medium tracking-[-0.06em] text-white">
+            <h1 className="font-display text-[clamp(2.1rem,3.35vw,3.28rem)] leading-[1] font-medium tracking-[-0.058em] text-white">
               <span className="block sm:whitespace-nowrap">
                 I&apos;m Isaiah.
               </span>
@@ -78,8 +78,8 @@ export function HeroSection() {
           </ul>
         </motion.div>
 
-        <div className="flex items-end lg:justify-end">
-          <div className="space-y-2.5 lg:pt-[8.8rem] xl:pt-[9.15rem]">
+        <div className="flex items-end justify-end">
+          <div className="ml-auto flex w-fit flex-col items-end space-y-2.5 text-right lg:pt-[8.8rem] xl:pt-[9.15rem]">
             <motion.div
               initial={canAnimate ? { opacity: 0, y: 10 } : false}
               animate={canAnimate ? { opacity: 1, y: 0 } : undefined}
@@ -88,16 +88,16 @@ export function HeroSection() {
                 ease: [0.22, 1, 0.36, 1],
                 delay: 0.16,
               }}
-              className="flex items-center gap-2.5 text-[0.88rem] font-medium text-white"
+              className="flex items-center justify-end gap-2 text-[0.84rem] font-medium text-white"
             >
-              <span className="relative inline-flex h-3 w-3 items-center justify-center">
+              <span className="relative inline-flex h-2.5 w-2.5 items-center justify-center">
                 <span
                   aria-hidden="true"
-                  className={`absolute h-3 w-3 rounded-full bg-emerald-300/28 blur-[3px] ${canAnimate ? 'status-light-glow' : ''}`}
+                  className={`absolute h-2.5 w-2.5 rounded-full bg-emerald-300/35 blur-[2px] ${canAnimate ? 'status-light-glow' : ''}`}
                 />
                 <span
                   aria-hidden="true"
-                  className={`relative h-2.5 w-2.5 rounded-full bg-emerald-300 shadow-[0_0_16px_rgba(74,222,128,0.92)] ${canAnimate ? 'status-light-core' : ''}`}
+                  className={`relative h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_10px_rgba(74,222,128,0.84)] ${canAnimate ? 'status-light-core' : ''}`}
                 />
               </span>
               <span>Available for work</span>

@@ -41,9 +41,9 @@ export function ProjectCard({
         )}
       </div>
 
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.03)_0%,rgba(0,0,0,0.05)_52%,rgba(0,0,0,0.34)_100%)] transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.03)_0%,rgba(0,0,0,0.05)_52%,rgba(0,0,0,0.34)_100%)] transition-opacity duration-200 ease-in-out group-hover:opacity-100" />
 
-      <div className="absolute inset-x-4 bottom-4 translate-y-4 opacity-0 transition-all duration-300 group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:translate-y-0 group-hover:opacity-100">
+      <div className="absolute inset-x-4 bottom-4 translate-y-4 opacity-0 transition-all duration-200 ease-in-out group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:translate-y-0 group-hover:opacity-100">
         <div className="flex items-center gap-2">
           {primaryLink ? (
             <ProjectPrimaryPill
@@ -70,7 +70,7 @@ function ProjectPrimaryPill({
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,20,0.72),rgba(18,18,20,0.58))] px-4 text-sm font-medium text-white backdrop-blur-xl transition-colors hover:bg-[linear-gradient(180deg,rgba(18,18,20,0.82),rgba(18,18,20,0.68))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+      className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,20,0.72),rgba(18,18,20,0.58))] px-4 text-sm font-medium text-white backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out hover:-translate-y-0.5 hover:bg-[linear-gradient(180deg,rgba(18,18,20,0.82),rgba(18,18,20,0.68))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
     >
       <span>{projectName}</span>
       <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -85,7 +85,7 @@ function ProjectGithubPill({ href }: { href: string }) {
       target="_blank"
       rel="noreferrer"
       aria-label="Open GitHub repository"
-      className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,20,0.72),rgba(18,18,20,0.58))] text-white backdrop-blur-xl transition-colors hover:bg-[linear-gradient(180deg,rgba(18,18,20,0.82),rgba(18,18,20,0.68))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+      className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,20,0.72),rgba(18,18,20,0.58))] text-white backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out hover:-translate-y-0.5 hover:bg-[linear-gradient(180deg,rgba(18,18,20,0.82),rgba(18,18,20,0.68))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
     >
       <Github className="h-4 w-4" aria-hidden="true" />
     </a>
@@ -105,7 +105,7 @@ function renderProjectPreview(
         src={previewImageSrc}
         alt={previewImageAlt ?? project.imageAlt ?? `${project.name} preview`}
         fill
-        className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+        className="object-cover object-top transition-transform duration-300 ease-in-out group-hover:scale-[1.02]"
         sizes={sizes}
         priority={priority}
       />
@@ -118,7 +118,7 @@ function renderProjectPreview(
         src={project.imageSrc}
         alt={project.imageAlt}
         fill
-        className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+        className="object-cover object-top transition-transform duration-300 ease-in-out group-hover:scale-[1.02]"
         sizes={sizes}
         priority={priority}
       />
