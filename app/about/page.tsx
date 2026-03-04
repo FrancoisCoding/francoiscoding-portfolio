@@ -1,7 +1,17 @@
 import Image from 'next/image';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowUpRight, Github, Linkedin } from 'lucide-react';
+import {
+  ArrowUpRight,
+  Bot,
+  Code2,
+  Database,
+  Github,
+  LayoutGrid,
+  Linkedin,
+  Rocket,
+  Settings2,
+} from 'lucide-react';
 import {
   SiNextdotjs,
   SiOpenai,
@@ -34,12 +44,42 @@ const aboutNavigationLinks = [
 ] as const;
 
 const expertiseTags = [
-  'Full stack engineering',
-  'Frontend systems',
-  'Backend architecture',
-  'Internal tools',
-  'AI-assisted workflows',
-  'Product delivery',
+  {
+    label: 'Full stack engineering',
+    icon: Code2,
+    iconClassName: 'text-sky-300',
+    iconContainerClassName: 'border-sky-300/35 bg-sky-500/18',
+  },
+  {
+    label: 'Frontend systems',
+    icon: LayoutGrid,
+    iconClassName: 'text-violet-300',
+    iconContainerClassName: 'border-violet-300/35 bg-violet-500/18',
+  },
+  {
+    label: 'Backend architecture',
+    icon: Database,
+    iconClassName: 'text-emerald-300',
+    iconContainerClassName: 'border-emerald-300/35 bg-emerald-500/18',
+  },
+  {
+    label: 'Internal tools',
+    icon: Settings2,
+    iconClassName: 'text-amber-300',
+    iconContainerClassName: 'border-amber-300/35 bg-amber-500/18',
+  },
+  {
+    label: 'AI-assisted workflows',
+    icon: Bot,
+    iconClassName: 'text-cyan-300',
+    iconContainerClassName: 'border-cyan-300/35 bg-cyan-500/18',
+  },
+  {
+    label: 'Product delivery',
+    icon: Rocket,
+    iconClassName: 'text-pink-300',
+    iconContainerClassName: 'border-pink-300/35 bg-pink-500/18',
+  },
 ] as const;
 
 const experienceItems = [
@@ -71,36 +111,56 @@ const toolLinks = [
     name: 'Next.js',
     href: 'https://nextjs.org',
     icon: SiNextdotjs,
+    iconColor: '#f8fafc',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
   },
   {
     name: 'TypeScript',
     href: 'https://www.typescriptlang.org',
     icon: SiTypescript,
+    iconColor: '#3178c6',
+    iconContainerClassName:
+      'border-[#3178c6]/40 bg-[linear-gradient(180deg,rgba(49,120,198,0.28),rgba(49,120,198,0.14))]',
   },
   {
     name: 'Tailwind CSS',
     href: 'https://tailwindcss.com',
     icon: SiTailwindcss,
+    iconColor: '#38bdf8',
+    iconContainerClassName:
+      'border-sky-300/35 bg-[linear-gradient(180deg,rgba(56,189,248,0.22),rgba(14,116,144,0.14))]',
   },
   {
     name: 'Supabase',
     href: 'https://supabase.com',
     icon: SiSupabase,
+    iconColor: '#3ecf8e',
+    iconContainerClassName:
+      'border-emerald-300/35 bg-[linear-gradient(180deg,rgba(62,207,142,0.24),rgba(22,101,52,0.14))]',
   },
   {
     name: 'Prisma',
     href: 'https://www.prisma.io',
     icon: SiPrisma,
+    iconColor: '#5a67d8',
+    iconContainerClassName:
+      'border-indigo-300/35 bg-[linear-gradient(180deg,rgba(90,103,216,0.22),rgba(49,46,129,0.14))]',
   },
   {
     name: 'PostgreSQL',
     href: 'https://www.postgresql.org',
     icon: SiPostgresql,
+    iconColor: '#336791',
+    iconContainerClassName:
+      'border-blue-300/35 bg-[linear-gradient(180deg,rgba(51,103,145,0.24),rgba(30,58,138,0.14))]',
   },
   {
     name: 'OpenAI',
     href: 'https://openai.com',
     icon: SiOpenai,
+    iconColor: '#4ade80',
+    iconContainerClassName:
+      'border-green-300/35 bg-[linear-gradient(180deg,rgba(74,222,128,0.2),rgba(21,128,61,0.14))]',
   },
 ] as const;
 
@@ -295,14 +355,23 @@ export default function AboutPage() {
             </h2>
 
             <div className="flex flex-wrap gap-2">
-              {expertiseTags.map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex min-h-10 items-center rounded-xl border border-white/10 bg-white/6 px-3.5 text-sm font-medium text-white/80"
-                >
-                  {tag}
-                </span>
-              ))}
+              {expertiseTags.map((tag) => {
+                const Icon = tag.icon;
+
+                return (
+                  <span
+                    key={tag.label}
+                    className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/6 px-3 py-1.5 text-sm font-medium text-white/85"
+                  >
+                    <span
+                      className={`inline-flex h-7 w-7 items-center justify-center rounded-lg border ${tag.iconContainerClassName}`}
+                    >
+                      <Icon className={`h-4 w-4 ${tag.iconClassName}`} />
+                    </span>
+                    {tag.label}
+                  </span>
+                );
+              })}
             </div>
 
             <div className="space-y-3">
@@ -387,11 +456,16 @@ export default function AboutPage() {
                     href={item.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="group flex min-h-[5.25rem] items-center justify-between rounded-[1.35rem] border border-white/10 bg-white/5 px-5 transition-colors hover:bg-white/8 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+                    className="group flex min-h-[5.25rem] items-center justify-between rounded-[1.35rem] border border-white/10 bg-white/5 px-5 transition-[transform,background-color,border-color] duration-200 ease-in-out hover:-translate-y-0.5 hover:bg-white/8 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-[1rem] border border-white/10 bg-[#111214] text-white">
-                        <Icon className="h-5 w-5" />
+                      <div
+                        className={`flex h-11 w-11 items-center justify-center rounded-[1rem] border ${item.iconContainerClassName}`}
+                      >
+                        <Icon
+                          className="h-5 w-5"
+                          style={{ color: item.iconColor }}
+                        />
                       </div>
                       <div>
                         <p className="text-[0.98rem] font-medium text-white">
