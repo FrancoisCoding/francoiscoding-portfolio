@@ -24,6 +24,10 @@ const aboutNavigationLinks = [
     label: 'Expertise',
   },
   {
+    href: '#hobbies',
+    label: 'Hobbies',
+  },
+  {
     href: '#tool-stack',
     label: 'Tool Stack',
   },
@@ -124,6 +128,50 @@ const aboutGalleryItems = [
     alt: 'Isaiah Francois walking through greenery in Bali.',
     className: 'row-span-2 min-h-[18rem] md:min-h-[22rem]',
     sizes: '(max-width: 1024px) 100vw, 12vw',
+  },
+] as const;
+
+const hobbiesCards = [
+  {
+    src: '/about/about6.jpg',
+    alt: 'Workspace setup with laptop and desk tools.',
+    title: 'Building & Learning',
+    className: 'rotate-[-7deg]',
+  },
+  {
+    src: '/about/about8.jpg',
+    alt: 'Ocean and travel scene.',
+    title: 'Travel & Exploration',
+    className: 'rotate-[3deg]',
+  },
+  {
+    src: '/about/about4.jpg',
+    alt: 'Fitness equipment and gym space.',
+    title: 'Fitness & Wellness',
+    className: 'rotate-[6deg]',
+  },
+] as const;
+
+const hobbiesMosaic = [
+  {
+    src: '/about/about2.jpg',
+    alt: 'Isaiah standing in front of a skyline view.',
+    className: 'row-span-2 min-h-[14rem]',
+  },
+  {
+    src: '/about/about7.jpg',
+    alt: 'Night skyline from a city vantage point.',
+    className: 'row-span-2 min-h-[14rem]',
+  },
+  {
+    src: '/about/about5.jpg',
+    alt: 'Outdoor water and coastline view.',
+    className: 'min-h-[9rem]',
+  },
+  {
+    src: '/about/about3.jpg',
+    alt: 'Landscape view with mountains.',
+    className: 'min-h-[9rem]',
   },
 ] as const;
 
@@ -275,6 +323,51 @@ export default function AboutPage() {
                     <p className="text-sm text-white/48">{item.timeframe}</p>
                   </div>
                 </article>
+              ))}
+            </div>
+          </section>
+
+          <section id="hobbies" className="space-y-8">
+            <h2 className="text-[2rem] font-semibold tracking-[-0.05em] text-white">
+              Hobbies
+            </h2>
+
+            <div className="grid gap-4 sm:grid-cols-3">
+              {hobbiesCards.map((item) => (
+                <article
+                  key={item.src}
+                  className={`rounded-[1.2rem] border border-white/10 bg-[#202124] p-2.5 ${item.className}`}
+                >
+                  <div className="relative min-h-[9rem] overflow-hidden rounded-[0.95rem] border border-white/8">
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 33vw"
+                    />
+                  </div>
+                  <p className="px-1 pt-3 pb-1 text-center text-[0.94rem] font-medium text-white/88">
+                    {item.title}
+                  </p>
+                </article>
+              ))}
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-[1fr_1fr_1fr] sm:grid-rows-2">
+              {hobbiesMosaic.map((item) => (
+                <div
+                  key={item.src}
+                  className={`relative overflow-hidden rounded-[1.25rem] border border-white/10 bg-[#0f0f10] ${item.className}`}
+                >
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 33vw"
+                  />
+                </div>
               ))}
             </div>
           </section>
