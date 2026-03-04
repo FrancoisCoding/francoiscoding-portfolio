@@ -48,61 +48,74 @@ const expertiseTags = [
     label: 'Full stack engineering',
     icon: Code2,
     iconClassName: 'text-sky-300',
-    iconContainerClassName: 'border-sky-300/35 bg-sky-500/18',
   },
   {
     label: 'Frontend systems',
     icon: LayoutGrid,
     iconClassName: 'text-violet-300',
-    iconContainerClassName: 'border-violet-300/35 bg-violet-500/18',
   },
   {
     label: 'Backend architecture',
     icon: Database,
     iconClassName: 'text-emerald-300',
-    iconContainerClassName: 'border-emerald-300/35 bg-emerald-500/18',
   },
   {
     label: 'Internal tools',
     icon: Settings2,
     iconClassName: 'text-amber-300',
-    iconContainerClassName: 'border-amber-300/35 bg-amber-500/18',
   },
   {
     label: 'AI-assisted workflows',
     icon: Bot,
     iconClassName: 'text-cyan-300',
-    iconContainerClassName: 'border-cyan-300/35 bg-cyan-500/18',
   },
   {
     label: 'Product delivery',
     icon: Rocket,
     iconClassName: 'text-pink-300',
-    iconContainerClassName: 'border-pink-300/35 bg-pink-500/18',
   },
 ] as const;
 
 const experienceItems = [
   {
+    role: 'Senior Full Stack Engineer',
     company: 'FinanceFlow',
-    detail: 'Product engineering, architecture, and modern finance UX.',
-    timeframe: 'Current',
+    location: 'Remote',
+    timeframe: '2024 - Present',
+    duration: '(2+ years)',
+    logoLabel: 'FF',
+    logoClassName:
+      'border-emerald-300/35 bg-[linear-gradient(180deg,rgba(16,185,129,0.3),rgba(5,46,22,0.22))] text-emerald-100',
   },
   {
+    role: 'Software Engineer',
     company: 'Disney',
-    detail: 'Frontend and full stack delivery on production-facing systems.',
-    timeframe: 'Previous',
+    location: 'United States',
+    timeframe: '2022 - 2024',
+    duration: '(2 years)',
+    logoLabel: 'D',
+    logoClassName:
+      'border-red-300/35 bg-[linear-gradient(180deg,rgba(248,113,113,0.3),rgba(69,10,10,0.22))] text-red-100',
   },
   {
+    role: 'Full Stack Engineer',
     company: 'Department of Defense',
-    detail:
-      'Secure workflows, engineering delivery, and pragmatic systems work.',
-    timeframe: 'Previous',
+    location: 'United States',
+    timeframe: '2020 - 2022',
+    duration: '(2 years)',
+    logoLabel: 'DoD',
+    logoClassName:
+      'border-blue-300/35 bg-[linear-gradient(180deg,rgba(96,165,250,0.3),rgba(23,37,84,0.22))] text-blue-100',
   },
   {
+    role: 'Software Developer',
     company: 'MassVirtual',
-    detail: 'Product development across immersive and web-based experiences.',
-    timeframe: 'Previous',
+    location: 'United States',
+    timeframe: '2018 - 2020',
+    duration: '(2 years)',
+    logoLabel: 'MV',
+    logoClassName:
+      'border-fuchsia-300/35 bg-[linear-gradient(180deg,rgba(232,121,249,0.3),rgba(74,4,78,0.22))] text-fuchsia-100',
   },
 ] as const;
 
@@ -361,35 +374,45 @@ export default function AboutPage() {
                 return (
                   <span
                     key={tag.label}
-                    className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/6 px-3 py-1.5 text-sm font-medium text-white/85"
+                    className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/8 px-3.5 text-[0.96rem] font-medium text-white/88"
                   >
-                    <span
-                      className={`inline-flex h-7 w-7 items-center justify-center rounded-lg border ${tag.iconContainerClassName}`}
-                    >
-                      <Icon className={`h-4 w-4 ${tag.iconClassName}`} />
-                    </span>
+                    <Icon className={`h-4 w-4 ${tag.iconClassName}`} />
                     {tag.label}
                   </span>
                 );
               })}
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3.5">
               {experienceItems.map((item) => (
                 <article
                   key={item.company}
-                  className="rounded-[1.35rem] border border-white/10 bg-white/5 px-5 py-5"
+                  className="rounded-[1.25rem] border border-white/10 bg-white/[0.04] px-4 py-4"
                 >
-                  <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                    <div className="space-y-1.5">
-                      <h3 className="text-[1.08rem] font-semibold text-white">
-                        {item.company}
-                      </h3>
-                      <p className="max-w-3xl text-sm leading-6 text-white/64">
-                        {item.detail}
-                      </p>
+                  <div className="grid gap-4 md:grid-cols-[3.5rem_minmax(0,1fr)] md:items-start">
+                    <div
+                      className={`inline-flex h-14 w-14 items-center justify-center rounded-[1rem] border text-sm font-semibold tracking-wide ${item.logoClassName}`}
+                    >
+                      {item.logoLabel}
                     </div>
-                    <p className="text-sm text-white/48">{item.timeframe}</p>
+
+                    <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                      <div className="space-y-0.5">
+                        <h3 className="text-[1.12rem] font-semibold text-white">
+                          {item.role}
+                        </h3>
+                        <p className="text-[1.02rem] text-white/84">
+                          {item.company}
+                        </p>
+                        <p className="text-sm text-white/58">{item.location}</p>
+                      </div>
+                      <div className="text-left md:text-right">
+                        <p className="text-[1rem] text-white/84">
+                          {item.timeframe}
+                        </p>
+                        <p className="text-sm text-white/48">{item.duration}</p>
+                      </div>
+                    </div>
                   </div>
                 </article>
               ))}
