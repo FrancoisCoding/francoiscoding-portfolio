@@ -15,7 +15,7 @@ export default function OpenGraphImage() {
         width: '100%',
         height: '100%',
         background:
-          'linear-gradient(125deg, rgb(2, 6, 23) 0%, rgb(15, 23, 42) 45%, rgb(15, 118, 110) 100%)',
+          'linear-gradient(180deg, rgb(6, 6, 7) 0%, rgb(12, 12, 13) 100%)',
         color: 'white',
         padding: '72px',
         justifyContent: 'space-between',
@@ -31,7 +31,7 @@ export default function OpenGraphImage() {
           maxWidth: '780px',
         }}
       >
-        <p style={{ fontSize: '28px', letterSpacing: '0.18em', opacity: 0.8 }}>
+        <p style={{ fontSize: '28px', letterSpacing: '0.18em', opacity: 0.56 }}>
           PORTFOLIO
         </p>
         <p
@@ -45,7 +45,7 @@ export default function OpenGraphImage() {
           Isaiah Francois
         </p>
         <p style={{ fontSize: '32px', opacity: 0.9, margin: 0 }}>
-          Senior Full Stack Engineer (8+ years)
+          Senior Full Stack Engineer • 7+ years
         </p>
       </div>
     </div>,

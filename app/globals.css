@@ -1,68 +1,142 @@
 @import 'tailwindcss';
 
 :root {
-  --background: #f4f7fb;
-  --foreground: #0f172a;
-  --brand: #0f766e;
-  --brand-strong: #115e59;
-  --surface: #ffffff;
+  color-scheme: dark;
+  --background: #050505;
+  --foreground: #f5f5f5;
+  --muted: #a1a1aa;
+  --brand: #ffffff;
+  --brand-strong: #e5e7eb;
+  --surface: #101010;
+  --surface-muted: #181818;
+  --border: rgba(255, 255, 255, 0.08);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --font-accent: var(--font-accent);
   --font-sans: var(--font-body);
   --font-display: var(--font-display);
 }
 
-.dark {
-  --background: #020617;
-  --foreground: #e2e8f0;
-  --brand: #14b8a6;
-  --brand-strong: #2dd4bf;
-  --surface: #0f172a;
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.05), transparent 24%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.016), transparent 18%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.011) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.011) 1px, transparent 1px),
+    var(--background);
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 64px,
+    64px 100%,
+    100% 100%;
   color: var(--foreground);
   font-family: var(--font-body), sans-serif;
   line-height: 1.6;
+  text-rendering: optimizeLegibility;
 }
 
 .font-display {
   font-family: var(--font-display), sans-serif;
 }
 
-.hero-glow-primary {
-  position: absolute;
-  top: -160px;
-  left: -100px;
-  width: 420px;
-  height: 420px;
-  border-radius: 999px;
-  background: radial-gradient(
-    circle,
-    rgb(20 184 166 / 25%) 0%,
-    rgb(20 184 166 / 0%) 70%
-  );
+.font-accent {
+  font-family: var(--font-accent), serif;
 }
 
-.hero-glow-secondary {
-  position: absolute;
-  right: -120px;
-  top: 220px;
-  width: 380px;
-  height: 380px;
-  border-radius: 999px;
-  background: radial-gradient(
-    circle,
-    rgb(59 130 246 / 17%) 0%,
-    rgb(59 130 246 / 0%) 70%
-  );
+::selection {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.status-light-core {
+  animation: status-light-core 2.2s steps(1, end) infinite;
+}
+
+.status-light-glow {
+  animation: status-light-glow 2.2s steps(1, end) infinite;
+}
+
+@keyframes status-light-core {
+  0%,
+  18%,
+  42%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  19%,
+  31%,
+  43%,
+  55% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+
+  32%,
+  41%,
+  56%,
+  68% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+
+  69%,
+  82% {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+
+  83%,
+  99% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes status-light-glow {
+  0%,
+  18%,
+  42%,
+  100% {
+    opacity: 0.65;
+    transform: scale(1.2);
+  }
+
+  19%,
+  31%,
+  43%,
+  55%,
+  69%,
+  82% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  32%,
+  41%,
+  56%,
+  68%,
+  83%,
+  99% {
+    opacity: 0.55;
+    transform: scale(1.28);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {

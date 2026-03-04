@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Manrope, Sora } from 'next/font/google';
+import { Manrope } from 'next/font/google';
 
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
@@ -8,7 +8,7 @@ import { ThemeProvider } from '@/components/providers/theme-provider';
 import { siteConfig } from '@/lib/site-config';
 import './globals.css';
 
-const displayFont = Sora({
+const displayFont = Manrope({
   variable: '--font-display',
   subsets: ['latin'],
 });
@@ -25,11 +25,11 @@ export const metadata: Metadata = {
     template: '%s | Isaiah Francois',
   },
   description:
-    'Portfolio of Isaiah Francois, Senior Full Stack Engineer with 8+ years building high-impact products.',
+    'Portfolio of Isaiah Francois, Senior Full Stack Engineer with 7+ years building modern product systems.',
   openGraph: {
     title: 'Isaiah Francois | Senior Full Stack Engineer',
     description:
-      'Portfolio of Isaiah Francois, Senior Full Stack Engineer with 8+ years building high-impact products.',
+      'Portfolio of Isaiah Francois, Senior Full Stack Engineer with 7+ years building modern product systems.',
     type: 'website',
     url: '/',
     siteName: 'Isaiah Francois Portfolio',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Isaiah Francois | Senior Full Stack Engineer',
     description:
-      'Portfolio of Isaiah Francois, Senior Full Stack Engineer with 8+ years building high-impact products.',
+      'Portfolio of Isaiah Francois, Senior Full Stack Engineer with 7+ years building modern product systems.',
     images: ['/opengraph-image'],
   },
 };
@@ -61,23 +61,19 @@ export default function RootLayout({
       <body
         className={`${displayFont.variable} ${bodyFont.variable} min-h-screen antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" forcedTheme="dark">
           <AppProviders>
             <a
               href="#main-content"
-              className="sr-only z-50 rounded-md bg-white px-3 py-2 text-slate-900 focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:ring-2 focus:ring-[var(--brand)] focus:outline-none"
+              className="sr-only z-50 rounded-md bg-white px-3 py-2 text-slate-950 focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
             >
               Skip to main content
             </a>
-            <div className="relative flex min-h-screen flex-col">
-              <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-                <div className="hero-glow-primary" />
-                <div className="hero-glow-secondary" />
-              </div>
+            <div className="flex min-h-screen flex-col">
               <SiteHeader />
               <main
                 id="main-content"
-                className="mx-auto w-full max-w-6xl flex-1 px-4 sm:px-6"
+                className="w-full flex-1 px-5 sm:px-8 lg:px-10 xl:px-12 2xl:px-14"
               >
                 {children}
               </main>

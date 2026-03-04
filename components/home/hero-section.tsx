@@ -1,96 +1,130 @@
 'use client';
 
-import { ArrowRight, Github } from 'lucide-react';
-import { motion, useReducedMotion } from 'framer-motion';
-import Link from 'next/link';
-import Image from 'next/image';
+import { useRef } from 'react';
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from 'framer-motion';
 
-import { Button } from '@/components/ui/button';
+import { useIsHydrated } from '@/hooks/use-is-hydrated';
 import { siteConfig } from '@/lib/site-config';
 
-const heroTags = [
-  'React + Next.js',
-  'TypeScript',
-  'Cloud & DevOps',
-  'Product-Driven Delivery',
-];
+const heroHighlights = ['7+ years of experience'];
 
 export function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const isHydrated = useIsHydrated();
   const shouldReduceMotion = useReducedMotion();
-  const startValues = shouldReduceMotion
-    ? { opacity: 1 }
-    : { opacity: 0, y: 24 };
-  const endValues = { opacity: 1, y: 0 };
+  const canAnimate = isHydrated && !shouldReduceMotion;
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  });
+  const backgroundGlowY = useTransform(scrollYProgress, [0, 1], [0, -42]);
+  const backgroundGlowX = useTransform(scrollYProgress, [0, 1], [0, 20]);
 
   return (
-    <section id="hero" className="pt-16 pb-24 sm:pt-24">
-      <motion.div
-        initial={startValues}
-        animate={endValues}
-        transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: 'easeOut' }}
-        className="space-y-8"
-      >
-        <p className="text-sm font-semibold tracking-[0.18em] text-[var(--brand)] uppercase">
-          Portfolio
-        </p>
-        <div className="space-y-4">
-          <h1 className="font-display max-w-4xl text-5xl leading-tight font-semibold tracking-tight text-slate-950 sm:text-6xl dark:text-white">
-            Isaiah Francois
-          </h1>
-          <p className="max-w-2xl text-xl leading-relaxed text-slate-700 dark:text-slate-200">
-            Senior Full Stack Engineer (8+ years)
-          </p>
-          <p className="max-w-3xl text-base leading-relaxed text-slate-600 dark:text-slate-300">
-            Building reliable, user-first products across enterprise, defense,
-            and media domains with an emphasis on outcomes, speed, and
-            engineering quality.
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <Button asChild size="lg">
-            <a
-              href={siteConfig.financeFlowUrl}
-              target="_blank"
-              rel="noreferrer"
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden pt-7 pb-10 sm:pt-9 sm:pb-12"
+    >
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <motion.div
+          aria-hidden="true"
+          className="absolute -top-24 left-[-8%] h-[24rem] w-[24rem] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.07),transparent_62%)] blur-[120px]"
+          style={
+            canAnimate ? { x: backgroundGlowX, y: backgroundGlowY } : undefined
+          }
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.03),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0.018),transparent_26%)]" />
+      </div>
+
+      <div className="mx-auto grid max-w-[74rem] gap-10 lg:grid-cols-[minmax(0,40rem)_12rem] xl:grid-cols-[minmax(0,42rem)_13rem] xl:gap-20">
+        <motion.div
+          initial={canAnimate ? { opacity: 0, y: 16 } : false}
+          animate={canAnimate ? { opacity: 1, y: 0 } : undefined}
+          transition={{ duration: 0.45, ease: 'easeOut' }}
+          className="space-y-9"
+        >
+          <div className="space-y-4">
+            <h1 className="font-display text-[clamp(2.55rem,4.1vw,4.15rem)] leading-[0.98] font-medium tracking-[-0.06em] text-white">
+              <span className="block sm:whitespace-nowrap">
+                I&apos;m Isaiah.
+              </span>
+              <span className="block sm:whitespace-nowrap">
+                Full stack developer.
+              </span>
+              <span className="block sm:whitespace-nowrap">
+                Building modern products.
+              </span>
+            </h1>
+          </div>
+
+          <ul className="grid gap-3 sm:max-w-xl">
+            {heroHighlights.map((highlight) => (
+              <li
+                key={highlight}
+                className="flex items-start gap-3 text-[0.92rem] font-medium text-white/76"
+              >
+                <span
+                  aria-hidden="true"
+                  className="mt-[0.58rem] h-1.5 w-1.5 rounded-full bg-white/62"
+                />
+                <span>{highlight}</span>
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+
+        <div className="flex items-end lg:justify-end">
+          <div className="space-y-2.5 lg:pt-[8.8rem] xl:pt-[9.15rem]">
+            <motion.div
+              initial={canAnimate ? { opacity: 0, y: 10 } : false}
+              animate={canAnimate ? { opacity: 1, y: 0 } : undefined}
+              transition={{
+                duration: 0.38,
+                ease: [0.22, 1, 0.36, 1],
+                delay: 0.16,
+              }}
+              className="flex items-center gap-2.5 text-[0.88rem] font-medium text-white"
             >
-              View FinanceFlow
-              <ArrowRight className="size-4" />
-            </a>
-          </Button>
-          <Button asChild variant="secondary" size="lg">
-            <Link href="/contact">Contact</Link>
-          </Button>
-          <Button asChild variant="ghost" size="lg">
-            <Link href="/resume">Download Resume</Link>
-          </Button>
-          <Button asChild variant="ghost" size="lg">
-            <a href={siteConfig.githubUrl} target="_blank" rel="noreferrer">
-              <Github className="size-4" />
-              GitHub
-            </a>
-          </Button>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {heroTags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full border border-black/10 bg-white/60 px-3 py-1 text-sm text-slate-700 dark:border-white/20 dark:bg-white/5 dark:text-slate-300"
+              <span className="relative inline-flex h-3 w-3 items-center justify-center">
+                <span
+                  aria-hidden="true"
+                  className={`absolute h-3 w-3 rounded-full bg-emerald-300/28 blur-[3px] ${canAnimate ? 'status-light-glow' : ''}`}
+                />
+                <span
+                  aria-hidden="true"
+                  className={`relative h-2.5 w-2.5 rounded-full bg-emerald-300 shadow-[0_0_16px_rgba(74,222,128,0.92)] ${canAnimate ? 'status-light-core' : ''}`}
+                />
+              </span>
+              <span>Available for work</span>
+            </motion.div>
+
+            <motion.a
+              href={`mailto:${siteConfig.email}`}
+              initial={
+                canAnimate ? { opacity: 0, y: 10, filter: 'blur(6px)' } : false
+              }
+              animate={
+                canAnimate
+                  ? { opacity: 1, y: 0, filter: 'blur(0px)' }
+                  : undefined
+              }
+              transition={{
+                duration: 0.48,
+                ease: [0.22, 1, 0.36, 1],
+                delay: 0.24,
+              }}
+              className="block text-[0.9rem] text-white/60 transition-[color,text-shadow] hover:text-white hover:[text-shadow:0_0_18px_rgba(255,255,255,0.16)] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
             >
-              {tag}
-            </span>
-          ))}
+              {siteConfig.email}
+            </motion.a>
+          </div>
         </div>
-        <div className="overflow-hidden rounded-2xl border border-black/10 bg-white/70 p-3 shadow-xl shadow-black/5 dark:border-white/15 dark:bg-white/5">
-          <Image
-            src="/financeflow-preview.svg"
-            alt="FinanceFlow product preview"
-            width={1200}
-            height={720}
-            priority
-            className="h-auto w-full rounded-xl"
-          />
-        </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
