@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 
-import { Badge } from '@/components/ui/badge';
 import { companyExperience } from '@/lib/company-experience';
 
 export const metadata: Metadata = {
@@ -18,56 +17,54 @@ export const metadata: Metadata = {
 export default function ExperiencePage() {
   return (
     <section className="py-16">
-      <h1 className="font-display text-4xl font-semibold text-slate-950 dark:text-white">
-        Experience
-      </h1>
-      <p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-300">
-        Timeline overview with expandable details for enterprise and regulated
-        product delivery.
-      </p>
-      <div className="mt-10 space-y-5">
-        {companyExperience.map((item) => (
-          <details
-            key={item.company}
-            className="group rounded-2xl border border-black/10 bg-white/70 p-5 shadow-sm dark:border-white/15 dark:bg-white/5"
-          >
-            <summary className="cursor-pointer list-none">
-              <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+      <div className="space-y-10">
+        <div className="space-y-4 text-center">
+          <p className="text-xs font-medium tracking-[0.12em] text-slate-500 uppercase dark:text-slate-400">
+            Experience
+          </p>
+          <h1 className="font-display text-5xl font-semibold tracking-tight text-slate-950 dark:text-white">
+            Experience
+          </h1>
+          <p className="mx-auto max-w-2xl text-slate-600 dark:text-slate-300">
+            A concise overview of company work and technical delivery.
+          </p>
+        </div>
+        <div className="space-y-5">
+          {companyExperience.map((item) => (
+            <article
+              key={item.company}
+              className="rounded-[2rem] border border-black/8 bg-white p-7 shadow-[0_12px_40px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-[var(--surface)] dark:shadow-none"
+            >
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                  <h2 className="font-display text-2xl font-semibold text-slate-950 dark:text-white">
+                  <p className="text-xs font-medium tracking-[0.12em] text-slate-500 uppercase dark:text-slate-400">
+                    Company
+                  </p>
+                  <h2 className="font-display mt-2 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">
                     {item.company}
                   </h2>
-                  <p className="text-sm font-semibold text-[var(--brand)]">
+                  <p className="text-sm text-slate-600 dark:text-slate-300">
                     {item.roleTitle}
                   </p>
                 </div>
-                <p className="text-sm text-slate-600 dark:text-slate-300">
+                <p className="text-sm text-slate-500 dark:text-slate-400">
                   {item.timeframe}
                 </p>
               </div>
-            </summary>
-            <div className="mt-4 space-y-4 border-t border-black/10 pt-4 dark:border-white/10">
-              <ul className="space-y-2 text-sm leading-relaxed text-slate-700 dark:text-slate-200">
+              <ul className="mt-4 space-y-2 text-sm leading-relaxed text-slate-700 dark:text-slate-200">
                 {item.impacts.map((impact) => (
-                  <li key={impact} className="flex gap-2">
-                    <span
-                      aria-hidden="true"
-                      className="pt-1 text-[var(--brand)]"
-                    >
-                      •
-                    </span>
-                    <span>{impact}</span>
-                  </li>
+                  <li key={impact}>{impact}</li>
                 ))}
               </ul>
-              <div className="flex flex-wrap gap-2">
-                {item.stack.map((tech) => (
-                  <Badge key={`${item.company}-${tech}`}>{tech}</Badge>
-                ))}
-              </div>
-            </div>
-          </details>
-        ))}
+              <p className="mt-4 text-sm text-slate-600 dark:text-slate-300">
+                <span className="font-medium text-slate-950 dark:text-white">
+                  Stack:
+                </span>{' '}
+                {item.stack.join(', ')}
+              </p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );
