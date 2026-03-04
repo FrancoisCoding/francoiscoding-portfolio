@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Manrope } from 'next/font/google';
+import { Inter } from 'next/font/google';
 
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
@@ -8,12 +8,12 @@ import { ThemeProvider } from '@/components/providers/theme-provider';
 import { siteConfig } from '@/lib/site-config';
 import './globals.css';
 
-const displayFont = Manrope({
+const displayFont = Inter({
   variable: '--font-display',
   subsets: ['latin'],
 });
 
-const bodyFont = Manrope({
+const bodyFont = Inter({
   variable: '--font-body',
   subsets: ['latin'],
 });

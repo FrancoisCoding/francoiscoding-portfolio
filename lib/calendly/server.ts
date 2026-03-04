@@ -14,6 +14,10 @@ interface ICalendlyAvailableTimeResource {
 
 interface ICalendlyAvailabilityApiResponse {
   collection: ICalendlyAvailableTimeResource[];
+  pagination?: {
+    next_page?: string | null;
+    next_page_token?: string | null;
+  };
 }
 
 interface ICalendlyInviteeApiResponse {
@@ -123,24 +127,42 @@ export async function getCalendlyAvailability(
   const availabilityMap = new Map<string, Set<string>>();
 
   for (const chunk of chunks) {
-    const query = new URLSearchParams({
+    const baseQuery = new URLSearchParams({
       event_type: configuration.eventTypeUri,
       start_time: chunk.start.toISOString(),
       end_time: chunk.end.toISOString(),
+      count: '100',
     });
+    let pageToken = '';
 
-    const payload = await calendlyFetch<ICalendlyAvailabilityApiResponse>(
-      `/event_type_available_times?${query.toString()}`,
-    );
+    while (true) {
+      const query = new URLSearchParams(baseQuery);
 
-    for (const item of payload.collection ?? []) {
-      const dateKey = formatDateKeyForTimeZone(
-        new Date(item.start_time),
-        timeZone,
+      if (pageToken) {
+        query.set('page_token', pageToken);
+      }
+
+      const payload = await calendlyFetch<ICalendlyAvailabilityApiResponse>(
+        `/event_type_available_times?${query.toString()}`,
       );
-      const existingTimes = availabilityMap.get(dateKey) ?? new Set<string>();
-      existingTimes.add(item.start_time);
-      availabilityMap.set(dateKey, existingTimes);
+
+      for (const item of payload.collection ?? []) {
+        const dateKey = formatDateKeyForTimeZone(
+          new Date(item.start_time),
+          timeZone,
+        );
+        const existingTimes = availabilityMap.get(dateKey) ?? new Set<string>();
+        existingTimes.add(item.start_time);
+        availabilityMap.set(dateKey, existingTimes);
+      }
+
+      const nextPageToken = getCalendlyNextPageToken(payload.pagination);
+
+      if (!nextPageToken) {
+        break;
+      }
+
+      pageToken = nextPageToken;
     }
   }
 
@@ -197,12 +219,13 @@ export async function bookCalendlyInvitee(
 }
 
 function buildDemoAvailability(month: string): ICalendlyAvailabilityPayload {
-  const calendarDays = buildCalendarDays(month).filter(
-    (day) => day.isCurrentMonth,
-  );
-  const availableDays = calendarDays
-    .filter((day, index) => index % 3 === 1 || index % 5 === 0)
-    .slice(0, 8)
+  const availableDays = buildCalendarDays(month)
+    .filter((day) => day.isCurrentMonth)
+    .filter((day) => {
+      const dayDate = new Date(`${day.dateKey}T12:00:00Z`);
+      const dayOfWeek = dayDate.getUTCDay();
+      return dayOfWeek !== 0 && dayOfWeek !== 6;
+    })
     .map((day) => ({
       date: day.dateKey,
       startTimes: ['15:00:00.000Z', '15:45:00.000Z', '16:45:00.000Z'].map(
@@ -215,6 +238,25 @@ function buildDemoAvailability(month: string): ICalendlyAvailabilityPayload {
     eventLabel: '15 minute intro',
     source: 'demo',
   };
+}
+
+function getCalendlyNextPageToken(
+  pagination: ICalendlyAvailabilityApiResponse['pagination'],
+) {
+  if (pagination?.next_page_token) {
+    return pagination.next_page_token;
+  }
+
+  if (!pagination?.next_page) {
+    return '';
+  }
+
+  try {
+    const nextPageUrl = new URL(pagination.next_page);
+    return nextPageUrl.searchParams.get('page_token') ?? '';
+  } catch {
+    return '';
+  }
 }
 
 async function sendCalendlyLeadNotification(input: ICalendlyBookingInput) {

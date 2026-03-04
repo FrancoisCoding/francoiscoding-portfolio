@@ -44,9 +44,9 @@ export function ContactSection({ id }: IContactSectionProps) {
         style={canAnimate ? { y: glowY } : undefined}
       />
 
-      <div className="mx-auto max-w-[42rem] space-y-4 text-center">
+      <div className="mx-auto max-w-[42rem] space-y-3 text-center">
         <p className="text-sm text-white/55">Contact</p>
-        <h2 className="font-display text-[clamp(2.6rem,4.9vw,4.35rem)] leading-[0.92] font-semibold tracking-[-0.06em] text-white">
+        <h2 className="font-display text-[clamp(1.9rem,3.4vw,3.05rem)] leading-[0.96] font-semibold tracking-[-0.05em] text-white">
           Let&apos;s Build Something Great!
           <span className="block">Book a Call or Drop an Email.</span>
         </h2>
@@ -61,7 +61,7 @@ export function ContactSection({ id }: IContactSectionProps) {
       </div>
 
       <motion.div
-        className="mx-auto mt-8 max-w-[41rem]"
+        className="mx-auto mt-7 max-w-[45rem]"
         style={canAnimate ? { y: panelY } : undefined}
       >
         <CalendlyPanel />

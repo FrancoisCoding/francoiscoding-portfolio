@@ -311,6 +311,8 @@ export function CalendlyPanel() {
     return null;
   }
 
+  const isLiveSource = availabilityData.source === 'live';
+
   if (completedBooking) {
     return (
       <div className="mx-auto max-w-[26rem] rounded-[2rem] border border-white/10 bg-[#111112] p-6 shadow-[0_30px_90px_rgba(0,0,0,0.42)]">
@@ -586,7 +588,15 @@ export function CalendlyPanel() {
             ))}
 
             {calendarDays.map((day) => {
-              const dayHasAvailability = availabilityByDate.has(day.dateKey);
+              const dayTimes = availabilityByDate.get(day.dateKey) ?? [];
+              const dayHasAvailability = dayTimes.length > 0;
+              const dayDate = new Date(`${day.dateKey}T12:00:00Z`);
+              const dayOfWeek = dayDate.getUTCDay();
+              const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+              const isDateSelectable =
+                day.isCurrentMonth &&
+                !isWeekend &&
+                (isLiveSource ? dayHasAvailability : true);
               const isSelected = resolvedSelectedDateKey === day.dateKey;
 
               return (
@@ -594,20 +604,20 @@ export function CalendlyPanel() {
                   key={day.dateKey}
                   type="button"
                   onClick={() => handleSelectDate(day.dateKey)}
-                  disabled={!dayHasAvailability}
+                  disabled={!isDateSelectable}
                   aria-label={formatDateButtonLabel(day.dateKey, timeZone)}
                   className={[
                     'relative inline-flex aspect-square min-h-12 items-center justify-center rounded-2xl border text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
                     isSelected
                       ? 'border-white bg-white text-slate-950'
-                      : dayHasAvailability
+                      : isDateSelectable
                         ? 'border-white/8 bg-white/5 text-white/78 hover:bg-white/10'
                         : 'border-white/6 bg-white/[0.035] text-white/26',
                     !day.isCurrentMonth ? 'text-white/44' : '',
                   ].join(' ')}
                 >
                   <span>{day.dayNumber}</span>
-                  {dayHasAvailability && !isSelected ? (
+                  {isDateSelectable && !isSelected ? (
                     <span
                       aria-hidden="true"
                       className="absolute bottom-2 h-1 w-1 rounded-full bg-white/42"
