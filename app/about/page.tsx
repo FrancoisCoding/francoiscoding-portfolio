@@ -13,13 +13,21 @@ import {
   Settings2,
 } from 'lucide-react';
 import {
+  SiDocker,
+  SiFramer,
+  SiGit,
+  SiGraphql,
   SiNextdotjs,
+  SiNodedotjs,
   SiOpenai,
   SiPostgresql,
   SiPrisma,
+  SiPython,
+  SiReact,
   SiSupabase,
   SiTailwindcss,
   SiTypescript,
+  SiVercel,
 } from 'react-icons/si';
 
 import { siteConfig } from '@/lib/site-config';
@@ -128,6 +136,14 @@ const toolLinks = [
     iconContainerClassName: 'border-white/12 bg-[#101113]',
   },
   {
+    name: 'React',
+    href: 'https://react.dev',
+    icon: SiReact,
+    iconColor: '#61dafb',
+    iconContainerClassName:
+      'border-cyan-300/35 bg-[linear-gradient(180deg,rgba(97,218,251,0.24),rgba(8,47,73,0.14))]',
+  },
+  {
     name: 'TypeScript',
     href: 'https://www.typescriptlang.org',
     icon: SiTypescript,
@@ -142,6 +158,22 @@ const toolLinks = [
     iconColor: '#38bdf8',
     iconContainerClassName:
       'border-sky-300/35 bg-[linear-gradient(180deg,rgba(56,189,248,0.22),rgba(14,116,144,0.14))]',
+  },
+  {
+    name: 'Node.js',
+    href: 'https://nodejs.org',
+    icon: SiNodedotjs,
+    iconColor: '#66cc33',
+    iconContainerClassName:
+      'border-lime-300/35 bg-[linear-gradient(180deg,rgba(102,204,51,0.22),rgba(54,83,20,0.14))]',
+  },
+  {
+    name: 'GraphQL',
+    href: 'https://graphql.org',
+    icon: SiGraphql,
+    iconColor: '#e535ab',
+    iconContainerClassName:
+      'border-fuchsia-300/35 bg-[linear-gradient(180deg,rgba(229,53,171,0.22),rgba(80,7,36,0.14))]',
   },
   {
     name: 'Supabase',
@@ -175,6 +207,45 @@ const toolLinks = [
     iconContainerClassName:
       'border-green-300/35 bg-[linear-gradient(180deg,rgba(74,222,128,0.2),rgba(21,128,61,0.14))]',
   },
+  {
+    name: 'Python',
+    href: 'https://www.python.org',
+    icon: SiPython,
+    iconColor: '#ffde57',
+    iconContainerClassName:
+      'border-yellow-300/35 bg-[linear-gradient(180deg,rgba(255,222,87,0.2),rgba(113,63,18,0.14))]',
+  },
+  {
+    name: 'Docker',
+    href: 'https://www.docker.com',
+    icon: SiDocker,
+    iconColor: '#2496ed',
+    iconContainerClassName:
+      'border-sky-300/35 bg-[linear-gradient(180deg,rgba(36,150,237,0.22),rgba(12,74,110,0.14))]',
+  },
+  {
+    name: 'Vercel',
+    href: 'https://vercel.com',
+    icon: SiVercel,
+    iconColor: '#ffffff',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'Framer Motion',
+    href: 'https://www.framer.com/motion/',
+    icon: SiFramer,
+    iconColor: '#7f5af0',
+    iconContainerClassName:
+      'border-indigo-300/35 bg-[linear-gradient(180deg,rgba(127,90,240,0.24),rgba(49,46,129,0.14))]',
+  },
+  {
+    name: 'Git',
+    href: 'https://git-scm.com',
+    icon: SiGit,
+    iconColor: '#f05032',
+    iconContainerClassName:
+      'border-orange-300/35 bg-[linear-gradient(180deg,rgba(240,80,50,0.22),rgba(124,45,18,0.14))]',
+  },
 ] as const;
 
 const aboutGalleryItems = [
@@ -206,21 +277,21 @@ const aboutGalleryItems = [
 
 const hobbiesCards = [
   {
-    src: '/about/about6.jpg',
-    alt: 'Workspace setup with laptop and desk tools.',
-    title: 'Building & Learning',
+    src: '/about/about8.jpg',
+    alt: 'Coastal travel scene near clear blue water.',
+    title: 'Travel',
     className: 'rotate-[-7deg]',
   },
   {
-    src: '/about/about8.jpg',
-    alt: 'Ocean and travel scene.',
-    title: 'Travel & Exploration',
+    src: '/about/about4.jpg',
+    alt: 'Training and movement session in a gym environment.',
+    title: 'Volleyball',
     className: 'rotate-[3deg]',
   },
   {
-    src: '/about/about4.jpg',
-    alt: 'Fitness equipment and gym space.',
-    title: 'Fitness & Wellness',
+    src: '/about/about6.jpg',
+    alt: 'Laptop setup used for games and coding.',
+    title: 'Gaming',
     className: 'rotate-[6deg]',
   },
 ] as const;
