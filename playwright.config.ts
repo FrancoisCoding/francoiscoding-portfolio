@@ -1,6 +1,6 @@
 import { defineConfig } from '@playwright/test';
 
-const port = 4173;
+const port = Number(process.env.PLAYWRIGHT_PORT ?? 4317);
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -12,17 +12,5 @@ export default defineConfig({
   use: {
     baseURL: `http://127.0.0.1:${port}`,
     trace: 'retain-on-failure',
-  },
-  webServer: {
-    command: `pnpm dev --port ${port}`,
-    url: `http://127.0.0.1:${port}`,
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-    env: {
-      NEXT_PUBLIC_SITE_URL: `http://127.0.0.1:${port}`,
-      NEXT_PUBLIC_SUPABASE_URL: 'https://example.supabase.co',
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: 'example-anon-key',
-      ADMIN_ALLOWLIST_EMAILS: 'admin@example.com',
-    },
   },
 });
