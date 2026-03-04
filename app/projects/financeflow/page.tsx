@@ -1,109 +1,87 @@
-import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from 'next';
-import { ArrowUpRight } from 'lucide-react';
 
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { projectsData } from '@/lib/projects-data';
+import { financeFlowProject } from '@/lib/projects-data';
+import { siteConfig } from '@/lib/site-config';
 
-const financeFlowProject = projectsData.find(
-  (project) => project.slug === 'financeflow',
-);
+const financeFlowGallery = [
+  {
+    src: '/projects/financeflow-dashboard.png',
+    alt: 'FinanceFlow dashboard preview',
+  },
+  {
+    src: '/projects/financeflow-ai.png',
+    alt: 'FinanceFlow AI assistant preview',
+  },
+  {
+    src: '/projects/financeflow-subscriptions.png',
+    alt: 'FinanceFlow subscriptions preview',
+  },
+];
 
 export const metadata: Metadata = {
-  title: 'FinanceFlow Case Study',
-  description:
-    'Case study breakdown of FinanceFlow covering problem, solution, impact, and delivery stack.',
+  title: 'FinanceFlow',
+  description: 'FinanceFlow project overview and product preview.',
   openGraph: {
-    title: 'FinanceFlow Case Study | Isaiah Francois',
-    description:
-      'A concise case study walkthrough for FinanceFlow, a featured product project.',
+    title: 'FinanceFlow | Isaiah Francois',
+    description: 'FinanceFlow project overview and product preview.',
     url: '/projects/financeflow',
   },
 };
 
-export default function FinanceFlowCaseStudyPage() {
-  if (!financeFlowProject) {
-    return (
-      <section className="py-16">
-        <h1 className="font-display text-4xl font-semibold text-slate-950 dark:text-white">
-          FinanceFlow Case Study
-        </h1>
-        <p className="mt-4 text-slate-600 dark:text-slate-300">
-          Case study details are currently unavailable.
-        </p>
-      </section>
-    );
-  }
-
+export default function FinanceFlowProjectPage() {
   return (
-    <section className="space-y-8 py-16">
-      <div className="space-y-3">
-        <p className="text-sm font-semibold tracking-[0.16em] text-[var(--brand)] uppercase">
-          Case Study
-        </p>
-        <h1 className="font-display text-4xl font-semibold text-slate-950 dark:text-white">
-          {financeFlowProject.name}
-        </h1>
-        <p className="max-w-3xl text-slate-600 dark:text-slate-300">
-          {financeFlowProject.summary}
-        </p>
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-3">
-        <Card>
-          <CardHeader>
-            <CardTitle>Problem</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm leading-relaxed text-slate-700 dark:text-slate-200">
-            {financeFlowProject.problem}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Solution</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm leading-relaxed text-slate-700 dark:text-slate-200">
-            {financeFlowProject.solution}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Impact</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm leading-relaxed text-slate-700 dark:text-slate-200">
-            {financeFlowProject.impact}
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="space-y-3">
-        <h2 className="font-display text-2xl font-semibold text-slate-950 dark:text-white">
-          Stack
-        </h2>
-        <div className="flex flex-wrap gap-2">
-          {financeFlowProject.stack.map((item) => (
-            <Badge key={item}>{item}</Badge>
-          ))}
+    <section className="pt-10 pb-12 sm:pt-12">
+      <div className="grid gap-8 border-b border-white/8 pb-10 lg:grid-cols-[0.8fr_1.2fr]">
+        <div className="space-y-4">
+          <p className="text-sm text-white/55">{financeFlowProject.eyebrow}</p>
+          <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+            {financeFlowProject.name}
+          </h1>
+        </div>
+        <div className="space-y-5">
+          <p className="text-base leading-7 text-white/72">
+            {financeFlowProject.summary}
+          </p>
+          <p className="text-base leading-7 text-white/64">
+            {financeFlowProject.description}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {financeFlowProject.stack.map((item) => (
+              <span
+                key={item}
+                className="inline-flex min-h-10 items-center rounded-full border border-white/10 bg-white/6 px-3 text-sm text-white/70"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+          <a
+            href={siteConfig.financeFlowUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex min-h-11 items-center rounded-xl border border-white/10 bg-white px-4 text-sm font-medium text-slate-950 transition-colors hover:bg-slate-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+          >
+            View FinanceFlow
+          </a>
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-4">
-        <a
-          href="https://www.financeflow.dev"
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--brand)] underline-offset-4 hover:underline"
-        >
-          View FinanceFlow
-          <ArrowUpRight className="size-3.5" />
-        </a>
-        <Link
-          href="/projects"
-          className="inline-flex items-center gap-1 text-sm font-semibold text-slate-700 underline-offset-4 hover:underline dark:text-slate-200"
-        >
-          Back to Projects
-        </Link>
+      <div className="grid gap-4 pt-8 lg:grid-cols-3">
+        {financeFlowGallery.map((image) => (
+          <div
+            key={image.src}
+            className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#111]"
+          >
+            <Image
+              src={image.src}
+              alt={image.alt}
+              fill
+              className="object-cover object-top"
+              sizes="(max-width: 1024px) 100vw, 33vw"
+            />
+          </div>
+        ))}
       </div>
     </section>
   );

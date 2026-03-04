@@ -1,54 +1,38 @@
 import type { Metadata } from 'next';
 
 import { ProjectCard } from '@/components/projects/project-card';
-import { projectsData } from '@/lib/projects-data';
-
-const featuredProject = projectsData.find((project) => project.featured);
-const secondaryProjects = projectsData.filter((project) => !project.featured);
+import { showcasedProjects } from '@/lib/projects-data';
 
 export const metadata: Metadata = {
   title: 'Projects',
   description:
-    'Featured projects led by Isaiah Francois, including FinanceFlow and private enterprise initiatives.',
+    'Selected web projects from Isaiah Francois, including Edson Prime Estates, Bible Jeopardy, and Bear-X.',
   openGraph: {
     title: 'Projects | Isaiah Francois',
     description:
-      'Problem-to-impact case studies, technical stack summaries, and links to featured work.',
+      'Selected projects, live links, and GitHub references where available.',
     url: '/projects',
   },
 };
 
 export default function ProjectsPage() {
   return (
-    <section className="space-y-10 py-16">
-      <div className="space-y-3">
-        <h1 className="font-display text-4xl font-semibold text-slate-950 dark:text-white">
-          Projects
+    <section className="pt-10 pb-12 sm:pt-12">
+      <div className="space-y-4 border-b border-white/8 pb-10">
+        <p className="text-sm text-white/55">Work</p>
+        <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+          Web projects with strong visual direction and direct product access.
         </h1>
-        <p className="max-w-2xl text-slate-600 dark:text-slate-300">
-          Selected work demonstrating problem framing, technical execution, and
-          measurable product impact.
+        <p className="max-w-2xl text-base leading-7 text-white/68">
+          A concise view of selected public projects. Each card links straight
+          to the live product, with GitHub included where it is public.
         </p>
       </div>
 
-      {featuredProject ? (
-        <div className="space-y-3">
-          <p className="text-sm font-semibold tracking-[0.16em] text-[var(--brand)] uppercase">
-            Featured
-          </p>
-          <ProjectCard project={featuredProject} />
-        </div>
-      ) : null}
-
-      <div className="space-y-3">
-        <p className="text-sm font-semibold tracking-[0.16em] text-slate-600 uppercase dark:text-slate-300">
-          Additional Work
-        </p>
-        <div className="grid gap-4 lg:grid-cols-2">
-          {secondaryProjects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
-          ))}
-        </div>
+      <div className="grid gap-4 pt-8 lg:grid-cols-3">
+        {showcasedProjects.map((project) => (
+          <ProjectCard key={project.slug} project={project} />
+        ))}
       </div>
     </section>
   );
