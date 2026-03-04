@@ -17,6 +17,8 @@ export const metadata: Metadata = {
 };
 
 export default function ResumePage() {
+  const inlineResumePath = `${resumePath}#zoom=page-fit&view=FitH&toolbar=1&navpanes=0`;
+
   return (
     <section className="py-16">
       <div className="space-y-8">
@@ -33,23 +35,24 @@ export default function ResumePage() {
           <div className="space-y-6">
             <div className="flex flex-wrap gap-3">
               <Button asChild>
-                <a href={resumePath} download>
-                  <Download className="size-4" />
-                  Download Resume
+                <a href={resumePath} target="_blank" rel="noreferrer">
+                  Open in New Tab
                 </a>
               </Button>
               <Button asChild variant="secondary">
-                <a href={resumePath} target="_blank" rel="noreferrer">
-                  Open in New Tab
+                <a href={resumePath} download>
+                  <Download className="size-4" />
+                  Download Resume
                 </a>
               </Button>
             </div>
 
             <div className="overflow-hidden rounded-xl border border-black/10 dark:border-white/10">
               <iframe
-                src={`${resumePath}#view=FitH`}
+                src={inlineResumePath}
                 title="Isaiah Francois resume PDF viewer"
                 className="h-[70vh] w-full"
+                loading="lazy"
               />
             </div>
           </div>
