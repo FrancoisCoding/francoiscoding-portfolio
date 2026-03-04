@@ -140,18 +140,39 @@ export function SiteHeader() {
             })}
           </nav>
 
-          <button
+          <motion.button
             type="button"
             onClick={() => setIsMenuOpen((currentValue) => !currentValue)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white/92 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.11),rgba(255,255,255,0.05))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+            className="group inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white/92 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.11),rgba(255,255,255,0.05))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
             aria-expanded={isMenuOpen}
             aria-controls="site-header-menu"
             aria-label={
               isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'
             }
+            whileHover={
+              canAnimate
+                ? { scale: 1.04, y: -0.5, rotate: isMenuOpen ? 90 : 2 }
+                : undefined
+            }
+            whileTap={canAnimate ? { scale: 0.95 } : undefined}
+            animate={
+              canAnimate
+                ? {
+                    rotate: isMenuOpen ? 90 : 0,
+                    boxShadow: isMenuOpen
+                      ? '0 0 0 1px rgba(255,255,255,0.18), inset 0 1px 0 rgba(255,255,255,0.08)'
+                      : 'inset 0 1px 0 rgba(255,255,255,0.04)',
+                  }
+                : undefined
+            }
+            transition={
+              canAnimate
+                ? { type: 'spring', stiffness: 380, damping: 26, mass: 0.42 }
+                : undefined
+            }
           >
             <MenuToggleIcon isOpen={isMenuOpen} canAnimate={canAnimate} />
-          </button>
+          </motion.button>
 
           <AnimatePresence>
             {isMenuOpen ? (
@@ -184,7 +205,7 @@ export function SiteHeader() {
                           href={link.href}
                           onClick={() => setIsMenuOpen(false)}
                           className={cn(
-                            'inline-flex min-h-11 w-full items-center rounded-xl border px-4 text-sm font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
+                            'group inline-flex min-h-11 w-full items-center rounded-xl border px-4 text-sm font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out hover:translate-x-[3px] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
                             isActive
                               ? 'border-white/10 bg-white text-slate-950'
                               : 'border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.11),rgba(255,255,255,0.05))]',
@@ -224,10 +245,13 @@ export function SiteHeader() {
                                 ? undefined
                                 : 'noreferrer'
                             }
-                            className="inline-flex min-h-11 w-full items-center justify-between rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.035))] px-4 text-sm font-medium text-white transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.05))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+                            className="group inline-flex min-h-11 w-full items-center justify-between rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.035))] px-4 text-sm font-medium text-white transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out hover:translate-x-[3px] hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.05))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
                           >
                             {link.label}
-                            <span className="text-white/50" aria-hidden="true">
+                            <span
+                              className="text-white/50 transition-transform duration-200 ease-in-out group-hover:translate-x-0.5"
+                              aria-hidden="true"
+                            >
                               ↗
                             </span>
                           </a>
@@ -240,10 +264,13 @@ export function SiteHeader() {
                         <Link
                           href={link.href}
                           onClick={() => setIsMenuOpen(false)}
-                          className="inline-flex min-h-11 w-full items-center justify-between rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.035))] px-4 text-sm font-medium text-white transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.05))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+                          className="group inline-flex min-h-11 w-full items-center justify-between rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.035))] px-4 text-sm font-medium text-white transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out hover:translate-x-[3px] hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.05))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
                         >
                           {link.label}
-                          <span className="text-white/50" aria-hidden="true">
+                          <span
+                            className="text-white/50 transition-transform duration-200 ease-in-out group-hover:translate-x-0.5"
+                            aria-hidden="true"
+                          >
                             →
                           </span>
                         </Link>
@@ -267,14 +294,21 @@ function MenuToggleIcon({
   isOpen: boolean;
   canAnimate: boolean;
 }) {
-  const topLineState = isOpen ? { y: 5, rotate: 45 } : { y: 0, rotate: 0 };
+  const topLineState = isOpen
+    ? { y: 5.5, rotate: 45, scaleX: 0.95 }
+    : { y: 0, rotate: 0, scaleX: 1 };
   const middleLineState = isOpen
-    ? { opacity: 0, scaleX: 0.5 }
-    : { opacity: 1, scaleX: 1 };
-  const bottomLineState = isOpen ? { y: -5, rotate: -45 } : { y: 0, rotate: 0 };
+    ? { opacity: 0, scaleX: 0, x: 2 }
+    : { opacity: 1, scaleX: 1, x: 0 };
+  const bottomLineState = isOpen
+    ? { y: -5.5, rotate: -45, scaleX: 0.95 }
+    : { y: 0, rotate: 0, scaleX: 1 };
   const iconTransition = {
-    duration: canAnimate ? 0.2 : 0,
-    ease: 'easeOut' as const,
+    type: 'spring' as const,
+    stiffness: 420,
+    damping: 30,
+    mass: 0.33,
+    duration: canAnimate ? undefined : 0,
   };
 
   return (
@@ -288,8 +322,11 @@ function MenuToggleIcon({
         className="absolute top-[7px] left-0 h-[1.5px] w-4 rounded-full bg-current"
         animate={middleLineState}
         transition={{
-          duration: canAnimate ? 0.16 : 0,
-          ease: 'easeOut',
+          type: 'spring',
+          stiffness: 420,
+          damping: 34,
+          mass: 0.28,
+          duration: canAnimate ? undefined : 0,
         }}
       />
       <motion.span
