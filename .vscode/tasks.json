@@ -2,27 +2,16 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Run Next.js Dev Server",
+      "label": "pnpm dev",
       "type": "shell",
       "command": "pnpm dev",
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "isBackground": true,
-      "problemMatcher": {
-        "owner": "custom",
-        "pattern": {
-          "regexp": "."
-        },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": ".",
-          "endsPattern": "Ready in"
-        }
-      },
       "presentation": {
         "reveal": "always",
-        "panel": "dedicated"
+        "panel": "dedicated",
+        "focus": true
       }
     }
   ]
