@@ -145,9 +145,10 @@ const experienceItems: IExperienceItem[] = [
     location: 'Remote',
     timeframe: 'Feb 2021 - Apr 2023',
     duration: '(2 years 3 months)',
+    logoSrc: '/expertise/sosha.svg',
+    logoAlt: 'SoSha logo',
     logoLabel: 'S',
-    logoClassName:
-      'border-indigo-300/35 bg-[linear-gradient(180deg,rgba(129,140,248,0.3),rgba(30,27,75,0.22))] text-indigo-100',
+    logoClassName: 'border-white/14 bg-white text-slate-950',
   },
   {
     role: 'Front-End Engineer (Externship)',
