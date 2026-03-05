@@ -27,6 +27,11 @@ export const metadata: Metadata = {
   },
   description:
     'Portfolio of Isaiah Francois, Senior Full Stack Engineer with 7+ years building modern product systems.',
+  icons: {
+    icon: [{ url: '/profile.jpg', type: 'image/jpeg' }],
+    shortcut: [{ url: '/profile.jpg', type: 'image/jpeg' }],
+    apple: [{ url: '/profile.jpg', type: 'image/jpeg' }],
+  },
   openGraph: {
     title: 'Isaiah Francois | Senior Full Stack Engineer',
     description:

@@ -1,3 +1,5 @@
+import { readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import Image from 'next/image';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -513,30 +515,130 @@ const extendedTools = toolLinks.filter(
   (item) => !coreToolNameSet.has(item.name),
 );
 
+const aboutImageQuality = 100;
+
+const mainAboutImageFileNames = [
+  'main.jpg',
+  'main2.jpg',
+  'main3.jpg',
+  'main4.jpg',
+] as const;
+
+const hobbyCategoryImageFileNames = [
+  'travel.jpg',
+  'cooking.jpg',
+  'bouldering.jpg',
+  'volleyball.jpg',
+] as const;
+
+const additionalGalleryLayoutCycle = [
+  {
+    className: 'sm:col-span-1 sm:row-span-2 min-h-[12rem] sm:min-h-[17rem]',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 42vw, 24vw',
+  },
+  {
+    className: 'sm:col-span-2 sm:row-span-2 min-h-[12rem] sm:min-h-[17rem]',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 84vw, 48vw',
+  },
+  {
+    className: 'sm:col-span-1 sm:row-span-2 min-h-[12rem] sm:min-h-[17rem]',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 42vw, 24vw',
+  },
+  {
+    className: 'sm:col-span-1 min-h-[9.5rem]',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 42vw, 24vw',
+  },
+  {
+    className: 'sm:col-span-1 min-h-[9.5rem]',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 42vw, 24vw',
+  },
+  {
+    className: 'sm:col-span-2 min-h-[9.5rem]',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 84vw, 48vw',
+  },
+] as const;
+
+function getAboutImageFileNames() {
+  try {
+    const aboutDirectoryPath = join(process.cwd(), 'public', 'about');
+    return readdirSync(aboutDirectoryPath)
+      .filter((fileName) => /\.(avif|jpg|jpeg|png|webp)$/i.test(fileName))
+      .sort((leftFileName, rightFileName) =>
+        leftFileName.localeCompare(rightFileName),
+      );
+  } catch {
+    return [];
+  }
+}
+
+function buildAboutImageAlt(fileName: string) {
+  const sanitizedLabel = fileName
+    .replace(/\.[^.]+$/, '')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\d+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!sanitizedLabel) {
+    return 'Isaiah Francois lifestyle photo.';
+  }
+
+  return `Isaiah Francois ${sanitizedLabel} photo.`;
+}
+
+const aboutImageFileNames = getAboutImageFileNames();
+
+const usedAboutImageFileNameSet = new Set<string>([
+  ...mainAboutImageFileNames,
+  ...hobbyCategoryImageFileNames,
+]);
+
+const additionalAboutImageTiles = aboutImageFileNames
+  .filter((fileName) => !usedAboutImageFileNameSet.has(fileName))
+  .map((fileName, index) => {
+    const isDrawingImage = fileName.startsWith('drawing');
+    const layout =
+      additionalGalleryLayoutCycle[index % additionalGalleryLayoutCycle.length];
+
+    return {
+      src: `/about/${fileName}`,
+      alt: buildAboutImageAlt(fileName),
+      className: isDrawingImage
+        ? 'sm:col-span-2 min-h-[11.5rem] sm:min-h-[16.5rem]'
+        : layout.className,
+      imageClassName: isDrawingImage
+        ? 'object-contain bg-[#0f0f10] p-2 sm:p-3'
+        : 'object-cover',
+      sizes: isDrawingImage
+        ? '(max-width: 640px) 100vw, (max-width: 1024px) 84vw, 48vw'
+        : layout.sizes,
+    };
+  });
+
 const aboutGalleryItems = [
   {
     src: '/about/main.jpg',
     alt: 'Isaiah Francois portrait in London.',
     className: 'row-span-2 min-h-[18rem] md:min-h-[22rem]',
-    sizes: '(max-width: 1024px) 100vw, 22vw',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 46vw, 35vw',
   },
   {
     src: '/about/main2.jpg',
     alt: 'Isaiah Francois with scenic travel backdrop.',
     className: 'min-h-[8.5rem] md:min-h-[10.5rem]',
-    sizes: '(max-width: 1024px) 50vw, 10vw',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 30vw, 20vw',
   },
   {
     src: '/about/main3.jpg',
     alt: 'Lifestyle portrait in Las Vegas.',
     className: 'min-h-[8.5rem] md:min-h-[10.5rem]',
-    sizes: '(max-width: 1024px) 50vw, 10vw',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 22vw, 14vw',
   },
   {
     src: '/about/main4.jpg',
     alt: 'Isaiah Francois on travel in Bali.',
     className: 'row-span-2 min-h-[18rem] md:min-h-[22rem]',
-    sizes: '(max-width: 1024px) 100vw, 12vw',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 30vw, 20vw',
   },
 ] as const;
 
@@ -568,39 +670,6 @@ const hobbiesCards = [
     title: 'Volleyball',
     stackClassName:
       'z-10 translate-x-[8rem] rotate-[8deg] group-hover:translate-x-[18rem] group-hover:rotate-[5deg]',
-  },
-] as const;
-
-const hobbiesMosaic = [
-  {
-    src: '/about/travel2.jpg',
-    alt: 'Ocean cliff view during travel.',
-    className: 'row-span-2 min-h-[14rem]',
-  },
-  {
-    src: '/about/travel3.jpg',
-    alt: 'Travel view in tropical waters.',
-    className: 'row-span-2 min-h-[14rem]',
-  },
-  {
-    src: '/about/travel5.jpg',
-    alt: 'Travel snapshot in a scenic destination.',
-    className: 'row-span-2 min-h-[14rem]',
-  },
-  {
-    src: '/about/foodie.jpg',
-    alt: 'Food and lifestyle snapshot.',
-    className: 'min-h-[9rem]',
-  },
-  {
-    src: '/about/drawing.jpg',
-    alt: 'Drawing and art detail.',
-    className: 'min-h-[9rem]',
-  },
-  {
-    src: '/about/drawing2.jpg',
-    alt: 'Sketchbook and drawing setup.',
-    className: 'min-h-[9rem]',
   },
 ] as const;
 
@@ -636,6 +705,7 @@ export default function AboutPage() {
                     fill
                     className="object-cover"
                     sizes={item.sizes}
+                    quality={aboutImageQuality}
                     priority={index < 2}
                   />
                 </div>
@@ -791,6 +861,7 @@ export default function AboutPage() {
                       fill
                       className="object-cover"
                       sizes="(max-width: 1024px) 100vw, 33vw"
+                      quality={aboutImageQuality}
                     />
                   </div>
                   <p className="font-accent px-1 pt-3 pb-1 text-center text-[1.02rem] font-medium tracking-[0.01em] text-white/90">
@@ -813,6 +884,7 @@ export default function AboutPage() {
                       fill
                       className="object-cover"
                       sizes="(max-width: 1024px) 100vw, 260px"
+                      quality={aboutImageQuality}
                     />
                   </div>
                   <p className="font-accent px-1 pt-3 pb-1 text-center text-[1.06rem] font-medium tracking-[0.01em] text-white/90">
@@ -822,8 +894,8 @@ export default function AboutPage() {
               ))}
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-[1fr_1fr_1fr] sm:grid-rows-3">
-              {hobbiesMosaic.map((item) => (
+            <div className="grid auto-rows-[8.6rem] gap-3 sm:auto-rows-[7.9rem] sm:grid-cols-3">
+              {additionalAboutImageTiles.map((item, index) => (
                 <div
                   key={item.src}
                   className={`relative overflow-hidden rounded-[1.25rem] border border-white/10 bg-[#0f0f10] ${item.className}`}
@@ -832,8 +904,10 @@ export default function AboutPage() {
                     src={item.src}
                     alt={item.alt}
                     fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 33vw"
+                    className={item.imageClassName}
+                    sizes={item.sizes}
+                    quality={aboutImageQuality}
+                    priority={index < 3}
                   />
                 </div>
               ))}
