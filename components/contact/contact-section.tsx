@@ -32,7 +32,7 @@ export function ContactSection({ id }: IContactSectionProps) {
     <motion.section
       ref={sectionRef}
       id={id}
-      className="relative scroll-mt-24 border-t border-white/8 pt-10 pb-10 sm:pt-12"
+      className="relative scroll-mt-24 border-t border-white/8 pt-9 pb-10 sm:pt-11"
       initial={canAnimate ? { opacity: 0, y: 18 } : false}
       whileInView={canAnimate ? { opacity: 1, y: 0 } : undefined}
       viewport={{ once: true, amount: 0.25 }}
@@ -44,9 +44,9 @@ export function ContactSection({ id }: IContactSectionProps) {
         style={canAnimate ? { y: glowY } : undefined}
       />
 
-      <div className="mx-auto max-w-[42rem] space-y-3 text-center">
+      <div className="mx-auto max-w-[36rem] space-y-3 text-center">
         <p className="text-sm text-white/55">Contact</p>
-        <h2 className="font-display text-[clamp(1.9rem,3.4vw,3.05rem)] leading-[0.96] font-semibold tracking-[-0.05em] text-white">
+        <h2 className="font-display text-[clamp(1.8rem,2.7vw,2.65rem)] leading-[0.96] font-semibold tracking-[-0.05em] text-white">
           Let&apos;s Build Something Great!
           <span className="block">Book a Call or Drop an Email.</span>
         </h2>
@@ -61,7 +61,7 @@ export function ContactSection({ id }: IContactSectionProps) {
       </div>
 
       <motion.div
-        className="mx-auto mt-7 max-w-[45rem]"
+        className="mx-auto mt-6 max-w-[44rem]"
         style={canAnimate ? { y: panelY } : undefined}
       >
         <CalendlyPanel />

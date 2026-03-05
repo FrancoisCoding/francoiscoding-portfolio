@@ -26,14 +26,10 @@ html {
 
 body {
   background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.05), transparent 24%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.016), transparent 18%),
     linear-gradient(90deg, rgba(255, 255, 255, 0.011) 1px, transparent 1px),
     linear-gradient(180deg, rgba(255, 255, 255, 0.011) 1px, transparent 1px),
     var(--background);
   background-size:
-    100% 100%,
-    100% 100%,
     100% 64px,
     64px 100%,
     100% 100%;
@@ -57,64 +53,70 @@ body {
 }
 
 .status-light-core {
-  animation: status-light-core 1.2s steps(1, end) infinite;
+  animation: status-light-core 5.2s ease-in-out infinite;
 }
 
 .status-light-glow {
-  animation: status-light-glow 1.2s steps(1, end) infinite;
+  animation: status-light-glow 5.2s ease-in-out infinite;
 }
 
 @keyframes status-light-core {
   0%,
-  14%,
-  32%,
-  48%,
-  62%,
-  78%,
+  42%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
 
-  15%,
-  21%,
-  33%,
-  39%,
-  49%,
-  55%,
-  63%,
-  69%,
-  79%,
-  85% {
-    opacity: 0.28;
-    transform: scale(0.7);
+  47% {
+    opacity: 0.44;
+    transform: scale(0.84);
+  }
+
+  50% {
+    opacity: 0.72;
+    transform: scale(0.93);
+  }
+
+  53% {
+    opacity: 0.46;
+    transform: scale(0.85);
+  }
+
+  57%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
 @keyframes status-light-glow {
   0%,
-  14%,
-  32%,
-  48%,
-  62%,
-  78%,
+  42%,
   100% {
-    opacity: 0.85;
-    transform: scale(1.2);
+    opacity: 0.72;
+    transform: scale(1.08);
   }
 
-  15%,
-  21%,
-  33%,
-  39%,
-  49%,
-  55%,
-  63%,
-  69%,
-  79%,
-  85% {
-    opacity: 0.12;
-    transform: scale(0.68);
+  47% {
+    opacity: 0.2;
+    transform: scale(0.82);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(0.94);
+  }
+
+  53% {
+    opacity: 0.22;
+    transform: scale(0.84);
+  }
+
+  57%,
+  100% {
+    opacity: 0.72;
+    transform: scale(1.08);
   }
 }
 

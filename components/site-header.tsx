@@ -83,8 +83,8 @@ export function SiteHeader() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50">
-      <div className="mx-auto flex w-full max-w-[74rem] items-start justify-between gap-3 px-5 py-3 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 bg-transparent">
+      <div className="mx-auto flex w-full max-w-[68rem] items-start justify-between gap-3 px-5 py-3 sm:px-6 lg:px-8">
         <motion.div
           initial={canAnimate ? { opacity: 0, y: -10 } : false}
           animate={canAnimate ? { opacity: 1, y: 0 } : undefined}
@@ -126,10 +126,10 @@ export function SiteHeader() {
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
                   className={cn(
-                    'inline-flex min-h-10 items-center rounded-xl border px-3.5 text-[0.72rem] font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
+                    'inline-flex min-h-10 items-center rounded-xl border px-3.5 text-[0.72rem] font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
                     isActive
                       ? 'border-white/12 bg-white text-slate-950 shadow-[0_14px_32px_rgba(255,255,255,0.06)]'
-                      : 'border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white/92 hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.11),rgba(255,255,255,0.05))]',
+                      : 'border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white/92',
                   )}
                   aria-current={isActive ? 'page' : undefined}
                 >
@@ -142,16 +142,11 @@ export function SiteHeader() {
           <motion.button
             type="button"
             onClick={() => setIsMenuOpen((currentValue) => !currentValue)}
-            className="group inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white/92 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.11),rgba(255,255,255,0.05))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+            className="group inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white/92 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
             aria-expanded={isMenuOpen}
             aria-controls="site-header-menu"
             aria-label={
               isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'
-            }
-            whileHover={
-              canAnimate
-                ? { scale: 1.05, y: -1, rotate: isMenuOpen ? 90 : 3 }
-                : undefined
             }
             whileTap={canAnimate ? { scale: 0.95 } : undefined}
             animate={
