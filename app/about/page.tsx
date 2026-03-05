@@ -50,6 +50,7 @@ import {
   SiVercel,
 } from 'react-icons/si';
 
+import { AboutSideNav } from '@/components/about/about-side-nav';
 import { siteConfig } from '@/lib/site-config';
 
 const aboutNavigationLinks = [
@@ -540,19 +541,22 @@ const hobbiesCards = [
     src: '/about/about8.jpg',
     alt: 'Coastal travel scene near clear blue water.',
     title: 'Travel',
-    className: 'rotate-[-7deg]',
+    stackClassName:
+      'z-20 -translate-x-[68%] -rotate-[8deg] group-hover:-translate-x-[122%] group-hover:-rotate-[10deg]',
   },
   {
     src: '/about/about4.jpg',
     alt: 'Training and movement session in a gym environment.',
     title: 'Volleyball',
-    className: 'rotate-[3deg]',
+    stackClassName:
+      'z-30 -translate-x-1/2 rotate-[1deg] group-hover:-translate-x-1/2 group-hover:rotate-0',
   },
   {
     src: '/about/about6.jpg',
     alt: 'Laptop setup used for games and coding.',
     title: 'Gaming',
-    className: 'rotate-[6deg]',
+    stackClassName:
+      'z-10 -translate-x-[32%] rotate-[8deg] group-hover:translate-x-[32%] group-hover:rotate-[10deg]',
   },
 ] as const;
 
@@ -595,22 +599,7 @@ export default function AboutPage() {
   return (
     <section className="pt-7 pb-12 sm:pt-9">
       <div className="mx-auto max-w-[64rem] lg:grid lg:grid-cols-[5.75rem_minmax(0,1fr)] lg:gap-12">
-        <nav
-          aria-label="About page sections"
-          className="hidden lg:sticky lg:top-24 lg:block lg:self-start"
-        >
-          <div className="space-y-3 text-[0.95rem] text-white/52">
-            {aboutNavigationLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="block transition-colors hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-        </nav>
+        <AboutSideNav links={aboutNavigationLinks} />
 
         <div className="space-y-14">
           <section id="overview" className="space-y-8">
@@ -765,11 +754,11 @@ export default function AboutPage() {
               Hobbies
             </h2>
 
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid gap-4 sm:hidden">
               {hobbiesCards.map((item) => (
                 <article
                   key={item.src}
-                  className={`rounded-[1.2rem] border border-white/10 bg-[#202124] p-2.5 ${item.className}`}
+                  className="rounded-[1.2rem] border border-white/10 bg-[#202124] p-2.5"
                 >
                   <div className="relative min-h-[9rem] overflow-hidden rounded-[0.95rem] border border-white/8">
                     <Image
@@ -778,6 +767,28 @@ export default function AboutPage() {
                       fill
                       className="object-cover"
                       sizes="(max-width: 1024px) 100vw, 33vw"
+                    />
+                  </div>
+                  <p className="px-1 pt-3 pb-1 text-center text-[0.94rem] font-medium text-white/88">
+                    {item.title}
+                  </p>
+                </article>
+              ))}
+            </div>
+
+            <div className="group relative mx-auto hidden h-[16.5rem] w-full max-w-[44rem] sm:block">
+              {hobbiesCards.map((item) => (
+                <article
+                  key={`${item.src}-stack`}
+                  className={`absolute top-1 left-1/2 w-[11.7rem] rounded-[1.2rem] border border-white/10 bg-[#202124] p-2.5 shadow-[0_20px_40px_rgba(0,0,0,0.35)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${item.stackClassName}`}
+                >
+                  <div className="relative min-h-[9.1rem] overflow-hidden rounded-[0.95rem] border border-white/8">
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 260px"
                     />
                   </div>
                   <p className="px-1 pt-3 pb-1 text-center text-[0.94rem] font-medium text-white/88">
