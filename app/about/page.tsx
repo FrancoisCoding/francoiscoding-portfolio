@@ -852,7 +852,7 @@ export default function AboutPage() {
               {hobbiesCards.map((item) => (
                 <article
                   key={`${item.src}-stack`}
-                  className={`absolute top-2 left-1/2 w-[11.5rem] rounded-[1.2rem] border border-white/10 bg-[#202124] p-2.5 shadow-[0_20px_40px_rgba(0,0,0,0.35)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${item.stackClassName}`}
+                  className={`absolute top-2 left-[calc(50%-5.75rem)] w-[11.5rem] rounded-[1.2rem] border border-white/10 bg-[#202124] p-2.5 shadow-[0_20px_40px_rgba(0,0,0,0.35)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${item.stackClassName}`}
                 >
                   <div className="relative min-h-[9.1rem] overflow-hidden rounded-[0.95rem] border border-white/8">
                     <Image
