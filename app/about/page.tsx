@@ -449,6 +449,44 @@ const toolLinks = [
   },
 ] as const;
 
+const toolUsageByName: Record<(typeof toolLinks)[number]['name'], string> = {
+  AWS: 'Cloud infrastructure',
+  Azure: 'Cloud deployment',
+  Confluence: 'Documentation hub',
+  Cypress: 'E2E test coverage',
+  Datadog: 'Runtime monitoring',
+  Django: 'Backend services',
+  Docker: 'Containerized delivery',
+  Express: 'REST API layer',
+  Figma: 'UI system design',
+  Firebase: 'Auth and realtime',
+  'Framer Motion': 'UI motion',
+  Git: 'Version control',
+  GitLab: 'CI and repos',
+  GraphQL: 'Typed API queries',
+  Jest: 'Unit testing',
+  Jira: 'Sprint tracking',
+  MongoDB: 'Document database',
+  'New Relic': 'Performance insights',
+  'Next.js': 'Product web apps',
+  'Node.js': 'Server runtime',
+  OpenAI: 'AI assistance',
+  Playwright: 'Browser automation',
+  PostgreSQL: 'Relational database',
+  Prisma: 'Type-safe ORM',
+  Python: 'Data tooling',
+  React: 'Component UI',
+  Redux: 'Global state',
+  Snowflake: 'Analytics warehouse',
+  Streamlit: 'Data apps',
+  Supabase: 'Backend platform',
+  'Tailwind CSS': 'Design system styling',
+  'TanStack Query': 'Server-state caching',
+  TypeScript: 'Typed JavaScript',
+  Vercel: 'Frontend hosting',
+  'Vue.js': 'Reactive interfaces',
+};
+
 const aboutGalleryItems = [
   {
     src: '/about/about1.jpg',
@@ -777,7 +815,7 @@ export default function AboutPage() {
                           {item.name}
                         </p>
                         <p className="text-sm text-white/52">
-                          Open technology site
+                          {toolUsageByName[item.name]}
                         </p>
                       </div>
                     </div>
