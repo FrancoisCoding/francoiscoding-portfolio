@@ -45,6 +45,12 @@ export const financeFlowProject: IProjectItem = {
       external: true,
       tone: 'primary',
     },
+    {
+      label: 'GitHub',
+      href: 'https://github.com/FrancoisCoding/personal-finance',
+      external: true,
+      tone: 'secondary',
+    },
   ],
   stack: ['Next.js', 'TypeScript', 'Supabase', 'Tailwind CSS'],
   preview: 'image',
@@ -121,6 +127,12 @@ export const showcasedProjects: IProjectItem[] = [
         href: 'https://bear-x.netlify.app/',
         external: true,
         tone: 'primary',
+      },
+      {
+        label: 'GitHub',
+        href: 'https://github.com/FrancoisCoding/bear-x',
+        external: true,
+        tone: 'secondary',
       },
     ],
     stack: [
