@@ -587,11 +587,11 @@ export function CalendlyPanel() {
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-7 gap-2">
+          <div className="mt-5 grid grid-cols-7 gap-1.5 sm:mt-6 sm:gap-2">
             {calendarWeekdayLabels.map((day) => (
               <span
                 key={day}
-                className="px-2 py-2 text-center text-xs font-semibold tracking-[0.12em] text-white/48 uppercase"
+                className="px-0 py-1.5 text-center text-[0.67rem] font-semibold tracking-[0.1em] text-white/48 uppercase sm:px-2 sm:py-2 sm:text-xs sm:tracking-[0.12em]"
               >
                 {day}
               </span>
@@ -612,7 +612,7 @@ export function CalendlyPanel() {
                   disabled={!isDateSelectable}
                   aria-label={formatDateButtonLabel(day.dateKey, timeZone)}
                   className={[
-                    'relative inline-flex aspect-square min-h-12 items-center justify-center rounded-2xl border text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
+                    'relative inline-flex h-10 w-full items-center justify-center rounded-2xl border text-[0.92rem] font-medium transition-colors focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none sm:h-12 sm:text-sm',
                     isSelected
                       ? 'border-white bg-white text-slate-950'
                       : isDateSelectable
@@ -625,7 +625,7 @@ export function CalendlyPanel() {
                   {isDateSelectable && !isSelected ? (
                     <span
                       aria-hidden="true"
-                      className="absolute bottom-2 h-1 w-1 rounded-full bg-white/42"
+                      className="absolute bottom-1.5 h-1 w-1 rounded-full bg-white/42 sm:bottom-2"
                     />
                   ) : null}
                 </button>
