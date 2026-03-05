@@ -515,25 +515,25 @@ const extendedTools = toolLinks.filter(
 
 const aboutGalleryItems = [
   {
-    src: '/about/about1.jpg',
+    src: '/about/main.jpg',
     alt: 'Isaiah Francois standing near Big Ben in London.',
     className: 'row-span-2 min-h-[18rem] md:min-h-[22rem]',
     sizes: '(max-width: 1024px) 100vw, 22vw',
   },
   {
-    src: '/about/about5.jpg',
-    alt: 'Isaiah Francois smiling beside a dolphin in the water.',
+    src: '/about/travel5.jpg',
+    alt: 'Garden walk with a scenic historic building backdrop.',
     className: 'min-h-[8.5rem] md:min-h-[10.5rem]',
     sizes: '(max-width: 1024px) 50vw, 10vw',
   },
   {
-    src: '/about/about8.jpg',
-    alt: 'Ocean overlook from a cliffside viewpoint.',
+    src: '/about/travel3.jpg',
+    alt: 'Travel moment in a lush tropical setting.',
     className: 'min-h-[8.5rem] md:min-h-[10.5rem]',
     sizes: '(max-width: 1024px) 50vw, 10vw',
   },
   {
-    src: '/about/about3.jpg',
+    src: '/about/main4.jpg',
     alt: 'Isaiah Francois walking through greenery in Bali.',
     className: 'row-span-2 min-h-[18rem] md:min-h-[22rem]',
     sizes: '(max-width: 1024px) 100vw, 12vw',
@@ -542,47 +542,54 @@ const aboutGalleryItems = [
 
 const hobbiesCards = [
   {
-    src: '/about/about8.jpg',
-    alt: 'Coastal travel scene near clear blue water.',
+    src: '/about/travel2.jpg',
+    alt: 'Travel moment by the coast and city view.',
     title: 'Travel',
     stackClassName:
-      'z-20 -translate-x-[70%] -rotate-[8deg] group-hover:-translate-x-[145%] group-hover:-rotate-[12deg]',
+      'z-40 -translate-x-[70%] -rotate-[10deg] group-hover:-translate-x-[164%] group-hover:-rotate-[13deg]',
   },
   {
-    src: '/about/about4.jpg',
-    alt: 'Training and movement session in a gym environment.',
+    src: '/about/cooking.jpg',
+    alt: 'Cooking workshop moment.',
+    title: 'Cooking',
+    stackClassName:
+      'z-30 -translate-x-[58%] -rotate-[4deg] group-hover:-translate-x-[98%] group-hover:-rotate-[6deg]',
+  },
+  {
+    src: '/about/bouldering.jpg',
+    alt: 'Indoor bouldering session.',
+    title: 'Bouldering',
+    stackClassName:
+      'z-20 -translate-x-[44%] rotate-[5deg] group-hover:translate-x-[4%] group-hover:rotate-[7deg]',
+  },
+  {
+    src: '/about/volleyball.jpg',
+    alt: 'Beach volleyball event with teammates.',
     title: 'Volleyball',
     stackClassName:
-      'z-30 -translate-x-1/2 rotate-[1deg] group-hover:-translate-x-1/2 group-hover:rotate-0',
-  },
-  {
-    src: '/about/about6.jpg',
-    alt: 'Laptop setup used for games and coding.',
-    title: 'Gaming',
-    stackClassName:
-      'z-10 -translate-x-[30%] rotate-[8deg] group-hover:translate-x-[45%] group-hover:rotate-[12deg]',
+      'z-10 -translate-x-[30%] rotate-[12deg] group-hover:translate-x-[96%] group-hover:rotate-[15deg]',
   },
 ] as const;
 
 const hobbiesMosaic = [
   {
-    src: '/about/about2.jpg',
-    alt: 'Isaiah standing in front of a skyline view.',
+    src: '/about/main2.jpg',
+    alt: 'Ocean cliff view during travel.',
     className: 'row-span-2 min-h-[14rem]',
   },
   {
-    src: '/about/about7.jpg',
-    alt: 'Night skyline from a city vantage point.',
+    src: '/about/main3.jpg',
+    alt: 'Las Vegas mural portrait.',
     className: 'row-span-2 min-h-[14rem]',
   },
   {
-    src: '/about/about5.jpg',
-    alt: 'Outdoor water and coastline view.',
+    src: '/about/foodie.jpg',
+    alt: 'Food and lifestyle snapshot.',
     className: 'min-h-[9rem]',
   },
   {
-    src: '/about/about3.jpg',
-    alt: 'Landscape view with mountains.',
+    src: '/about/drawing.jpg',
+    alt: 'Sketch artwork detail.',
     className: 'min-h-[9rem]',
   },
 ] as const;

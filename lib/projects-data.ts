@@ -48,8 +48,8 @@ export const financeFlowProject: IProjectItem = {
   ],
   stack: ['Next.js', 'TypeScript', 'Supabase', 'Tailwind CSS'],
   preview: 'image',
-  imageSrc: '/projects/financeflow-dashboard.png',
-  imageAlt: 'FinanceFlow dashboard interface',
+  imageSrc: '/projects/financeflow.png',
+  imageAlt: 'FinanceFlow application interface',
 };
 
 export const showcasedProjects: IProjectItem[] = [
@@ -77,36 +77,8 @@ export const showcasedProjects: IProjectItem[] = [
     ],
     stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'i18n'],
     preview: 'image',
-    imageSrc: '/projects/edson-prime-estates.jpg',
+    imageSrc: '/projects/edsonrealestates.png',
     imageAlt: 'Edson Prime Estates landing page preview',
-  },
-  {
-    slug: 'bible-jeopardy',
-    name: 'Bible Jeopardy',
-    eyebrow: 'Browser game',
-    summary:
-      'Arcade-style Bible trivia experience built for quick play, clear categories, and lightweight web delivery.',
-    description:
-      'A game-first web project with a branded identity, straightforward interaction loop, and fast access through the browser or itch.io.',
-    links: [
-      {
-        label: 'Play game',
-        href: 'https://francoiscoding.itch.io/bible-jeopardy',
-        external: true,
-        tone: 'primary',
-      },
-      {
-        label: 'GitHub',
-        href: 'https://github.com/FrancoisCoding/bible-jeopardy',
-        external: true,
-        tone: 'secondary',
-      },
-    ],
-    stack: ['JavaScript', 'HTML', 'CSS', 'Game UI'],
-    preview: 'bibleJeopardy',
-    imageSrc:
-      'https://raw.githubusercontent.com/FrancoisCoding/bible-jeopardy/main/bible_jeopardy_logo.png',
-    imageAlt: 'Bible Jeopardy logo',
   },
   {
     slug: 'bear-x',
@@ -130,7 +102,9 @@ export const showcasedProjects: IProjectItem[] = [
       'Animation',
       'Responsive layout',
     ],
-    preview: 'bearX',
+    preview: 'image',
+    imageSrc: '/projects/bearx.png',
+    imageAlt: 'Bear-X project preview',
   },
 ];
 
@@ -138,12 +112,12 @@ export const projectsData = [financeFlowProject, ...showcasedProjects];
 
 export const homeProjectTiles: IHomeProjectTile[] = [
   {
-    key: 'financeflow-dashboard',
+    key: 'financeflow',
     projectSlug: 'financeflow',
     className: '',
     cardClassName: 'min-h-[24rem] lg:min-h-[31rem]',
-    imageSrc: '/projects/financeflow-dashboard.png',
-    imageAlt: 'FinanceFlow dashboard project preview',
+    imageSrc: '/projects/financeflow.png',
+    imageAlt: 'FinanceFlow project preview',
     sizes: '(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw',
   },
   {
@@ -151,38 +125,17 @@ export const homeProjectTiles: IHomeProjectTile[] = [
     projectSlug: 'edson-prime-estates',
     className: '',
     cardClassName: 'min-h-[24rem] lg:min-h-[31rem]',
-    imageSrc: '/projects/edson-prime-estates.jpg',
+    imageSrc: '/projects/edsonrealestates.png',
     imageAlt: 'Edson Prime Estates landing page preview',
     sizes: '(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw',
-  },
-  {
-    key: 'financeflow-ai',
-    projectSlug: 'financeflow',
-    className: '',
-    cardClassName: 'min-h-[24rem] lg:min-h-[31rem]',
-    imageSrc: '/projects/financeflow-ai.png',
-    imageAlt: 'FinanceFlow AI workspace preview',
-    sizes: '(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw',
-  },
-  {
-    key: 'bible-jeopardy',
-    projectSlug: 'bible-jeopardy',
-    className: '',
-    cardClassName: 'min-h-[24rem] lg:min-h-[31rem]',
   },
   {
     key: 'bear-x',
     projectSlug: 'bear-x',
     className: '',
     cardClassName: 'min-h-[24rem] lg:min-h-[31rem]',
-  },
-  {
-    key: 'financeflow-subscriptions',
-    projectSlug: 'financeflow',
-    className: '',
-    cardClassName: 'min-h-[24rem] lg:min-h-[31rem]',
-    imageSrc: '/projects/financeflow-subscriptions.png',
-    imageAlt: 'FinanceFlow subscriptions preview',
+    imageSrc: '/projects/bearx.png',
+    imageAlt: 'Bear-X project preview',
     sizes: '(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw',
   },
 ];

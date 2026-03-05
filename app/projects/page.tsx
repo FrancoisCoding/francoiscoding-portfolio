@@ -6,7 +6,7 @@ import { showcasedProjects } from '@/lib/projects-data';
 export const metadata: Metadata = {
   title: 'Projects',
   description:
-    'Selected web projects from Isaiah Francois, including Edson Prime Estates, Bible Jeopardy, and Bear-X.',
+    'Selected web projects from Isaiah Francois, including FinanceFlow, Edson Prime Estates, and Bear-X.',
   openGraph: {
     title: 'Projects | Isaiah Francois',
     description:
