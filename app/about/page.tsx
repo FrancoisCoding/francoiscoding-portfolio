@@ -134,9 +134,10 @@ const experienceItems: IExperienceItem[] = [
     location: 'Orlando, FL',
     timeframe: 'Apr 2023 - Jun 2024',
     duration: '(1 year 3 months)',
+    logoSrc: '/expertise/massvirtual.svg',
+    logoAlt: 'MassVirtual logo',
     logoLabel: 'MV',
-    logoClassName:
-      'border-fuchsia-300/35 bg-[linear-gradient(180deg,rgba(232,121,249,0.3),rgba(74,4,78,0.22))] text-fuchsia-100',
+    logoClassName: 'border-[#00A4E4]/35 bg-[#071018] text-[#9edfff]',
   },
   {
     role: 'Lead Front-End Engineer',
