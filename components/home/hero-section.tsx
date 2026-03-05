@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 
 import { useIsHydrated } from '@/hooks/use-is-hydrated';
 import { siteConfig } from '@/lib/site-config';
+import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 
 const heroHighlights = ['7+ years of experience'];
 const heroHeadlineLines = [
@@ -50,17 +51,12 @@ export function HeroSection() {
           <div className="space-y-4">
             <h1 className="font-display text-[clamp(1.9rem,2.95vw,2.9rem)] leading-[0.98] font-medium tracking-[-0.055em] text-white">
               {heroHeadlineLines.map((line, index) => (
-                <span
+                <TextGenerateEffect
                   key={line}
-                  className={`block sm:whitespace-nowrap ${canAnimate ? 'headline-entry' : ''}`}
-                  style={
-                    canAnimate
-                      ? { animationDelay: `${80 + index * 130}ms` }
-                      : undefined
-                  }
-                >
-                  {line}
-                </span>
+                  words={line}
+                  className="block sm:whitespace-nowrap"
+                  delay={canAnimate ? 0.08 + index * 0.13 : 0}
+                />
               ))}
             </h1>
           </div>

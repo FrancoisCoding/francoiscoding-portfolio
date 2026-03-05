@@ -42,6 +42,11 @@ const secondaryLinks = [
     external: true,
   },
   {
+    href: siteConfig.twitterUrl,
+    label: 'X',
+    external: true,
+  },
+  {
     href: siteConfig.githubUrl,
     label: 'GitHub',
     external: true,

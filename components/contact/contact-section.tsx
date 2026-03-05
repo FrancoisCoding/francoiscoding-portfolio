@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 import { CalendlyPanel } from '@/components/contact/calendly-panel';
+import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 import { useIsHydrated } from '@/hooks/use-is-hydrated';
 import { siteConfig } from '@/lib/site-config';
 
@@ -45,17 +46,12 @@ export function ContactSection({ id }: IContactSectionProps) {
       <div className="mx-auto max-w-[34rem] space-y-3 text-center">
         <h2 className="font-display text-[clamp(1.58rem,2.45vw,2.35rem)] leading-[0.98] font-semibold tracking-[-0.04em] text-white">
           {contactHeadlineLines.map((line, index) => (
-            <span
+            <TextGenerateEffect
               key={line}
-              className={`block ${canAnimate ? 'headline-entry' : ''}`}
-              style={
-                canAnimate
-                  ? { animationDelay: `${120 + index * 140}ms` }
-                  : undefined
-              }
-            >
-              {line}
-            </span>
+              words={line}
+              className="block"
+              delay={canAnimate ? 0.12 + index * 0.14 : 0}
+            />
           ))}
         </h2>
         <div className="flex justify-center">

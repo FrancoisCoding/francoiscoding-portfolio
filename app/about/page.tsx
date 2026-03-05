@@ -17,6 +17,7 @@ import {
   Linkedin,
   Rocket,
   Settings2,
+  Twitter,
 } from 'lucide-react';
 import {
   SiConfluence,
@@ -730,6 +731,15 @@ export default function AboutPage() {
                   className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/8 text-white transition-colors hover:bg-white/12 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
                 >
                   <Linkedin className="h-4 w-4" aria-hidden="true" />
+                </a>
+                <a
+                  href={siteConfig.twitterUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="X"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/8 text-white transition-colors hover:bg-white/12 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+                >
+                  <Twitter className="h-4 w-4" aria-hidden="true" />
                 </a>
                 <a
                   href={siteConfig.githubUrl}
