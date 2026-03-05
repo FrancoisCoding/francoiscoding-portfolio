@@ -28,7 +28,6 @@ import {
   calendlyBookingFormSchema,
   type TCalendlyBookingFormValues,
 } from '@/lib/validation/calendly';
-import { siteConfig } from '@/lib/site-config';
 
 interface ICalendlyAvailabilityDay {
   date: string;
@@ -316,21 +315,6 @@ export function CalendlyPanel() {
 
   if (!availabilityData) {
     return null;
-  }
-
-  if (availabilityData.source === 'demo') {
-    const calendlyEmbedSource = `${siteConfig.calendlyUrl}?hide_gdpr_banner=1&timezone=${encodeURIComponent(timeZone)}`;
-
-    return (
-      <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#0d0d0e] shadow-[0_30px_90px_rgba(0,0,0,0.42)]">
-        <iframe
-          title="Calendly scheduling"
-          src={calendlyEmbedSource}
-          className="h-[760px] w-full"
-          loading="lazy"
-        />
-      </div>
-    );
   }
 
   if (completedBooking) {
