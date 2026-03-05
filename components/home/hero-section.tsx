@@ -52,8 +52,12 @@ export function HeroSection() {
               {heroHeadlineLines.map((line, index) => (
                 <span
                   key={line}
-                  className="headline-entry block sm:whitespace-nowrap"
-                  style={{ animationDelay: `${80 + index * 130}ms` }}
+                  className={`block sm:whitespace-nowrap ${canAnimate ? 'headline-entry' : ''}`}
+                  style={
+                    canAnimate
+                      ? { animationDelay: `${80 + index * 130}ms` }
+                      : undefined
+                  }
                 >
                   {line}
                 </span>

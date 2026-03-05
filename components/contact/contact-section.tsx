@@ -47,8 +47,12 @@ export function ContactSection({ id }: IContactSectionProps) {
           {contactHeadlineLines.map((line, index) => (
             <span
               key={line}
-              className="headline-entry block"
-              style={{ animationDelay: `${120 + index * 140}ms` }}
+              className={`block ${canAnimate ? 'headline-entry' : ''}`}
+              style={
+                canAnimate
+                  ? { animationDelay: `${120 + index * 140}ms` }
+                  : undefined
+              }
             >
               {line}
             </span>

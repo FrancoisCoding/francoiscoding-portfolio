@@ -53,11 +53,11 @@ body {
 }
 
 .status-light-core {
-  animation: status-light-core 2.1s steps(1, end) infinite;
+  animation: status-light-core 2.7s steps(1, end) infinite;
 }
 
 .status-light-glow {
-  animation: status-light-glow 2.1s steps(1, end) infinite;
+  animation: status-light-glow 2.7s steps(1, end) infinite;
 }
 
 .header-entry {
@@ -70,68 +70,38 @@ body {
 
 .headline-entry {
   opacity: 0;
-  transform: translateY(16px);
-  filter: blur(6px);
-  animation: headline-entry 740ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform: translateY(22px);
+  filter: blur(8px);
+  animation: headline-entry 860ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes status-light-core {
   0%,
-  42%,
+  45%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
 
-  47% {
-    opacity: 0.44;
-    transform: scale(0.84);
-  }
-
-  50% {
-    opacity: 0.72;
-    transform: scale(0.93);
-  }
-
-  53% {
-    opacity: 0.46;
-    transform: scale(0.85);
-  }
-
-  57%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
+  46%,
+  54% {
+    opacity: 0.12;
+    transform: scale(0.74);
   }
 }
 
 @keyframes status-light-glow {
   0%,
-  42%,
+  45%,
   100% {
     opacity: 0.72;
     transform: scale(1.08);
   }
 
-  47% {
-    opacity: 0.2;
-    transform: scale(0.82);
-  }
-
-  50% {
-    opacity: 0.4;
-    transform: scale(0.94);
-  }
-
-  53% {
-    opacity: 0.22;
-    transform: scale(0.84);
-  }
-
-  57%,
-  100% {
-    opacity: 0.72;
-    transform: scale(1.08);
+  46%,
+  54% {
+    opacity: 0.06;
+    transform: scale(0.68);
   }
 }
 
@@ -152,8 +122,8 @@ body {
 @keyframes headline-entry {
   0% {
     opacity: 0;
-    transform: translateY(16px);
-    filter: blur(6px);
+    transform: translateY(22px);
+    filter: blur(8px);
   }
 
   100% {
