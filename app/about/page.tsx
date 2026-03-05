@@ -533,28 +533,28 @@ const hobbyCategoryImageFileNames = [
 
 const additionalGalleryLayoutCycle = [
   {
-    className: 'sm:col-span-1 sm:row-span-2 min-h-[12rem] sm:min-h-[17rem]',
-    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 42vw, 24vw',
+    className: 'sm:col-span-1 sm:row-span-2 min-h-[8.6rem] sm:min-h-[11.2rem]',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 38vw, 21vw',
   },
   {
-    className: 'sm:col-span-2 sm:row-span-2 min-h-[12rem] sm:min-h-[17rem]',
-    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 84vw, 48vw',
+    className: 'sm:col-span-2 sm:row-span-2 min-h-[8.6rem] sm:min-h-[11.2rem]',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 76vw, 42vw',
   },
   {
-    className: 'sm:col-span-1 sm:row-span-2 min-h-[12rem] sm:min-h-[17rem]',
-    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 42vw, 24vw',
+    className: 'sm:col-span-1 sm:row-span-2 min-h-[8.6rem] sm:min-h-[11.2rem]',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 38vw, 21vw',
   },
   {
-    className: 'sm:col-span-1 min-h-[9.5rem]',
-    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 42vw, 24vw',
+    className: 'sm:col-span-1 min-h-[6.7rem]',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 38vw, 21vw',
   },
   {
-    className: 'sm:col-span-1 min-h-[9.5rem]',
-    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 42vw, 24vw',
+    className: 'sm:col-span-1 min-h-[6.7rem]',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 38vw, 21vw',
   },
   {
-    className: 'sm:col-span-2 min-h-[9.5rem]',
-    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 84vw, 48vw',
+    className: 'sm:col-span-2 min-h-[6.7rem]',
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 76vw, 42vw',
   },
 ] as const;
 
@@ -604,13 +604,13 @@ const additionalAboutImageTiles = aboutImageFileNames
       src: `/about/${fileName}`,
       alt: buildAboutImageAlt(fileName),
       className: isDrawingImage
-        ? 'sm:col-span-2 min-h-[11.5rem] sm:min-h-[16.5rem]'
+        ? 'sm:col-span-2 min-h-[8.4rem] sm:min-h-[11rem]'
         : layout.className,
       imageClassName: isDrawingImage
-        ? 'object-contain bg-[#0f0f10] p-2 sm:p-3'
-        : 'object-cover',
+        ? 'object-contain bg-[#0f0f10] p-1.5 sm:p-2'
+        : 'object-contain bg-[#0f0f10] p-1.5 sm:p-2',
       sizes: isDrawingImage
-        ? '(max-width: 640px) 100vw, (max-width: 1024px) 84vw, 48vw'
+        ? '(max-width: 640px) 100vw, (max-width: 1024px) 76vw, 42vw'
         : layout.sizes,
     };
   });
@@ -894,7 +894,7 @@ export default function AboutPage() {
               ))}
             </div>
 
-            <div className="grid auto-rows-[8.6rem] gap-3 sm:auto-rows-[7.9rem] sm:grid-cols-3">
+            <div className="mx-auto grid max-w-[54rem] auto-rows-[6.6rem] gap-3 sm:auto-rows-[5.9rem] sm:grid-cols-3">
               {additionalAboutImageTiles.map((item, index) => (
                 <div
                   key={item.src}

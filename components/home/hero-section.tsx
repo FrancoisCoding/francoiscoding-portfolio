@@ -12,6 +12,37 @@ import { useIsHydrated } from '@/hooks/use-is-hydrated';
 import { siteConfig } from '@/lib/site-config';
 
 const heroHighlights = ['7+ years of experience'];
+const heroHeadlineLines = [
+  "I'm Isaiah.",
+  'Full stack developer.',
+  'Building modern products.',
+] as const;
+
+const heroHeadlineGroupAnimation = {
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.06,
+    },
+  },
+};
+
+const heroHeadlineLineAnimation = {
+  hidden: {
+    opacity: 0,
+    y: 18,
+    filter: 'blur(6px)',
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: {
+      duration: 0.52,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  },
+};
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -49,17 +80,22 @@ export function HeroSection() {
           className="space-y-8"
         >
           <div className="space-y-4">
-            <h1 className="font-display text-[clamp(1.9rem,2.95vw,2.9rem)] leading-[0.98] font-medium tracking-[-0.055em] text-white">
-              <span className="block sm:whitespace-nowrap">
-                I&apos;m Isaiah.
-              </span>
-              <span className="block sm:whitespace-nowrap">
-                Full stack developer.
-              </span>
-              <span className="block sm:whitespace-nowrap">
-                Building modern products.
-              </span>
-            </h1>
+            <motion.h1
+              className="font-display text-[clamp(1.9rem,2.95vw,2.9rem)] leading-[0.98] font-medium tracking-[-0.055em] text-white"
+              variants={canAnimate ? heroHeadlineGroupAnimation : undefined}
+              initial={canAnimate ? 'hidden' : false}
+              animate={canAnimate ? 'visible' : undefined}
+            >
+              {heroHeadlineLines.map((line) => (
+                <motion.span
+                  key={line}
+                  className="block sm:whitespace-nowrap"
+                  variants={canAnimate ? heroHeadlineLineAnimation : undefined}
+                >
+                  {line}
+                </motion.span>
+              ))}
+            </motion.h1>
           </div>
 
           <ul className="grid gap-2.5 sm:max-w-xl">
