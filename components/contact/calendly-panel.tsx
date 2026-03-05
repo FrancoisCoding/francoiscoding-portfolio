@@ -69,6 +69,10 @@ const defaultFormValues: TCalendlyBookingFormValues = {
   websiteUrl: '',
 };
 
+const defaultCalendlyTimeZone = 'America/New_York';
+const configuredCalendlyTimeZone =
+  process.env.NEXT_PUBLIC_CALENDLY_TIMEZONE?.trim() || defaultCalendlyTimeZone;
+
 async function fetchCalendlyAvailability(
   month: string,
   timeZone: string,
@@ -148,13 +152,14 @@ export function CalendlyPanel() {
   const [statusMessage, setStatusMessage] = useState('');
   const [completedBooking, setCompletedBooking] =
     useState<ICalendlyBookingPayload | null>(null);
-  const timeZone = isHydrated
-    ? Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'
+  const browserTimeZone = isHydrated
+    ? Intl.DateTimeFormat().resolvedOptions().timeZone
     : '';
+  const timeZone = configuredCalendlyTimeZone || browserTimeZone;
 
   const availabilityQuery = useQuery({
     queryKey: ['calendly-availability', monthValue, timeZone],
-    enabled: Boolean(timeZone),
+    enabled: true,
     queryFn: async () => fetchCalendlyAvailability(monthValue, timeZone),
   });
 
@@ -310,8 +315,6 @@ export function CalendlyPanel() {
   if (!availabilityData) {
     return null;
   }
-
-  const isLiveSource = availabilityData.source === 'live';
 
   if (completedBooking) {
     return (
@@ -588,15 +591,10 @@ export function CalendlyPanel() {
             ))}
 
             {calendarDays.map((day) => {
-              const dayTimes = availabilityByDate.get(day.dateKey) ?? [];
-              const dayHasAvailability = dayTimes.length > 0;
               const dayDate = new Date(`${day.dateKey}T12:00:00Z`);
               const dayOfWeek = dayDate.getUTCDay();
               const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-              const isDateSelectable =
-                day.isCurrentMonth &&
-                !isWeekend &&
-                (isLiveSource ? dayHasAvailability : true);
+              const isDateSelectable = day.isCurrentMonth && !isWeekend;
               const isSelected = resolvedSelectedDateKey === day.dateKey;
 
               return (

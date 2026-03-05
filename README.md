@@ -51,6 +51,10 @@ Copy `.env.example` to `.env.local` and configure:
 - `TURNSTILE_SITE_KEY`
 - `TURNSTILE_SECRET_KEY`
 - `OPENAI_API_KEY` (optional)
+- `CALENDLY_API_TOKEN` (optional, enables live scheduling)
+- `CALENDLY_EVENT_TYPE_URI` (optional, enables live scheduling)
+- `CALENDLY_EVENT_LABEL` (optional)
+- `NEXT_PUBLIC_CALENDLY_TIMEZONE` (recommended, defaults to `America/New_York`)
 
 ## Local Development
 

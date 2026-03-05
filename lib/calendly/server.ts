@@ -131,6 +131,7 @@ export async function getCalendlyAvailability(
       event_type: configuration.eventTypeUri,
       start_time: chunk.start.toISOString(),
       end_time: chunk.end.toISOString(),
+      timezone: timeZone,
       count: '100',
     });
     let pageToken = '';
@@ -147,12 +148,18 @@ export async function getCalendlyAvailability(
       );
 
       for (const item of payload.collection ?? []) {
+        const normalizedStartTime = normalizeCalendlyStartTime(item.start_time);
+
+        if (!normalizedStartTime) {
+          continue;
+        }
+
         const dateKey = formatDateKeyForTimeZone(
-          new Date(item.start_time),
+          new Date(normalizedStartTime),
           timeZone,
         );
         const existingTimes = availabilityMap.get(dateKey) ?? new Set<string>();
-        existingTimes.add(item.start_time);
+        existingTimes.add(normalizedStartTime);
         availabilityMap.set(dateKey, existingTimes);
       }
 
@@ -257,6 +264,17 @@ function getCalendlyNextPageToken(
   } catch {
     return '';
   }
+}
+
+function normalizeCalendlyStartTime(startTimeValue: string) {
+  const sanitizedStartTime = startTimeValue.replace(/(\.\d{3})\d+Z$/, '$1Z');
+  const parsedStartTime = new Date(sanitizedStartTime);
+
+  if (Number.isNaN(parsedStartTime.getTime())) {
+    return '';
+  }
+
+  return parsedStartTime.toISOString();
 }
 
 async function sendCalendlyLeadNotification(input: ICalendlyBookingInput) {
