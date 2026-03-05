@@ -4,8 +4,11 @@ import Link from 'next/link';
 import {
   ArrowUpRight,
   Bot,
+  Cloud,
+  CloudCog,
   Code2,
   Database,
+  FlaskConical,
   Github,
   LayoutGrid,
   Linkedin,
@@ -13,10 +16,22 @@ import {
   Settings2,
 } from 'lucide-react';
 import {
+  SiConfluence,
+  SiCypress,
+  SiDatadog,
+  SiDjango,
   SiDocker,
+  SiExpress,
+  SiFigma,
+  SiFirebase,
   SiFramer,
   SiGit,
+  SiGitlab,
   SiGraphql,
+  SiJest,
+  SiJira,
+  SiMongodb,
+  SiNewrelic,
   SiNextdotjs,
   SiNodedotjs,
   SiOpenai,
@@ -24,9 +39,14 @@ import {
   SiPrisma,
   SiPython,
   SiReact,
+  SiReactquery,
+  SiRedux,
+  SiSnowflake,
+  SiStreamlit,
   SiSupabase,
   SiTailwindcss,
   SiTypescript,
+  SiVuedotjs,
   SiVercel,
 } from 'react-icons/si';
 
@@ -58,74 +78,97 @@ const expertiseTags = [
     iconClassName: 'text-sky-300',
   },
   {
-    label: 'Frontend systems',
+    label: 'SaaS architecture',
     icon: LayoutGrid,
     iconClassName: 'text-violet-300',
   },
   {
-    label: 'Backend architecture',
+    label: 'REST API design',
     icon: Database,
     iconClassName: 'text-emerald-300',
   },
   {
-    label: 'Internal tools',
+    label: 'State management',
     icon: Settings2,
     iconClassName: 'text-amber-300',
   },
   {
-    label: 'AI-assisted workflows',
+    label: 'Cloud delivery',
     icon: Bot,
     iconClassName: 'text-cyan-300',
   },
   {
-    label: 'Product delivery',
+    label: 'Performance optimization',
     icon: Rocket,
     iconClassName: 'text-pink-300',
   },
 ] as const;
 
-const experienceItems = [
+interface IExperienceItem {
+  role: string;
+  company: string;
+  location: string;
+  timeframe: string;
+  duration: string;
+  logoAlt?: string;
+  logoClassName: string;
+  logoLabel: string;
+  logoSrc?: string;
+}
+
+const experienceItems: IExperienceItem[] = [
   {
     role: 'Senior Full Stack Engineer',
-    company: 'FinanceFlow',
-    location: 'Remote',
-    timeframe: '2024 - Present',
-    duration: '(2+ years)',
-    logoLabel: 'FF',
-    logoClassName:
-      'border-emerald-300/35 bg-[linear-gradient(180deg,rgba(16,185,129,0.3),rgba(5,46,22,0.22))] text-emerald-100',
-  },
-  {
-    role: 'Software Engineer',
     company: 'Disney',
-    location: 'United States',
-    timeframe: '2022 - 2024',
-    duration: '(2 years)',
+    location: 'Lake Buena Vista, FL',
+    timeframe: 'Jun 2024 - Present',
+    duration: '(1 year 9 months)',
+    logoSrc: '/expertise/disney.svg',
+    logoAlt: 'Disney logo',
     logoLabel: 'D',
-    logoClassName:
-      'border-red-300/35 bg-[linear-gradient(180deg,rgba(248,113,113,0.3),rgba(69,10,10,0.22))] text-red-100',
+    logoClassName: 'border-white/14 bg-white text-slate-950',
   },
   {
-    role: 'Full Stack Engineer',
+    role: 'Lead Web Engineer',
+    company: 'MassVirtual',
+    location: 'Orlando, FL',
+    timeframe: 'Apr 2023 - Jun 2024',
+    duration: '(1 year 3 months)',
+    logoLabel: 'MV',
+    logoClassName:
+      'border-fuchsia-300/35 bg-[linear-gradient(180deg,rgba(232,121,249,0.3),rgba(74,4,78,0.22))] text-fuchsia-100',
+  },
+  {
+    role: 'Lead Front-End Engineer',
+    company: 'SoSha',
+    location: 'Remote',
+    timeframe: 'Feb 2021 - Apr 2023',
+    duration: '(2 years 3 months)',
+    logoLabel: 'S',
+    logoClassName:
+      'border-indigo-300/35 bg-[linear-gradient(180deg,rgba(129,140,248,0.3),rgba(30,27,75,0.22))] text-indigo-100',
+  },
+  {
+    role: 'Front-End Engineer (Externship)',
     company: 'Department of Defense',
-    location: 'United States',
-    timeframe: '2020 - 2022',
-    duration: '(2 years)',
+    location: 'Remote',
+    timeframe: 'Oct 2020 - Dec 2020',
+    duration: '(3 months)',
     logoLabel: 'DoD',
     logoClassName:
       'border-blue-300/35 bg-[linear-gradient(180deg,rgba(96,165,250,0.3),rgba(23,37,84,0.22))] text-blue-100',
   },
   {
-    role: 'Software Developer',
-    company: 'MassVirtual',
-    location: 'United States',
-    timeframe: '2018 - 2020',
-    duration: '(2 years)',
-    logoLabel: 'MV',
+    role: 'Team Lead',
+    company: 'Bloom Institute of Technology',
+    location: 'Remote',
+    timeframe: 'Oct 2019 - Jul 2020',
+    duration: '(10 months)',
+    logoLabel: 'B',
     logoClassName:
-      'border-fuchsia-300/35 bg-[linear-gradient(180deg,rgba(232,121,249,0.3),rgba(74,4,78,0.22))] text-fuchsia-100',
+      'border-amber-300/35 bg-[linear-gradient(180deg,rgba(251,191,36,0.3),rgba(120,53,15,0.22))] text-amber-100',
   },
-] as const;
+];
 
 const toolLinks = [
   {
@@ -136,6 +179,14 @@ const toolLinks = [
     iconContainerClassName: 'border-white/12 bg-[#101113]',
   },
   {
+    name: 'Vue.js',
+    href: 'https://vuejs.org',
+    icon: SiVuedotjs,
+    iconColor: '#42b883',
+    iconContainerClassName:
+      'border-emerald-300/35 bg-[linear-gradient(180deg,rgba(66,184,131,0.24),rgba(6,78,59,0.14))]',
+  },
+  {
     name: 'React',
     href: 'https://react.dev',
     icon: SiReact,
@@ -144,12 +195,28 @@ const toolLinks = [
       'border-cyan-300/35 bg-[linear-gradient(180deg,rgba(97,218,251,0.24),rgba(8,47,73,0.14))]',
   },
   {
+    name: 'TanStack Query',
+    href: 'https://tanstack.com/query/latest',
+    icon: SiReactquery,
+    iconColor: '#ff4154',
+    iconContainerClassName:
+      'border-rose-300/35 bg-[linear-gradient(180deg,rgba(255,65,84,0.24),rgba(127,29,29,0.14))]',
+  },
+  {
     name: 'TypeScript',
     href: 'https://www.typescriptlang.org',
     icon: SiTypescript,
     iconColor: '#3178c6',
     iconContainerClassName:
       'border-[#3178c6]/40 bg-[linear-gradient(180deg,rgba(49,120,198,0.28),rgba(49,120,198,0.14))]',
+  },
+  {
+    name: 'Redux',
+    href: 'https://redux.js.org',
+    icon: SiRedux,
+    iconColor: '#8b5cf6',
+    iconContainerClassName:
+      'border-violet-300/35 bg-[linear-gradient(180deg,rgba(139,92,246,0.24),rgba(76,29,149,0.14))]',
   },
   {
     name: 'Tailwind CSS',
@@ -166,6 +233,21 @@ const toolLinks = [
     iconColor: '#66cc33',
     iconContainerClassName:
       'border-lime-300/35 bg-[linear-gradient(180deg,rgba(102,204,51,0.22),rgba(54,83,20,0.14))]',
+  },
+  {
+    name: 'Express',
+    href: 'https://expressjs.com',
+    icon: SiExpress,
+    iconColor: '#d1d5db',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'Django',
+    href: 'https://www.djangoproject.com',
+    icon: SiDjango,
+    iconColor: '#44b78b',
+    iconContainerClassName:
+      'border-emerald-300/35 bg-[linear-gradient(180deg,rgba(68,183,139,0.24),rgba(6,78,59,0.14))]',
   },
   {
     name: 'GraphQL',
@@ -200,6 +282,54 @@ const toolLinks = [
       'border-blue-300/35 bg-[linear-gradient(180deg,rgba(51,103,145,0.24),rgba(30,58,138,0.14))]',
   },
   {
+    name: 'MongoDB',
+    href: 'https://www.mongodb.com',
+    icon: SiMongodb,
+    iconColor: '#22c55e',
+    iconContainerClassName:
+      'border-green-300/35 bg-[linear-gradient(180deg,rgba(34,197,94,0.22),rgba(20,83,45,0.14))]',
+  },
+  {
+    name: 'Firebase',
+    href: 'https://firebase.google.com',
+    icon: SiFirebase,
+    iconColor: '#f59e0b',
+    iconContainerClassName:
+      'border-amber-300/35 bg-[linear-gradient(180deg,rgba(245,158,11,0.22),rgba(120,53,15,0.14))]',
+  },
+  {
+    name: 'Snowflake',
+    href: 'https://www.snowflake.com',
+    icon: SiSnowflake,
+    iconColor: '#38bdf8',
+    iconContainerClassName:
+      'border-cyan-300/35 bg-[linear-gradient(180deg,rgba(56,189,248,0.22),rgba(8,47,73,0.14))]',
+  },
+  {
+    name: 'Docker',
+    href: 'https://www.docker.com',
+    icon: SiDocker,
+    iconColor: '#2496ed',
+    iconContainerClassName:
+      'border-sky-300/35 bg-[linear-gradient(180deg,rgba(36,150,237,0.22),rgba(12,74,110,0.14))]',
+  },
+  {
+    name: 'AWS',
+    href: 'https://aws.amazon.com',
+    icon: Cloud,
+    iconColor: '#f59e0b',
+    iconContainerClassName:
+      'border-orange-300/35 bg-[linear-gradient(180deg,rgba(245,158,11,0.2),rgba(124,45,18,0.14))]',
+  },
+  {
+    name: 'Azure',
+    href: 'https://azure.microsoft.com',
+    icon: CloudCog,
+    iconColor: '#60a5fa',
+    iconContainerClassName:
+      'border-blue-300/35 bg-[linear-gradient(180deg,rgba(96,165,250,0.22),rgba(30,58,138,0.14))]',
+  },
+  {
     name: 'OpenAI',
     href: 'https://openai.com',
     icon: SiOpenai,
@@ -216,12 +346,43 @@ const toolLinks = [
       'border-yellow-300/35 bg-[linear-gradient(180deg,rgba(255,222,87,0.2),rgba(113,63,18,0.14))]',
   },
   {
-    name: 'Docker',
-    href: 'https://www.docker.com',
-    icon: SiDocker,
-    iconColor: '#2496ed',
+    name: 'Playwright',
+    href: 'https://playwright.dev',
+    icon: FlaskConical,
+    iconColor: '#84cc16',
     iconContainerClassName:
-      'border-sky-300/35 bg-[linear-gradient(180deg,rgba(36,150,237,0.22),rgba(12,74,110,0.14))]',
+      'border-lime-300/35 bg-[linear-gradient(180deg,rgba(132,204,22,0.2),rgba(63,98,18,0.14))]',
+  },
+  {
+    name: 'Cypress',
+    href: 'https://www.cypress.io',
+    icon: SiCypress,
+    iconColor: '#d1d5db',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'Jest',
+    href: 'https://jestjs.io',
+    icon: SiJest,
+    iconColor: '#e11d48',
+    iconContainerClassName:
+      'border-rose-300/35 bg-[linear-gradient(180deg,rgba(225,29,72,0.2),rgba(127,29,29,0.14))]',
+  },
+  {
+    name: 'Datadog',
+    href: 'https://www.datadoghq.com',
+    icon: SiDatadog,
+    iconColor: '#a78bfa',
+    iconContainerClassName:
+      'border-violet-300/35 bg-[linear-gradient(180deg,rgba(167,139,250,0.2),rgba(76,29,149,0.14))]',
+  },
+  {
+    name: 'New Relic',
+    href: 'https://newrelic.com',
+    icon: SiNewrelic,
+    iconColor: '#84cc16',
+    iconContainerClassName:
+      'border-lime-300/35 bg-[linear-gradient(180deg,rgba(132,204,22,0.2),rgba(63,98,18,0.14))]',
   },
   {
     name: 'Vercel',
@@ -239,12 +400,52 @@ const toolLinks = [
       'border-indigo-300/35 bg-[linear-gradient(180deg,rgba(127,90,240,0.24),rgba(49,46,129,0.14))]',
   },
   {
+    name: 'Figma',
+    href: 'https://www.figma.com',
+    icon: SiFigma,
+    iconColor: '#f97316',
+    iconContainerClassName:
+      'border-orange-300/35 bg-[linear-gradient(180deg,rgba(249,115,22,0.22),rgba(124,45,18,0.14))]',
+  },
+  {
+    name: 'Jira',
+    href: 'https://www.atlassian.com/software/jira',
+    icon: SiJira,
+    iconColor: '#60a5fa',
+    iconContainerClassName:
+      'border-blue-300/35 bg-[linear-gradient(180deg,rgba(96,165,250,0.22),rgba(30,58,138,0.14))]',
+  },
+  {
+    name: 'Confluence',
+    href: 'https://www.atlassian.com/software/confluence',
+    icon: SiConfluence,
+    iconColor: '#93c5fd',
+    iconContainerClassName:
+      'border-sky-300/35 bg-[linear-gradient(180deg,rgba(147,197,253,0.22),rgba(30,64,175,0.14))]',
+  },
+  {
+    name: 'GitLab',
+    href: 'https://about.gitlab.com',
+    icon: SiGitlab,
+    iconColor: '#fb7185',
+    iconContainerClassName:
+      'border-rose-300/35 bg-[linear-gradient(180deg,rgba(251,113,133,0.2),rgba(127,29,29,0.14))]',
+  },
+  {
     name: 'Git',
     href: 'https://git-scm.com',
     icon: SiGit,
     iconColor: '#f05032',
     iconContainerClassName:
       'border-orange-300/35 bg-[linear-gradient(180deg,rgba(240,80,50,0.22),rgba(124,45,18,0.14))]',
+  },
+  {
+    name: 'Streamlit',
+    href: 'https://streamlit.io',
+    icon: SiStreamlit,
+    iconColor: '#f43f5e',
+    iconContainerClassName:
+      'border-rose-300/35 bg-[linear-gradient(180deg,rgba(244,63,94,0.2),rgba(127,29,29,0.14))]',
   },
 ] as const;
 
@@ -464,7 +665,17 @@ export default function AboutPage() {
                     <div
                       className={`inline-flex h-14 w-14 items-center justify-center rounded-[1rem] border text-sm font-semibold tracking-wide ${item.logoClassName}`}
                     >
-                      {item.logoLabel}
+                      {item.logoSrc ? (
+                        <Image
+                          src={item.logoSrc}
+                          alt={item.logoAlt ?? `${item.company} logo`}
+                          width={42}
+                          height={42}
+                          className="h-10 w-10 object-contain"
+                        />
+                      ) : (
+                        item.logoLabel
+                      )}
                     </div>
 
                     <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">

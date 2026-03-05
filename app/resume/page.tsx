@@ -17,11 +17,11 @@ export const metadata: Metadata = {
 };
 
 export default function ResumePage() {
-  const inlineResumePath = `${resumePath}#zoom=page-fit&view=FitH&toolbar=1&navpanes=0`;
+  const inlineResumePath = `${resumePath}#page=1&view=FitH&zoom=page-fit&toolbar=0&navpanes=0&scrollbar=0`;
 
   return (
-    <section className="py-16">
-      <div className="space-y-8">
+    <section className="py-12">
+      <div className="mx-auto max-w-[68rem] space-y-8">
         <div className="grid gap-8 lg:grid-cols-[220px_1fr]">
           <div className="space-y-3">
             <h1 className="font-display text-4xl font-semibold text-slate-950 dark:text-white">
@@ -51,7 +51,7 @@ export default function ResumePage() {
               <iframe
                 src={inlineResumePath}
                 title="Isaiah Francois resume PDF viewer"
-                className="h-[70vh] w-full"
+                className="h-[calc(100vh-13.5rem)] min-h-[46rem] w-full"
                 loading="lazy"
               />
             </div>
