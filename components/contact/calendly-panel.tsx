@@ -28,6 +28,7 @@ import {
   calendlyBookingFormSchema,
   type TCalendlyBookingFormValues,
 } from '@/lib/validation/calendly';
+import { siteConfig } from '@/lib/site-config';
 
 interface ICalendlyAvailabilityDay {
   date: string;
@@ -69,9 +70,9 @@ const defaultFormValues: TCalendlyBookingFormValues = {
   websiteUrl: '',
 };
 
-const defaultCalendlyTimeZone = 'America/New_York';
 const configuredCalendlyTimeZone =
-  process.env.NEXT_PUBLIC_CALENDLY_TIMEZONE?.trim() || defaultCalendlyTimeZone;
+  process.env.NEXT_PUBLIC_CALENDLY_TIMEZONE?.trim() || '';
+const fallbackCalendlyTimeZone = 'America/New_York';
 
 async function fetchCalendlyAvailability(
   month: string,
@@ -155,7 +156,8 @@ export function CalendlyPanel() {
   const browserTimeZone = isHydrated
     ? Intl.DateTimeFormat().resolvedOptions().timeZone
     : '';
-  const timeZone = configuredCalendlyTimeZone || browserTimeZone;
+  const timeZone =
+    configuredCalendlyTimeZone || browserTimeZone || fallbackCalendlyTimeZone;
 
   const availabilityQuery = useQuery({
     queryKey: ['calendly-availability', monthValue, timeZone],
@@ -270,7 +272,7 @@ export function CalendlyPanel() {
     }));
   };
 
-  if (availabilityQuery.isLoading || !timeZone) {
+  if (availabilityQuery.isLoading) {
     return (
       <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#0d0d0e] shadow-[0_30px_90px_rgba(0,0,0,0.42)]">
         <div className="grid gap-0 lg:grid-cols-[1.15fr_0.85fr]">
@@ -314,6 +316,21 @@ export function CalendlyPanel() {
 
   if (!availabilityData) {
     return null;
+  }
+
+  if (availabilityData.source === 'demo') {
+    const calendlyEmbedSource = `${siteConfig.calendlyUrl}?hide_gdpr_banner=1&timezone=${encodeURIComponent(timeZone)}`;
+
+    return (
+      <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#0d0d0e] shadow-[0_30px_90px_rgba(0,0,0,0.42)]">
+        <iframe
+          title="Calendly scheduling"
+          src={calendlyEmbedSource}
+          className="h-[760px] w-full"
+          loading="lazy"
+        />
+      </div>
+    );
   }
 
   if (completedBooking) {
@@ -512,7 +529,13 @@ export function CalendlyPanel() {
           </div>
 
           {statusMessage ? (
-            <p className="text-sm text-rose-300">{statusMessage}</p>
+            <p
+              className="text-sm text-rose-300"
+              role="alert"
+              aria-live="polite"
+            >
+              {statusMessage}
+            </p>
           ) : null}
 
           <div className="flex items-center justify-between gap-3 pt-2">
@@ -636,11 +659,15 @@ export function CalendlyPanel() {
               <p className="mt-1 text-sm text-white/48">
                 {availabilityData.eventLabel}
               </p>
+              <p className="mt-1 text-xs text-white/40">
+                Times shown in {timeZone}
+              </p>
             </div>
             <div className="inline-flex rounded-full border border-white/8 bg-white/5 p-1 text-xs text-white/58">
               <button
                 type="button"
                 onClick={() => setTimeFormat('12h')}
+                aria-pressed={timeFormat === '12h'}
                 className={[
                   'rounded-full px-3 py-1 font-medium transition-colors',
                   timeFormat === '12h'
@@ -653,6 +680,7 @@ export function CalendlyPanel() {
               <button
                 type="button"
                 onClick={() => setTimeFormat('24h')}
+                aria-pressed={timeFormat === '24h'}
                 className={[
                   'rounded-full px-3 py-1 font-medium transition-colors',
                   timeFormat === '24h'

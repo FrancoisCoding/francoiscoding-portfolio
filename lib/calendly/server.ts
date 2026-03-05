@@ -125,11 +125,26 @@ export async function getCalendlyAvailability(
   const { start, end } = getCalendarRange(month);
   const chunks = splitRangeIntoWeeklyChunks(start, end);
   const availabilityMap = new Map<string, Set<string>>();
+  const now = new Date();
+  const minimumAllowedStartTime = new Date(now.getTime() + 60_000);
 
   for (const chunk of chunks) {
+    if (chunk.end <= minimumAllowedStartTime) {
+      continue;
+    }
+
+    const chunkStartTime =
+      chunk.start > minimumAllowedStartTime
+        ? chunk.start
+        : minimumAllowedStartTime;
+
+    if (chunkStartTime >= chunk.end) {
+      continue;
+    }
+
     const baseQuery = new URLSearchParams({
       event_type: configuration.eventTypeUri,
-      start_time: chunk.start.toISOString(),
+      start_time: chunkStartTime.toISOString(),
       end_time: chunk.end.toISOString(),
       timezone: timeZone,
       count: '100',

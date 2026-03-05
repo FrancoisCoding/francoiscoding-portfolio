@@ -28,10 +28,18 @@ test('contact route redirects to the homepage contact section', async ({
     .locator('#contact button')
     .filter({ hasText: /\d{1,2}:\d{2}/ })
     .first();
+  const hasCustomTimeSlots = (await firstTimeButton.count()) > 0;
 
-  await expect(firstTimeButton).toBeVisible();
-  await firstTimeButton.click();
-  await expect(page.getByRole('button', { name: 'Confirm' })).toBeVisible();
+  if (hasCustomTimeSlots) {
+    await expect(firstTimeButton).toBeVisible();
+    await firstTimeButton.click();
+    await expect(page.getByRole('button', { name: 'Confirm' })).toBeVisible();
+    return;
+  }
+
+  await expect(
+    page.locator('iframe[title="Calendly scheduling"]'),
+  ).toBeVisible();
 });
 
 test('admin route requires authentication', async ({ page }) => {
