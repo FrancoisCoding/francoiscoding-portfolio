@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Analytics } from '@vercel/analytics/react';
 import { Caveat, Manrope } from 'next/font/google';
 
 import { SiteFooter } from '@/components/site-footer';
@@ -85,6 +86,7 @@ export default function RootLayout({
               </main>
               <SiteFooter />
             </div>
+            <Analytics />
           </AppProviders>
         </ThemeProvider>
       </body>
