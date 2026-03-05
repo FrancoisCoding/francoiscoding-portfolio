@@ -1,12 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 import { CalendlyPanel } from '@/components/contact/calendly-panel';
 import { useIsHydrated } from '@/hooks/use-is-hydrated';
@@ -19,8 +14,7 @@ interface IContactSectionProps {
 export function ContactSection({ id }: IContactSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const isHydrated = useIsHydrated();
-  const shouldReduceMotion = useReducedMotion();
-  const canAnimate = isHydrated && !shouldReduceMotion;
+  const canAnimate = isHydrated;
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
@@ -53,12 +47,8 @@ export function ContactSection({ id }: IContactSectionProps) {
           {contactHeadlineLines.map((line, index) => (
             <span
               key={line}
-              className={`block ${canAnimate ? 'headline-entry' : ''}`}
-              style={
-                canAnimate
-                  ? { animationDelay: `${120 + index * 140}ms` }
-                  : undefined
-              }
+              className="headline-entry block"
+              style={{ animationDelay: `${120 + index * 140}ms` }}
             >
               {line}
             </span>

@@ -1,12 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 import { useIsHydrated } from '@/hooks/use-is-hydrated';
 import { siteConfig } from '@/lib/site-config';
@@ -21,8 +16,7 @@ const heroHeadlineLines = [
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const isHydrated = useIsHydrated();
-  const shouldReduceMotion = useReducedMotion();
-  const canAnimate = isHydrated && !shouldReduceMotion;
+  const canAnimate = isHydrated;
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start'],
@@ -58,12 +52,8 @@ export function HeroSection() {
               {heroHeadlineLines.map((line, index) => (
                 <span
                   key={line}
-                  className={`block sm:whitespace-nowrap ${canAnimate ? 'headline-entry' : ''}`}
-                  style={
-                    canAnimate
-                      ? { animationDelay: `${80 + index * 130}ms` }
-                      : undefined
-                  }
+                  className="headline-entry block sm:whitespace-nowrap"
+                  style={{ animationDelay: `${80 + index * 130}ms` }}
                 >
                   {line}
                 </span>

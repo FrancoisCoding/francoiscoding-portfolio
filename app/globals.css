@@ -53,11 +53,11 @@ body {
 }
 
 .status-light-core {
-  animation: status-light-core 3.8s ease-in-out infinite;
+  animation: status-light-core 2.1s steps(1, end) infinite;
 }
 
 .status-light-glow {
-  animation: status-light-glow 3.8s ease-in-out infinite;
+  animation: status-light-glow 2.1s steps(1, end) infinite;
 }
 
 .header-entry {
@@ -168,9 +168,15 @@ body {
     scroll-behavior: auto;
   }
 
-  .headline-entry,
   .header-entry,
   .header-entry-delay {
     animation: none;
+  }
+
+  .headline-entry {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
   }
 }
