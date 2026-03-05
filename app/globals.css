@@ -53,11 +53,19 @@ body {
 }
 
 .status-light-core {
-  animation: status-light-core 5.2s ease-in-out infinite;
+  animation: status-light-core 3.8s ease-in-out infinite;
 }
 
 .status-light-glow {
-  animation: status-light-glow 5.2s ease-in-out infinite;
+  animation: status-light-glow 3.8s ease-in-out infinite;
+}
+
+.header-entry {
+  animation: header-entry 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.header-entry-delay {
+  animation-delay: 80ms;
 }
 
 @keyframes status-light-core {
@@ -120,8 +128,27 @@ body {
   }
 }
 
+@keyframes header-entry {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+    filter: blur(4px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .header-entry,
+  .header-entry-delay {
+    animation: none;
   }
 }

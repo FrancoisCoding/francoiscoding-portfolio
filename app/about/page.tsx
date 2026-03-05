@@ -1,8 +1,9 @@
-import { readdirSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import Image from 'next/image';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { imageSize } from 'image-size';
 import {
   ArrowUpRight,
   Bot,
@@ -531,40 +532,29 @@ const hobbyCategoryImageFileNames = [
   'volleyball.jpg',
 ] as const;
 
-const additionalGalleryLayoutCycle = [
-  {
-    className: 'sm:col-span-1 sm:row-span-2 min-h-[8.6rem] sm:min-h-[11.2rem]',
-    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 38vw, 21vw',
-  },
-  {
-    className: 'sm:col-span-2 sm:row-span-2 min-h-[8.6rem] sm:min-h-[11.2rem]',
-    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 76vw, 42vw',
-  },
-  {
-    className: 'sm:col-span-1 sm:row-span-2 min-h-[8.6rem] sm:min-h-[11.2rem]',
-    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 38vw, 21vw',
-  },
-  {
-    className: 'sm:col-span-1 min-h-[6.7rem]',
-    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 38vw, 21vw',
-  },
-  {
-    className: 'sm:col-span-1 min-h-[6.7rem]',
-    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 38vw, 21vw',
-  },
-  {
-    className: 'sm:col-span-2 min-h-[6.7rem]',
-    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 76vw, 42vw',
-  },
-] as const;
+interface IAboutImageMeta {
+  fileName: string;
+  height: number;
+  width: number;
+}
 
-function getAboutImageFileNames() {
+function getAboutImagesMeta(): IAboutImageMeta[] {
   try {
     const aboutDirectoryPath = join(process.cwd(), 'public', 'about');
     return readdirSync(aboutDirectoryPath)
       .filter((fileName) => /\.(avif|jpg|jpeg|png|webp)$/i.test(fileName))
+      .map((fileName) => {
+        const imagePath = join(aboutDirectoryPath, fileName);
+        const dimensions = imageSize(readFileSync(imagePath));
+
+        return {
+          fileName,
+          height: dimensions.height ?? 1200,
+          width: dimensions.width ?? 1200,
+        };
+      })
       .sort((leftFileName, rightFileName) =>
-        leftFileName.localeCompare(rightFileName),
+        leftFileName.fileName.localeCompare(rightFileName.fileName),
       );
   } catch {
     return [];
@@ -586,32 +576,25 @@ function buildAboutImageAlt(fileName: string) {
   return `Isaiah Francois ${sanitizedLabel} photo.`;
 }
 
-const aboutImageFileNames = getAboutImageFileNames();
+const aboutImagesMeta = getAboutImagesMeta();
 
 const usedAboutImageFileNameSet = new Set<string>([
   ...mainAboutImageFileNames,
   ...hobbyCategoryImageFileNames,
 ]);
 
-const additionalAboutImageTiles = aboutImageFileNames
-  .filter((fileName) => !usedAboutImageFileNameSet.has(fileName))
-  .map((fileName, index) => {
-    const isDrawingImage = fileName.startsWith('drawing');
-    const layout =
-      additionalGalleryLayoutCycle[index % additionalGalleryLayoutCycle.length];
+const additionalAboutImageTiles = aboutImagesMeta
+  .filter((item) => !usedAboutImageFileNameSet.has(item.fileName))
+  .map((item) => {
+    const isDrawingImage = item.fileName.startsWith('drawing');
 
     return {
-      src: `/about/${fileName}`,
-      alt: buildAboutImageAlt(fileName),
-      className: isDrawingImage
-        ? 'sm:col-span-2 min-h-[8.4rem] sm:min-h-[11rem]'
-        : layout.className,
-      imageClassName: isDrawingImage
-        ? 'object-contain bg-[#0f0f10] p-1.5 sm:p-2'
-        : 'object-contain bg-[#0f0f10] p-1.5 sm:p-2',
-      sizes: isDrawingImage
-        ? '(max-width: 640px) 100vw, (max-width: 1024px) 76vw, 42vw'
-        : layout.sizes,
+      src: `/about/${item.fileName}`,
+      alt: buildAboutImageAlt(item.fileName),
+      className: isDrawingImage ? 'sm:col-span-2' : 'sm:col-span-1',
+      height: item.height,
+      imageClassName: isDrawingImage ? 'p-1.5 sm:p-2' : '',
+      width: item.width,
     };
   });
 
@@ -894,22 +877,23 @@ export default function AboutPage() {
               ))}
             </div>
 
-            <div className="mx-auto grid max-w-[54rem] auto-rows-[6.6rem] gap-3 sm:auto-rows-[5.9rem] sm:grid-cols-3">
+            <div className="mx-auto grid max-w-[48rem] grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
               {additionalAboutImageTiles.map((item, index) => (
-                <div
+                <figure
                   key={item.src}
-                  className={`relative overflow-hidden rounded-[1.25rem] border border-white/10 bg-[#0f0f10] ${item.className}`}
+                  className={`self-start ${item.className}`}
                 >
                   <Image
                     src={item.src}
                     alt={item.alt}
-                    fill
-                    className={item.imageClassName}
-                    sizes={item.sizes}
+                    width={item.width}
+                    height={item.height}
+                    className={`h-auto w-full rounded-[1rem] ${item.imageClassName}`}
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 34vw, 26vw"
                     quality={aboutImageQuality}
                     priority={index < 3}
                   />
-                </div>
+                </figure>
               ))}
             </div>
           </section>

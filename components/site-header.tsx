@@ -86,11 +86,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 bg-transparent">
       <div className="mx-auto flex w-full max-w-[68rem] items-start justify-between gap-3 px-5 py-3 sm:px-6 lg:px-8">
-        <motion.div
-          initial={canAnimate ? { opacity: 0, y: -10 } : false}
-          animate={canAnimate ? { opacity: 1, y: 0 } : undefined}
-          transition={{ duration: 0.35, ease: 'easeOut' }}
-        >
+        <motion.div className="header-entry">
           <Link
             href="/"
             className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.05))] shadow-[0_12px_32px_rgba(0,0,0,0.3)] backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
@@ -109,10 +105,7 @@ export function SiteHeader() {
 
         <motion.div
           ref={menuContainerRef}
-          className="relative flex items-center gap-2"
-          initial={canAnimate ? { opacity: 0, y: -10 } : false}
-          animate={canAnimate ? { opacity: 1, y: 0 } : undefined}
-          transition={{ duration: 0.35, ease: 'easeOut', delay: 0.06 }}
+          className="header-entry header-entry-delay relative flex items-center gap-2"
         >
           <nav
             aria-label="Primary navigation"

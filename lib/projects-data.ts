@@ -81,6 +81,33 @@ export const showcasedProjects: IProjectItem[] = [
     imageAlt: 'Edson Prime Estates landing page preview',
   },
   {
+    slug: 'bible-jeopardy',
+    name: 'Bible Jeopardy',
+    eyebrow: 'Interactive trivia game',
+    summary:
+      'Fast-paced Bible trivia experience designed for fun, replayability, and group engagement.',
+    description:
+      'An interactive browser game inspired by Jeopardy-style play, built for quick rounds, clean game flow, and audience participation.',
+    links: [
+      {
+        label: 'Play game',
+        href: 'https://francoiscoding.itch.io/bible-jeopardy',
+        external: true,
+        tone: 'primary',
+      },
+      {
+        label: 'GitHub',
+        href: 'https://github.com/FrancoisCoding/bible-jeopardy',
+        external: true,
+        tone: 'secondary',
+      },
+    ],
+    stack: ['Interactive game UI', 'Trivia mechanics', 'Responsive experience'],
+    preview: 'image',
+    imageSrc: '/projects/biblejeopardy.png',
+    imageAlt: 'Bible Jeopardy project preview',
+  },
+  {
     slug: 'bear-x',
     name: 'Bear-X',
     eyebrow: 'Retro landing page',
@@ -127,6 +154,15 @@ export const homeProjectTiles: IHomeProjectTile[] = [
     cardClassName: 'min-h-[24rem] lg:min-h-[31rem]',
     imageSrc: '/projects/edsonrealestates.png',
     imageAlt: 'Edson Prime Estates landing page preview',
+    sizes: '(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw',
+  },
+  {
+    key: 'bible-jeopardy',
+    projectSlug: 'bible-jeopardy',
+    className: '',
+    cardClassName: 'min-h-[24rem] lg:min-h-[31rem]',
+    imageSrc: '/projects/biblejeopardy.png',
+    imageAlt: 'Bible Jeopardy project preview',
     sizes: '(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw',
   },
   {

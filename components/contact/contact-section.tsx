@@ -27,6 +27,10 @@ export function ContactSection({ id }: IContactSectionProps) {
   });
   const glowY = useTransform(scrollYProgress, [0, 1], [50, -30]);
   const panelY = useTransform(scrollYProgress, [0, 1], [34, -12]);
+  const contactHeadlineLines = [
+    "Let's Build Something Great!",
+    'Book a Call or Drop an Email.',
+  ] as const;
 
   return (
     <motion.section
@@ -45,11 +49,45 @@ export function ContactSection({ id }: IContactSectionProps) {
       />
 
       <div className="mx-auto max-w-[34rem] space-y-3 text-center">
-        <p className="text-sm text-white/55">Contact</p>
-        <h2 className="font-display text-[clamp(1.58rem,2.45vw,2.35rem)] leading-[0.98] font-semibold tracking-[-0.04em] text-white">
-          Let&apos;s Build Something Great!
-          <span className="block">Book a Call or Drop an Email.</span>
-        </h2>
+        <motion.h2
+          className="font-display text-[clamp(1.58rem,2.45vw,2.35rem)] leading-[0.98] font-semibold tracking-[-0.04em] text-white"
+          initial={canAnimate ? 'hidden' : false}
+          whileInView={canAnimate ? 'visible' : undefined}
+          viewport={{ once: true, amount: 0.5 }}
+          variants={{
+            visible: {
+              transition: {
+                delayChildren: 0.1,
+                staggerChildren: 0.11,
+              },
+            },
+          }}
+        >
+          {contactHeadlineLines.map((line) => (
+            <motion.span
+              key={line}
+              className="block"
+              variants={{
+                hidden: {
+                  opacity: 0,
+                  y: 16,
+                  filter: 'blur(6px)',
+                },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  filter: 'blur(0px)',
+                  transition: {
+                    duration: 0.52,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                },
+              }}
+            >
+              {line}
+            </motion.span>
+          ))}
+        </motion.h2>
         <div className="flex justify-center">
           <a
             href={`mailto:${siteConfig.email}`}
