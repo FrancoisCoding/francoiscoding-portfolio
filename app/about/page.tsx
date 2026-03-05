@@ -490,6 +490,24 @@ const toolUsageByName: Record<(typeof toolLinks)[number]['name'], string> = {
   'Vue.js': 'Reactive interfaces',
 };
 
+const coreToolNames = [
+  'TypeScript',
+  'React',
+  'Next.js',
+  'Node.js',
+  'Supabase',
+  'Prisma',
+  'PostgreSQL',
+  'AWS',
+] as const;
+
+const coreToolNameSet = new Set<string>(coreToolNames);
+
+const coreTools = toolLinks.filter((item) => coreToolNameSet.has(item.name));
+const extendedTools = toolLinks.filter(
+  (item) => !coreToolNameSet.has(item.name),
+);
+
 const aboutGalleryItems = [
   {
     src: '/about/about1.jpg',
@@ -791,9 +809,13 @@ export default function AboutPage() {
             <h2 className="text-[2rem] font-semibold tracking-[-0.05em] text-white">
               Tool Stack
             </h2>
+            <p className="max-w-[36rem] text-sm text-white/58">
+              Core stack first for quick scanning. Expand to view the full
+              toolkit.
+            </p>
 
             <div className="grid gap-3 md:grid-cols-2">
-              {toolLinks.map((item) => {
+              {coreTools.map((item) => {
                 const Icon = item.icon;
 
                 return (
@@ -802,7 +824,7 @@ export default function AboutPage() {
                     href={item.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="group flex min-h-[5.25rem] items-center justify-between rounded-[1.35rem] border border-white/10 bg-white/5 px-5 transition-[transform,background-color,border-color] duration-200 ease-in-out hover:-translate-y-0.5 hover:bg-white/8 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+                    className="group flex min-h-[4.75rem] items-center justify-between rounded-[1.35rem] border border-white/10 bg-white/5 px-5 transition-[transform,background-color,border-color] duration-200 ease-in-out hover:-translate-y-0.5 hover:bg-white/8 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
                   >
                     <div className="flex items-center gap-4">
                       <div
@@ -830,6 +852,50 @@ export default function AboutPage() {
                 );
               })}
             </div>
+
+            <details className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
+              <summary className="cursor-pointer list-none text-sm font-medium text-white/78 [&::-webkit-details-marker]:hidden">
+                View complete toolkit ({extendedTools.length} more)
+              </summary>
+              <div className="mt-4 grid gap-2 md:grid-cols-2">
+                {extendedTools.map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="group flex min-h-[4rem] items-center justify-between rounded-[1rem] border border-white/8 bg-white/[0.03] px-4 transition-[background-color,border-color] duration-200 ease-in-out hover:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`flex h-9 w-9 items-center justify-center rounded-[0.8rem] border ${item.iconContainerClassName}`}
+                        >
+                          <Icon
+                            className="h-4 w-4"
+                            style={{ color: item.iconColor }}
+                          />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-white">
+                            {item.name}
+                          </p>
+                          <p className="text-xs text-white/52">
+                            {toolUsageByName[item.name]}
+                          </p>
+                        </div>
+                      </div>
+                      <ArrowUpRight
+                        className="h-3.5 w-3.5 text-white/38 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                        aria-hidden="true"
+                      />
+                    </a>
+                  );
+                })}
+              </div>
+            </details>
           </section>
         </div>
       </div>
