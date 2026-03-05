@@ -516,25 +516,25 @@ const extendedTools = toolLinks.filter(
 const aboutGalleryItems = [
   {
     src: '/about/main.jpg',
-    alt: 'Isaiah Francois standing near Big Ben in London.',
+    alt: 'Isaiah Francois portrait in London.',
     className: 'row-span-2 min-h-[18rem] md:min-h-[22rem]',
     sizes: '(max-width: 1024px) 100vw, 22vw',
   },
   {
-    src: '/about/travel5.jpg',
-    alt: 'Garden walk with a scenic historic building backdrop.',
+    src: '/about/main2.jpg',
+    alt: 'Isaiah Francois with scenic travel backdrop.',
     className: 'min-h-[8.5rem] md:min-h-[10.5rem]',
     sizes: '(max-width: 1024px) 50vw, 10vw',
   },
   {
-    src: '/about/travel3.jpg',
-    alt: 'Travel moment in a lush tropical setting.',
+    src: '/about/main3.jpg',
+    alt: 'Lifestyle portrait in Las Vegas.',
     className: 'min-h-[8.5rem] md:min-h-[10.5rem]',
     sizes: '(max-width: 1024px) 50vw, 10vw',
   },
   {
     src: '/about/main4.jpg',
-    alt: 'Isaiah Francois walking through greenery in Bali.',
+    alt: 'Isaiah Francois on travel in Bali.',
     className: 'row-span-2 min-h-[18rem] md:min-h-[22rem]',
     sizes: '(max-width: 1024px) 100vw, 12vw',
   },
@@ -542,44 +542,49 @@ const aboutGalleryItems = [
 
 const hobbiesCards = [
   {
-    src: '/about/travel2.jpg',
-    alt: 'Travel moment by the coast and city view.',
+    src: '/about/travel.jpg',
+    alt: 'Travel moment by the coast.',
     title: 'Travel',
     stackClassName:
-      'z-40 -translate-x-[70%] -rotate-[10deg] group-hover:-translate-x-[164%] group-hover:-rotate-[13deg]',
+      'z-40 -translate-x-[8rem] -rotate-[8deg] group-hover:-translate-x-[18rem] group-hover:-rotate-[5deg]',
   },
   {
     src: '/about/cooking.jpg',
-    alt: 'Cooking workshop moment.',
+    alt: 'Cooking moment.',
     title: 'Cooking',
     stackClassName:
-      'z-30 -translate-x-[58%] -rotate-[4deg] group-hover:-translate-x-[98%] group-hover:-rotate-[6deg]',
+      'z-30 -translate-x-[2.6rem] -rotate-[2deg] group-hover:-translate-x-[6rem] group-hover:-rotate-[1deg]',
   },
   {
     src: '/about/bouldering.jpg',
     alt: 'Indoor bouldering session.',
     title: 'Bouldering',
     stackClassName:
-      'z-20 -translate-x-[44%] rotate-[5deg] group-hover:translate-x-[4%] group-hover:rotate-[7deg]',
+      'z-20 translate-x-[2.6rem] rotate-[2deg] group-hover:translate-x-[6rem] group-hover:rotate-[1deg]',
   },
   {
     src: '/about/volleyball.jpg',
-    alt: 'Beach volleyball event with teammates.',
+    alt: 'Volleyball event with teammates.',
     title: 'Volleyball',
     stackClassName:
-      'z-10 -translate-x-[30%] rotate-[12deg] group-hover:translate-x-[96%] group-hover:rotate-[15deg]',
+      'z-10 translate-x-[8rem] rotate-[8deg] group-hover:translate-x-[18rem] group-hover:rotate-[5deg]',
   },
 ] as const;
 
 const hobbiesMosaic = [
   {
-    src: '/about/main2.jpg',
+    src: '/about/travel2.jpg',
     alt: 'Ocean cliff view during travel.',
     className: 'row-span-2 min-h-[14rem]',
   },
   {
-    src: '/about/main3.jpg',
-    alt: 'Las Vegas mural portrait.',
+    src: '/about/travel3.jpg',
+    alt: 'Travel view in tropical waters.',
+    className: 'row-span-2 min-h-[14rem]',
+  },
+  {
+    src: '/about/travel5.jpg',
+    alt: 'Travel snapshot in a scenic destination.',
     className: 'row-span-2 min-h-[14rem]',
   },
   {
@@ -589,7 +594,12 @@ const hobbiesMosaic = [
   },
   {
     src: '/about/drawing.jpg',
-    alt: 'Sketch artwork detail.',
+    alt: 'Drawing and art detail.',
+    className: 'min-h-[9rem]',
+  },
+  {
+    src: '/about/drawing2.jpg',
+    alt: 'Sketchbook and drawing setup.',
     className: 'min-h-[9rem]',
   },
 ] as const;
@@ -615,7 +625,7 @@ export default function AboutPage() {
         <div className="space-y-14">
           <section id="overview" className="space-y-8">
             <div className="grid gap-3 sm:grid-cols-[1.1fr_0.9fr_0.55fr] sm:grid-rows-2">
-              {aboutGalleryItems.map((item) => (
+              {aboutGalleryItems.map((item, index) => (
                 <div
                   key={item.src}
                   className={`relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#0f0f10] ${item.className}`}
@@ -626,7 +636,7 @@ export default function AboutPage() {
                     fill
                     className="object-cover"
                     sizes={item.sizes}
-                    priority
+                    priority={index < 2}
                   />
                 </div>
               ))}
@@ -783,18 +793,18 @@ export default function AboutPage() {
                       sizes="(max-width: 1024px) 100vw, 33vw"
                     />
                   </div>
-                  <p className="px-1 pt-3 pb-1 text-center text-[0.94rem] font-medium text-white/88">
+                  <p className="font-accent px-1 pt-3 pb-1 text-center text-[1.02rem] font-medium tracking-[0.01em] text-white/90">
                     {item.title}
                   </p>
                 </article>
               ))}
             </div>
 
-            <div className="group relative mx-auto hidden h-[16.5rem] w-full max-w-[44rem] sm:block">
+            <div className="group relative mx-auto hidden h-[16.5rem] w-full max-w-[48rem] sm:block">
               {hobbiesCards.map((item) => (
                 <article
                   key={`${item.src}-stack`}
-                  className={`absolute top-1 left-1/2 w-[11.7rem] rounded-[1.2rem] border border-white/10 bg-[#202124] p-2.5 shadow-[0_20px_40px_rgba(0,0,0,0.35)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${item.stackClassName}`}
+                  className={`absolute top-2 left-1/2 w-[11.5rem] rounded-[1.2rem] border border-white/10 bg-[#202124] p-2.5 shadow-[0_20px_40px_rgba(0,0,0,0.35)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${item.stackClassName}`}
                 >
                   <div className="relative min-h-[9.1rem] overflow-hidden rounded-[0.95rem] border border-white/8">
                     <Image
@@ -805,14 +815,14 @@ export default function AboutPage() {
                       sizes="(max-width: 1024px) 100vw, 260px"
                     />
                   </div>
-                  <p className="px-1 pt-3 pb-1 text-center text-[0.94rem] font-medium text-white/88">
+                  <p className="font-accent px-1 pt-3 pb-1 text-center text-[1.06rem] font-medium tracking-[0.01em] text-white/90">
                     {item.title}
                   </p>
                 </article>
               ))}
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-[1fr_1fr_1fr] sm:grid-rows-2">
+            <div className="grid gap-3 sm:grid-cols-[1fr_1fr_1fr] sm:grid-rows-3">
               {hobbiesMosaic.map((item) => (
                 <div
                   key={item.src}

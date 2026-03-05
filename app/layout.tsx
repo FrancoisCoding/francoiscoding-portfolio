@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Manrope } from 'next/font/google';
+import { Caveat, Manrope } from 'next/font/google';
 
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
@@ -8,14 +8,15 @@ import { ThemeProvider } from '@/components/providers/theme-provider';
 import { siteConfig } from '@/lib/site-config';
 import './globals.css';
 
-const displayFont = Manrope({
-  variable: '--font-display',
+const manropeFont = Manrope({
+  variable: '--font-manrope',
   subsets: ['latin'],
 });
 
-const bodyFont = Inter({
-  variable: '--font-body',
+const accentFont = Caveat({
+  variable: '--font-accent',
   subsets: ['latin'],
+  weight: ['500', '600'],
 });
 
 export const metadata: Metadata = {
@@ -59,7 +60,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${displayFont.variable} ${bodyFont.variable} min-h-screen antialiased`}
+        className={`${manropeFont.variable} ${accentFont.variable} min-h-screen antialiased`}
       >
         <ThemeProvider attribute="class" forcedTheme="dark">
           <AppProviders>
