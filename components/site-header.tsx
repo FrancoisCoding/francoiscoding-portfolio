@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -58,7 +58,8 @@ export function SiteHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
   const isHydrated = useIsHydrated();
-  const canAnimate = isHydrated;
+  const shouldReduceMotion = useReducedMotion();
+  const canAnimate = isHydrated && !shouldReduceMotion;
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -92,7 +93,7 @@ export function SiteHeader() {
         >
           <Link
             href="/"
-            className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.05))] shadow-[0_12px_32px_rgba(0,0,0,0.3)] backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+            className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.05))] shadow-[0_12px_32px_rgba(0,0,0,0.3)] backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
             aria-label="Go to the homepage"
           >
             <Image
@@ -126,7 +127,7 @@ export function SiteHeader() {
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
                   className={cn(
-                    'inline-flex min-h-10 items-center rounded-xl border px-3.5 text-[0.72rem] font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
+                    'inline-flex min-h-11 items-center rounded-xl border px-3.5 text-[0.72rem] font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
                     isActive
                       ? 'border-white/12 bg-white text-slate-950 shadow-[0_14px_32px_rgba(255,255,255,0.06)]'
                       : 'border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white/92',
@@ -142,7 +143,7 @@ export function SiteHeader() {
           <motion.button
             type="button"
             onClick={() => setIsMenuOpen((currentValue) => !currentValue)}
-            className="group inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white/92 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+            className="group inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white/92 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
             aria-expanded={isMenuOpen}
             aria-controls="site-header-menu"
             aria-label={

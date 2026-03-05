@@ -1,7 +1,12 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from 'framer-motion';
 
 import { useIsHydrated } from '@/hooks/use-is-hydrated';
 import { siteConfig } from '@/lib/site-config';
@@ -11,7 +16,8 @@ const heroHighlights = ['7+ years of experience'];
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const isHydrated = useIsHydrated();
-  const canAnimate = isHydrated;
+  const shouldReduceMotion = useReducedMotion();
+  const canAnimate = isHydrated && !shouldReduceMotion;
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start'],

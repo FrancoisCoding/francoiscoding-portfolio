@@ -43,7 +43,7 @@ export function ProjectCard({
 
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.03)_0%,rgba(0,0,0,0.05)_52%,rgba(0,0,0,0.34)_100%)] transition-opacity duration-200 ease-in-out group-hover:opacity-100" />
 
-      <div className="absolute inset-x-4 bottom-4 translate-y-4 opacity-0 transition-all duration-200 ease-in-out group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:translate-y-0 group-hover:opacity-100">
+      <div className="absolute inset-x-4 bottom-4 translate-y-0 opacity-100 transition-all duration-200 ease-in-out md:translate-y-4 md:opacity-0 md:group-focus-within:translate-y-0 md:group-focus-within:opacity-100 md:group-hover:translate-y-0 md:group-hover:opacity-100">
         <div className="flex items-center gap-2">
           {primaryLink ? (
             <ProjectPrimaryPill
@@ -105,7 +105,7 @@ function renderProjectPreview(
         src={previewImageSrc}
         alt={previewImageAlt ?? project.imageAlt ?? `${project.name} preview`}
         fill
-        className="object-cover object-top transition-transform duration-300 ease-in-out group-hover:scale-[1.02]"
+        className="object-cover object-top transition-transform duration-300 ease-in-out motion-reduce:transition-none md:group-hover:scale-[1.02]"
         sizes={sizes}
         priority={priority}
       />
@@ -118,7 +118,7 @@ function renderProjectPreview(
         src={project.imageSrc}
         alt={project.imageAlt}
         fill
-        className="object-cover object-top transition-transform duration-300 ease-in-out group-hover:scale-[1.02]"
+        className="object-cover object-top transition-transform duration-300 ease-in-out motion-reduce:transition-none md:group-hover:scale-[1.02]"
         sizes={sizes}
         priority={priority}
       />

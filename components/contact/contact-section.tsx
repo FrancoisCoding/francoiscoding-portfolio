@@ -44,9 +44,9 @@ export function ContactSection({ id }: IContactSectionProps) {
         style={canAnimate ? { y: glowY } : undefined}
       />
 
-      <div className="mx-auto max-w-[36rem] space-y-3 text-center">
+      <div className="mx-auto max-w-[34rem] space-y-3 text-center">
         <p className="text-sm text-white/55">Contact</p>
-        <h2 className="font-display text-[clamp(1.8rem,2.7vw,2.65rem)] leading-[0.96] font-semibold tracking-[-0.05em] text-white">
+        <h2 className="font-display text-[clamp(1.58rem,2.45vw,2.35rem)] leading-[0.98] font-semibold tracking-[-0.04em] text-white">
           Let&apos;s Build Something Great!
           <span className="block">Book a Call or Drop an Email.</span>
         </h2>

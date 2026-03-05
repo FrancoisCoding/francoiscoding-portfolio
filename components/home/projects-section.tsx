@@ -49,7 +49,7 @@ export function ProjectsSection() {
                 previewImageSrc={tile.imageSrc}
                 previewImageAlt={tile.imageAlt}
                 sizes={tile.sizes}
-                priority={index < 3}
+                priority={index === 0}
               />
             </motion.div>
           );
