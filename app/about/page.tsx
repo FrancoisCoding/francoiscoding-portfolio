@@ -585,18 +585,12 @@ const usedAboutImageFileNameSet = new Set<string>([
 
 const additionalAboutImageTiles = aboutImagesMeta
   .filter((item) => !usedAboutImageFileNameSet.has(item.fileName))
-  .map((item) => {
-    const isDrawingImage = item.fileName.startsWith('drawing');
-
-    return {
-      src: `/about/${item.fileName}`,
-      alt: buildAboutImageAlt(item.fileName),
-      className: isDrawingImage ? 'sm:col-span-2' : 'sm:col-span-1',
-      height: item.height,
-      imageClassName: isDrawingImage ? 'p-1.5 sm:p-2' : '',
-      width: item.width,
-    };
-  });
+  .map((item) => ({
+    src: `/about/${item.fileName}`,
+    alt: buildAboutImageAlt(item.fileName),
+    height: item.height,
+    width: item.width,
+  }));
 
 const aboutGalleryItems = [
   {
@@ -877,19 +871,19 @@ export default function AboutPage() {
               ))}
             </div>
 
-            <div className="mx-auto grid max-w-[48rem] grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
+            <div className="mx-auto w-full max-w-[48rem] columns-2 gap-2.5 sm:columns-3 sm:gap-3">
               {additionalAboutImageTiles.map((item, index) => (
                 <figure
                   key={item.src}
-                  className={`self-start ${item.className}`}
+                  className="mb-2.5 break-inside-avoid sm:mb-3"
                 >
                   <Image
                     src={item.src}
                     alt={item.alt}
                     width={item.width}
                     height={item.height}
-                    className={`h-auto w-full rounded-[1rem] ${item.imageClassName}`}
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 34vw, 26vw"
+                    className="h-auto w-full rounded-[1rem]"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 34vw, 24vw"
                     quality={aboutImageQuality}
                     priority={index < 3}
                   />

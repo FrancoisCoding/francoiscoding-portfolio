@@ -68,6 +68,13 @@ body {
   animation-delay: 80ms;
 }
 
+.headline-entry {
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(6px);
+  animation: headline-entry 740ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 @keyframes status-light-core {
   0%,
   42%,
@@ -142,11 +149,26 @@ body {
   }
 }
 
+@keyframes headline-entry {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(6px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
+  .headline-entry,
   .header-entry,
   .header-entry-delay {
     animation: none;

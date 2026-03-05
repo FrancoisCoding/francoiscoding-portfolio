@@ -49,45 +49,21 @@ export function ContactSection({ id }: IContactSectionProps) {
       />
 
       <div className="mx-auto max-w-[34rem] space-y-3 text-center">
-        <motion.h2
-          className="font-display text-[clamp(1.58rem,2.45vw,2.35rem)] leading-[0.98] font-semibold tracking-[-0.04em] text-white"
-          initial={canAnimate ? 'hidden' : false}
-          whileInView={canAnimate ? 'visible' : undefined}
-          viewport={{ once: true, amount: 0.5 }}
-          variants={{
-            visible: {
-              transition: {
-                delayChildren: 0.1,
-                staggerChildren: 0.11,
-              },
-            },
-          }}
-        >
-          {contactHeadlineLines.map((line) => (
-            <motion.span
+        <h2 className="font-display text-[clamp(1.58rem,2.45vw,2.35rem)] leading-[0.98] font-semibold tracking-[-0.04em] text-white">
+          {contactHeadlineLines.map((line, index) => (
+            <span
               key={line}
-              className="block"
-              variants={{
-                hidden: {
-                  opacity: 0,
-                  y: 16,
-                  filter: 'blur(6px)',
-                },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  filter: 'blur(0px)',
-                  transition: {
-                    duration: 0.52,
-                    ease: [0.22, 1, 0.36, 1],
-                  },
-                },
-              }}
+              className={`block ${canAnimate ? 'headline-entry' : ''}`}
+              style={
+                canAnimate
+                  ? { animationDelay: `${120 + index * 140}ms` }
+                  : undefined
+              }
             >
               {line}
-            </motion.span>
+            </span>
           ))}
-        </motion.h2>
+        </h2>
         <div className="flex justify-center">
           <a
             href={`mailto:${siteConfig.email}`}
