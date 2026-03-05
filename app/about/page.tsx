@@ -115,6 +115,7 @@ interface IExperienceItem {
   logoClassName: string;
   logoLabel: string;
   logoSrc?: string;
+  logoImageClassName?: string;
 }
 
 const experienceItems: IExperienceItem[] = [
@@ -149,7 +150,8 @@ const experienceItems: IExperienceItem[] = [
     logoSrc: '/expertise/sosha.svg',
     logoAlt: 'SoSha logo',
     logoLabel: 'S',
-    logoClassName: 'border-white/14 bg-white text-slate-950',
+    logoClassName: 'border-white/14 bg-[#dfe5f2] text-slate-950',
+    logoImageClassName: 'h-7 w-full object-contain',
   },
   {
     role: 'Front-End Engineer (Externship)',
@@ -157,6 +159,8 @@ const experienceItems: IExperienceItem[] = [
     location: 'Remote',
     timeframe: 'Oct 2020 - Dec 2020',
     duration: '(3 months)',
+    logoSrc: '/expertise/dod.png',
+    logoAlt: 'Department of Defense logo',
     logoLabel: 'DoD',
     logoClassName:
       'border-blue-300/35 bg-[linear-gradient(180deg,rgba(96,165,250,0.3),rgba(23,37,84,0.22))] text-blue-100',
@@ -542,7 +546,7 @@ const hobbiesCards = [
     alt: 'Coastal travel scene near clear blue water.',
     title: 'Travel',
     stackClassName:
-      'z-20 -translate-x-[68%] -rotate-[8deg] group-hover:-translate-x-[122%] group-hover:-rotate-[10deg]',
+      'z-20 -translate-x-[70%] -rotate-[8deg] group-hover:-translate-x-[145%] group-hover:-rotate-[12deg]',
   },
   {
     src: '/about/about4.jpg',
@@ -556,7 +560,7 @@ const hobbiesCards = [
     alt: 'Laptop setup used for games and coding.',
     title: 'Gaming',
     stackClassName:
-      'z-10 -translate-x-[32%] rotate-[8deg] group-hover:translate-x-[32%] group-hover:rotate-[10deg]',
+      'z-10 -translate-x-[30%] rotate-[8deg] group-hover:translate-x-[45%] group-hover:rotate-[12deg]',
   },
 ] as const;
 
@@ -719,7 +723,10 @@ export default function AboutPage() {
                           alt={item.logoAlt ?? `${item.company} logo`}
                           width={42}
                           height={42}
-                          className="h-10 w-10 object-contain"
+                          className={
+                            item.logoImageClassName ??
+                            'h-10 w-10 object-contain'
+                          }
                         />
                       ) : (
                         item.logoLabel
@@ -864,9 +871,14 @@ export default function AboutPage() {
               })}
             </div>
 
-            <details className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
+            <details className="group rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
               <summary className="cursor-pointer list-none text-sm font-medium text-white/78 [&::-webkit-details-marker]:hidden">
-                View complete toolkit ({extendedTools.length} more)
+                <span className="group-open:hidden">
+                  View complete toolkit ({extendedTools.length} more)
+                </span>
+                <span className="hidden group-open:inline">
+                  Collapse complete toolkit
+                </span>
               </summary>
               <div className="mt-4 grid gap-2 md:grid-cols-2">
                 {extendedTools.map((item) => {
