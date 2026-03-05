@@ -166,9 +166,10 @@ const experienceItems: IExperienceItem[] = [
     location: 'Remote',
     timeframe: 'Oct 2019 - Jul 2020',
     duration: '(10 months)',
+    logoSrc: '/expertise/bloominstituteoftechnology_logo.jpg',
+    logoAlt: 'Bloom Institute of Technology logo',
     logoLabel: 'B',
-    logoClassName:
-      'border-amber-300/35 bg-[linear-gradient(180deg,rgba(251,191,36,0.3),rgba(120,53,15,0.22))] text-amber-100',
+    logoClassName: 'border-white/14 bg-white text-slate-950',
   },
 ];
 
