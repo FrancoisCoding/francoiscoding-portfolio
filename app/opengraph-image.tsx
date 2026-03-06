@@ -61,7 +61,7 @@ export default function OpenGraphImage() {
             borderRadius: 999,
             padding: '10px 18px',
             background: 'rgba(255,255,255,0.05)',
-            width: 'fit-content',
+            alignSelf: 'flex-start',
           }}
         >
           Isaiah Francois
