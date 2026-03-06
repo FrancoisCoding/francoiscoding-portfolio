@@ -15,177 +15,153 @@ export default function OpenGraphImage() {
         width: '100%',
         height: '100%',
         position: 'relative',
-        overflow: 'hidden',
         background:
-          'linear-gradient(160deg, #050506 0%, #0b0d11 52%, #0f1115 100%)',
+          'linear-gradient(135deg,#020203 0%,#090b0f 45%,#0f1116 100%)',
         color: 'white',
-        padding: '58px',
+        padding: '64px',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        fontFamily: 'Manrope, Inter, sans-serif',
+        fontFamily: 'Inter, Manrope, sans-serif',
       }}
     >
+      {/* Glow background accents */}
       <div
         style={{
-          display: 'flex',
           position: 'absolute',
-          top: '-190px',
-          right: '-160px',
+          right: '-120px',
+          top: '-120px',
+          width: '500px',
+          height: '500px',
+          borderRadius: '999px',
+          background:
+            'radial-gradient(circle, rgba(56,189,248,0.35) 0%, rgba(56,189,248,0.08) 45%, rgba(0,0,0,0) 70%)',
+        }}
+      />
+
+      <div
+        style={{
+          position: 'absolute',
+          left: '-160px',
+          bottom: '-160px',
           width: '520px',
           height: '520px',
           borderRadius: '999px',
           background:
-            'radial-gradient(circle, rgba(56,189,248,0.24) 0%, rgba(56,189,248,0.06) 40%, rgba(56,189,248,0) 72%)',
-        }}
-      />
-      <div
-        style={{
-          display: 'flex',
-          position: 'absolute',
-          bottom: '-190px',
-          left: '-120px',
-          width: '460px',
-          height: '460px',
-          borderRadius: '999px',
-          background:
-            'radial-gradient(circle, rgba(34,197,94,0.16) 0%, rgba(34,197,94,0.05) 42%, rgba(34,197,94,0) 74%)',
+            'radial-gradient(circle, rgba(74,222,128,0.30) 0%, rgba(74,222,128,0.05) 45%, rgba(0,0,0,0) 70%)',
         }}
       />
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '26px',
-          width: '100%',
-          zIndex: 2,
-        }}
-      >
+      {/* Header */}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <div
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            borderRadius: '999px',
-            border: '1px solid rgba(255,255,255,0.18)',
-            background: 'rgba(255,255,255,0.06)',
+            fontSize: 20,
+            opacity: 0.8,
+            border: '1px solid rgba(255,255,255,0.15)',
+            borderRadius: 999,
             padding: '10px 18px',
-            fontSize: '18px',
-            letterSpacing: '0.05em',
-            textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.85)',
+            background: 'rgba(255,255,255,0.05)',
+            width: 'fit-content',
           }}
         >
-          Isaiah Francois Portfolio
+          Isaiah Francois
         </div>
-        <p
+
+        <div
           style={{
-            margin: 0,
-            fontSize: '78px',
+            marginTop: 40,
+            fontSize: 84,
             fontWeight: 700,
-            lineHeight: 1.02,
-            letterSpacing: '-0.04em',
-            maxWidth: '860px',
+            lineHeight: 1.05,
+            letterSpacing: -3,
+            maxWidth: 820,
           }}
         >
-          I&apos;m Isaiah. Full stack developer building modern products.
-        </p>
-        <p
+          Building modern
+          <br />
+          digital products.
+        </div>
+
+        <div
           style={{
-            margin: 0,
-            fontSize: '30px',
-            lineHeight: 1.25,
-            color: 'rgba(255,255,255,0.78)',
+            marginTop: 22,
+            fontSize: 30,
+            opacity: 0.75,
           }}
         >
-          Senior Full Stack Engineer · 7+ years · FinanceFlow, enterprise
-          systems, and product UX
-        </p>
+          Senior Full Stack Engineer · React · Next.js · Product Engineering
+        </div>
       </div>
 
+      {/* Bottom Section */}
       <div
         style={{
           display: 'flex',
-          width: '100%',
-          zIndex: 2,
           justifyContent: 'space-between',
           alignItems: 'flex-end',
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            gap: '12px',
-            alignItems: 'center',
-          }}
-        >
+        {/* availability */}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <div
             style={{
-              display: 'flex',
-              width: '12px',
-              height: '12px',
-              borderRadius: '999px',
+              width: 14,
+              height: 14,
+              borderRadius: 999,
               background: '#4ade80',
-              boxShadow: '0 0 14px rgba(74,222,128,0.9)',
+              marginRight: 14,
             }}
           />
-          <p
-            style={{
-              margin: 0,
-              fontSize: '22px',
-              color: 'rgba(255,255,255,0.88)',
-            }}
-          >
-            Available for work
-          </p>
+          <div style={{ fontSize: 26 }}>
+            Available for work · 7+ years experience
+          </div>
         </div>
 
+        {/* FinanceFlow glass card */}
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
-            width: '360px',
-            borderRadius: '22px',
-            border: '1px solid rgba(255,255,255,0.14)',
-            background: 'rgba(255,255,255,0.05)',
-            padding: '18px 20px',
-            gap: '8px',
+            width: 360,
+            borderRadius: 26,
+            border: '1px solid rgba(255,255,255,0.15)',
+            background: 'rgba(255,255,255,0.06)',
+            padding: 24,
           }}
         >
-          <p
+          <div
             style={{
-              margin: 0,
-              fontSize: '17px',
-              letterSpacing: '0.08em',
+              fontSize: 16,
+              opacity: 0.6,
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.62)',
+              letterSpacing: 1,
             }}
           >
             Featured Project
-          </p>
-          <p
+          </div>
+
+          <div
             style={{
-              margin: 0,
-              fontSize: '34px',
+              fontSize: 40,
               fontWeight: 700,
-              letterSpacing: '-0.03em',
+              marginTop: 6,
             }}
           >
             FinanceFlow
-          </p>
-          <p
+          </div>
+
+          <div
             style={{
-              margin: 0,
-              fontSize: '19px',
-              color: 'rgba(255,255,255,0.72)',
+              fontSize: 20,
+              opacity: 0.7,
+              marginTop: 6,
             }}
           >
             financeflow.dev
-          </p>
+          </div>
         </div>
       </div>
     </div>,
-    {
-      ...size,
-    },
+    size,
   );
 }

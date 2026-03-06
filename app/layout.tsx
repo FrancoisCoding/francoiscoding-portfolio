@@ -28,11 +28,11 @@ const openGraphImageUrl = new URL(
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
   title: {
-    default: 'Isaiah Francois Portfolio | Senior Full Stack Engineer',
+    default: 'Isaiah Francois | Senior Full Stack Engineer Portfolio',
     template: '%s | Isaiah Francois',
   },
   description:
-    "Explore Isaiah Francois's portfolio featuring 7+ years of full stack engineering, FinanceFlow, and scalable product systems built for performance and clean UX.",
+    'Senior full stack engineer Isaiah Francois builds scalable products like FinanceFlow using modern architecture, clean UX, and product-focused engineering.',
   alternates: {
     canonical: '/',
   },
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Isaiah Francois Portfolio | Senior Full Stack Engineer',
     description:
-      "Explore Isaiah Francois's portfolio featuring 7+ years of full stack engineering, FinanceFlow, and scalable product systems built for performance and clean UX.",
+      'Senior full stack engineer Isaiah Francois builds scalable products like FinanceFlow using modern architecture, clean UX, and product-focused engineering.',
     type: 'website',
     url: '/',
     siteName: 'Isaiah Francois Portfolio',
@@ -61,9 +61,18 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Isaiah Francois Portfolio | Senior Full Stack Engineer',
     description:
-      "Explore Isaiah Francois's portfolio featuring 7+ years of full stack engineering, FinanceFlow, and scalable product systems built for performance and clean UX.",
+      'Senior full stack engineer Isaiah Francois builds scalable products like FinanceFlow using modern architecture, clean UX, and product-focused engineering.',
     images: [openGraphImageUrl],
   },
+  keywords: [
+    'Isaiah Francois',
+    'Full Stack Engineer',
+    'Senior Software Engineer',
+    'React Developer',
+    'Next.js Developer',
+    'FinanceFlow',
+    'Software Engineer Portfolio',
+  ],
 };
 
 export default function RootLayout({
