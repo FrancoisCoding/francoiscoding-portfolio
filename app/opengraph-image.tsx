@@ -69,6 +69,9 @@ export default function OpenGraphImage() {
 
         <div
           style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 8,
             marginTop: 40,
             fontSize: 84,
             fontWeight: 700,
@@ -77,9 +80,8 @@ export default function OpenGraphImage() {
             maxWidth: 820,
           }}
         >
-          Building modern
-          <br />
-          digital products.
+          <span>Building modern</span>
+          <span>digital products.</span>
         </div>
 
         <div
