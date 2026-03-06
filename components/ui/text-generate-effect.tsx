@@ -11,6 +11,7 @@ interface ITextGenerateEffectProps {
   delay?: number;
   stagger?: number;
   duration?: number;
+  isActive?: boolean;
 }
 
 export function TextGenerateEffect({
@@ -20,6 +21,7 @@ export function TextGenerateEffect({
   delay = 0,
   stagger = 0.055,
   duration = 0.56,
+  isActive = true,
 }: ITextGenerateEffectProps) {
   const wordsArray = words.split(' ');
 
@@ -27,7 +29,7 @@ export function TextGenerateEffect({
     <motion.span
       className={cn('inline', className)}
       initial="hidden"
-      animate="visible"
+      animate={isActive ? 'visible' : 'hidden'}
       variants={{
         visible: {
           transition: {

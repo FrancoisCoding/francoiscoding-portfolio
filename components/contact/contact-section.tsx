@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 
 import { CalendlyPanel } from '@/components/contact/calendly-panel';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
@@ -14,8 +14,13 @@ interface IContactSectionProps {
 
 export function ContactSection({ id }: IContactSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const isHydrated = useIsHydrated();
   const canAnimate = isHydrated;
+  const isHeadingInView = useInView(headingRef, {
+    once: true,
+    amount: 0.45,
+  });
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
@@ -44,13 +49,17 @@ export function ContactSection({ id }: IContactSectionProps) {
       />
 
       <div className="mx-auto max-w-[34rem] space-y-3 text-center">
-        <h2 className="font-display text-[clamp(1.58rem,2.45vw,2.35rem)] leading-[0.98] font-semibold tracking-[-0.04em] text-white">
+        <h2
+          ref={headingRef}
+          className="font-display text-[clamp(1.58rem,2.45vw,2.35rem)] leading-[0.98] font-semibold tracking-[-0.04em] text-white"
+        >
           {contactHeadlineLines.map((line, index) => (
             <TextGenerateEffect
               key={line}
               words={line}
               className="block"
               delay={canAnimate ? 0.12 + index * 0.14 : 0}
+              isActive={canAnimate ? isHeadingInView : true}
             />
           ))}
         </h2>

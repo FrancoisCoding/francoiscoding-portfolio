@@ -20,29 +20,37 @@ const accentFont = Caveat({
   weight: ['500', '600'],
 });
 
+const openGraphImageUrl = new URL(
+  '/opengraph-image',
+  siteConfig.siteUrl,
+).toString();
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
   title: {
-    default: 'Isaiah Francois | Senior Full Stack Engineer',
+    default: 'Isaiah Francois Portfolio | Senior Full Stack Engineer',
     template: '%s | Isaiah Francois',
   },
   description:
-    'Portfolio of Isaiah Francois, Senior Full Stack Engineer with 7+ years building modern product systems.',
+    "Explore Isaiah Francois's portfolio featuring 7+ years of full stack engineering, FinanceFlow, and scalable product systems built for performance and clean UX.",
+  alternates: {
+    canonical: '/',
+  },
   icons: {
     icon: [{ url: '/profile.ico?v=1', type: 'image/x-icon' }],
     shortcut: [{ url: '/profile.ico?v=1', type: 'image/x-icon' }],
     apple: [{ url: '/profile.jpg?v=1', type: 'image/jpeg' }],
   },
   openGraph: {
-    title: 'Isaiah Francois | Senior Full Stack Engineer',
+    title: 'Isaiah Francois Portfolio | Senior Full Stack Engineer',
     description:
-      'Portfolio of Isaiah Francois, Senior Full Stack Engineer with 7+ years building modern product systems.',
+      "Explore Isaiah Francois's portfolio featuring 7+ years of full stack engineering, FinanceFlow, and scalable product systems built for performance and clean UX.",
     type: 'website',
     url: '/',
     siteName: 'Isaiah Francois Portfolio',
     images: [
       {
-        url: '/opengraph-image',
+        url: openGraphImageUrl,
         width: 1200,
         height: 630,
         alt: 'Isaiah Francois portfolio preview',
@@ -51,10 +59,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Isaiah Francois | Senior Full Stack Engineer',
+    title: 'Isaiah Francois Portfolio | Senior Full Stack Engineer',
     description:
-      'Portfolio of Isaiah Francois, Senior Full Stack Engineer with 7+ years building modern product systems.',
-    images: ['/opengraph-image'],
+      "Explore Isaiah Francois's portfolio featuring 7+ years of full stack engineering, FinanceFlow, and scalable product systems built for performance and clean UX.",
+    images: [openGraphImageUrl],
   },
 };
 
