@@ -1,0 +1,6 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+if [ -n "$1" ]; then
+  perl -0pi -e 's/^Co-Authored-By: Claude.*\n//gm' "$1"
+fi
