@@ -90,101 +90,114 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 bg-transparent">
-      <div className="mx-auto flex w-full max-w-[68rem] items-start justify-between gap-3 px-5 py-3 sm:px-6 lg:px-8">
-        <motion.div className="header-entry">
-          <Link
-            href="/"
-            className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.05))] shadow-[0_12px_32px_rgba(0,0,0,0.3)] backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
-            aria-label="Go to the homepage"
-          >
-            <Image
-              src="/profile.jpg"
-              alt="Isaiah Francois"
-              fill
-              className="object-cover"
-              sizes="44px"
-              priority
-            />
-          </Link>
-        </motion.div>
-
-        <motion.div
-          ref={menuContainerRef}
-          className="header-entry header-entry-delay relative flex items-center gap-2"
-        >
+      <div className="mx-auto flex w-full max-w-[68rem] items-start justify-center px-5 py-3 sm:px-6 lg:px-8">
+        <div ref={menuContainerRef} className="relative header-entry">
+          {/* ── Unified frosted glass capsule ── */}
           <nav
             aria-label="Primary navigation"
-            className="hidden items-center gap-2 md:flex"
+            className="flex items-center gap-1 rounded-full border border-white/[0.08] bg-white/[0.04] p-1 shadow-[0_2px_20px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-2xl"
           >
-            {primaryLinks.map((link) => {
-              const isActive = link.match(pathname);
+            {/* Profile link */}
+            <Link
+              href="/"
+              className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+              aria-label="Go to the homepage"
+            >
+              <Image
+                src="/profile.jpg"
+                alt="Isaiah Francois"
+                fill
+                className="object-cover"
+                sizes="32px"
+                priority
+              />
+            </Link>
 
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className={cn(
-                    'inline-flex min-h-11 items-center rounded-xl border px-3.5 text-[0.72rem] font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
-                    isActive
-                      ? 'border-white/12 bg-white text-slate-950 shadow-[0_14px_32px_rgba(255,255,255,0.06)]'
-                      : 'border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white/92',
-                  )}
-                  aria-current={isActive ? 'page' : undefined}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
+            {/* Divider */}
+            <div
+              className="mx-0.5 hidden h-4 w-px bg-white/[0.08] md:block"
+              aria-hidden="true"
+            />
+
+            {/* Nav links — desktop */}
+            <div className="hidden items-center gap-0.5 md:flex">
+              {primaryLinks.map((link) => {
+                const isActive = link.match(pathname);
+
+                return (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={cn(
+                      'relative inline-flex h-8 items-center rounded-full px-3.5 text-[0.72rem] font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
+                      isActive ? 'text-slate-950' : 'text-white/70 hover:text-white',
+                    )}
+                    aria-current={isActive ? 'page' : undefined}
+                  >
+                    {isActive && (
+                      <motion.span
+                        layoutId={canAnimate ? 'nav-active' : undefined}
+                        className="absolute inset-0 rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.2)]"
+                        transition={
+                          canAnimate
+                            ? {
+                                type: 'spring',
+                                stiffness: 380,
+                                damping: 30,
+                                mass: 0.6,
+                              }
+                            : { duration: 0 }
+                        }
+                      />
+                    )}
+                    <span className="relative z-10">{link.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Divider */}
+            <div
+              className="mx-0.5 h-4 w-px bg-white/[0.08]"
+              aria-hidden="true"
+            />
+
+            {/* Menu button */}
+            <motion.button
+              type="button"
+              onClick={() => setIsMenuOpen((currentValue) => !currentValue)}
+              className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-white/70 transition-colors duration-200 hover:bg-white/[0.06] hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+              aria-expanded={isMenuOpen}
+              aria-controls="site-header-menu"
+              aria-label={
+                isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'
+              }
+              whileTap={canAnimate ? { scale: 0.9 } : undefined}
+            >
+              <MenuToggleIcon isOpen={isMenuOpen} canAnimate={canAnimate} />
+            </motion.button>
           </nav>
 
-          <motion.button
-            type="button"
-            onClick={() => setIsMenuOpen((currentValue) => !currentValue)}
-            className="group inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white/92 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
-            aria-expanded={isMenuOpen}
-            aria-controls="site-header-menu"
-            aria-label={
-              isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'
-            }
-            whileTap={canAnimate ? { scale: 0.95 } : undefined}
-            animate={
-              canAnimate
-                ? {
-                    rotate: isMenuOpen ? 90 : 0,
-                    boxShadow: isMenuOpen
-                      ? '0 0 0 1px rgba(255,255,255,0.18), inset 0 1px 0 rgba(255,255,255,0.08)'
-                      : 'inset 0 1px 0 rgba(255,255,255,0.04)',
-                  }
-                : undefined
-            }
-            transition={
-              canAnimate
-                ? { type: 'spring', stiffness: 420, damping: 22, mass: 0.4 }
-                : undefined
-            }
-          >
-            <MenuToggleIcon isOpen={isMenuOpen} canAnimate={canAnimate} />
-          </motion.button>
-
+          {/* ── Dropdown menu ── */}
           <AnimatePresence>
             {isMenuOpen ? (
               <motion.div
                 id="site-header-menu"
                 initial={
-                  canAnimate ? { opacity: 0, y: -10, scale: 0.98 } : false
+                  canAnimate ? { opacity: 0, y: -8, scale: 0.96 } : false
                 }
                 animate={
                   canAnimate ? { opacity: 1, y: 0, scale: 1 } : undefined
                 }
                 exit={
-                  canAnimate ? { opacity: 0, y: -8, scale: 0.98 } : undefined
+                  canAnimate ? { opacity: 0, y: -6, scale: 0.96 } : undefined
                 }
-                transition={{ duration: 0.2, ease: 'easeOut' }}
-                className="absolute top-14 right-0 w-[min(22rem,calc(100vw-2rem))] overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#121212]/90 p-3 shadow-[0_24px_80px_rgba(0,0,0,0.42)] backdrop-blur-2xl"
+                transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute top-14 right-0 left-0 mx-auto w-[min(22rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0a0a0a]/80 p-2 shadow-[0_24px_80px_rgba(0,0,0,0.5)] backdrop-blur-2xl"
               >
                 <motion.div
-                  className="grid gap-2 md:hidden"
+                  className="grid gap-1 md:hidden"
                   initial={canAnimate ? 'closed' : false}
                   animate={canAnimate ? 'open' : undefined}
                   variants={menuListVariants}
@@ -196,20 +209,15 @@ export function SiteHeader() {
                       <motion.div
                         key={link.label}
                         variants={menuItemVariants}
-                        whileHover={canAnimate ? { x: 6 } : undefined}
-                        transition={{
-                          duration: 0.28,
-                          ease: [0.22, 1, 0.36, 1],
-                        }}
                       >
                         <Link
                           href={link.href}
                           onClick={() => setIsMenuOpen(false)}
                           className={cn(
-                            'group inline-flex min-h-11 w-full items-center rounded-xl border px-4 text-sm font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.13),rgba(255,255,255,0.07))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
+                            'inline-flex min-h-10 w-full items-center rounded-xl px-3.5 text-[0.82rem] font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
                             isActive
-                              ? 'border-white/10 bg-white text-slate-950'
-                              : 'border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] text-white hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.11),rgba(255,255,255,0.05))]',
+                              ? 'bg-white text-slate-950'
+                              : 'text-white/80 hover:bg-white/[0.06] hover:text-white',
                           )}
                           aria-current={isActive ? 'page' : undefined}
                         >
@@ -220,8 +228,10 @@ export function SiteHeader() {
                   })}
                 </motion.div>
 
+                <div className="my-1.5 h-px bg-white/[0.06] md:hidden" />
+
                 <motion.div
-                  className="mt-2 grid gap-2"
+                  className="grid gap-1"
                   initial={canAnimate ? 'closed' : false}
                   animate={canAnimate ? 'open' : undefined}
                   variants={menuListVariants}
@@ -232,11 +242,6 @@ export function SiteHeader() {
                         <motion.div
                           key={link.label}
                           variants={menuItemVariants}
-                          whileHover={canAnimate ? { x: 6 } : undefined}
-                          transition={{
-                            duration: 0.28,
-                            ease: [0.22, 1, 0.36, 1],
-                          }}
                         >
                           <a
                             href={link.href}
@@ -251,11 +256,11 @@ export function SiteHeader() {
                                 ? undefined
                                 : 'noreferrer'
                             }
-                            className="group inline-flex min-h-11 w-full items-center justify-between rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.035))] px-4 text-sm font-medium text-white transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.06))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+                            className="group inline-flex min-h-10 w-full items-center justify-between rounded-xl px-3.5 text-[0.82rem] font-medium text-white/70 transition-colors duration-200 hover:bg-white/[0.06] hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
                           >
                             {link.label}
                             <span
-                              className="text-white/50 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1"
+                              className="text-white/30 transition-transform duration-200 group-hover:translate-x-0.5"
                               aria-hidden="true"
                             >
                               ↗
@@ -269,20 +274,15 @@ export function SiteHeader() {
                       <motion.div
                         key={link.label}
                         variants={menuItemVariants}
-                        whileHover={canAnimate ? { x: 6 } : undefined}
-                        transition={{
-                          duration: 0.28,
-                          ease: [0.22, 1, 0.36, 1],
-                        }}
                       >
                         <Link
                           href={link.href}
                           onClick={() => setIsMenuOpen(false)}
-                          className="group inline-flex min-h-11 w-full items-center justify-between rounded-xl border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.035))] px-4 text-sm font-medium text-white transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.06))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+                          className="group inline-flex min-h-10 w-full items-center justify-between rounded-xl px-3.5 text-[0.82rem] font-medium text-white/70 transition-colors duration-200 hover:bg-white/[0.06] hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
                         >
                           {link.label}
                           <span
-                            className="text-white/50 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1"
+                            className="text-white/30 transition-transform duration-200 group-hover:translate-x-0.5"
                             aria-hidden="true"
                           >
                             →
@@ -295,7 +295,7 @@ export function SiteHeader() {
               </motion.div>
             ) : null}
           </AnimatePresence>
-        </motion.div>
+        </div>
       </div>
     </header>
   );
@@ -355,8 +355,8 @@ function MenuToggleIcon({
 const menuListVariants = {
   open: {
     transition: {
-      staggerChildren: 0.035,
-      delayChildren: 0.04,
+      staggerChildren: 0.03,
+      delayChildren: 0.03,
     },
   },
   closed: {},
@@ -366,11 +366,9 @@ const menuItemVariants = {
   open: {
     opacity: 1,
     y: 0,
-    x: 0,
   },
   closed: {
     opacity: 0,
-    y: -6,
-    x: -10,
+    y: -4,
   },
 };

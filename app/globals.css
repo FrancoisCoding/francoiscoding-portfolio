@@ -53,11 +53,11 @@ body {
 }
 
 .status-light-core {
-  animation: status-light-core 2.1s steps(1, end) infinite;
+  animation: status-light-core 2.4s ease-in-out infinite;
 }
 
 .status-light-glow {
-  animation: status-light-glow 2.1s steps(1, end) infinite;
+  animation: status-light-glow 2.4s ease-in-out infinite;
 }
 
 .header-entry {
@@ -70,31 +70,27 @@ body {
 
 @keyframes status-light-core {
   0%,
-  44%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
 
-  45%,
-  52% {
-    opacity: 0.06;
-    transform: scale(0.74);
+  50% {
+    opacity: 0.32;
+    transform: scale(0.82);
   }
 }
 
 @keyframes status-light-glow {
   0%,
-  44%,
   100% {
     opacity: 0.72;
     transform: scale(1.08);
   }
 
-  45%,
-  52% {
-    opacity: 0.02;
-    transform: scale(0.68);
+  50% {
+    opacity: 0.12;
+    transform: scale(0.74);
   }
 }
 
@@ -112,13 +108,33 @@ body {
   }
 }
 
+/* ── Page Transitions ── */
+
+.page-enter {
+  animation: page-enter 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
   .header-entry,
-  .header-entry-delay {
+  .header-entry-delay,
+  .page-enter {
     animation: none;
   }
 }
