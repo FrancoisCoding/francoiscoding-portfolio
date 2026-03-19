@@ -127,14 +127,17 @@ body {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+.reduce-motion {
+  scroll-behavior: auto;
+}
 
-  .header-entry,
-  .header-entry-delay,
-  .page-enter {
-    animation: none;
-  }
+.reduce-motion .header-entry,
+.reduce-motion .header-entry-delay,
+.reduce-motion .page-enter {
+  animation: none;
+}
+
+.reduce-motion .status-light-core,
+.reduce-motion .status-light-glow {
+  animation: none;
 }

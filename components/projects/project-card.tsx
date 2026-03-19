@@ -1,7 +1,11 @@
+'use client';
+
 import Image from 'next/image';
+import { useRef, useState, useCallback } from 'react';
 import { ArrowUpRight, Github } from 'lucide-react';
 
 import type { IProjectItem } from '@/lib/projects-data';
+import { useReducedMotionPreference } from '@/hooks/use-reduced-motion';
 import { cn } from '@/lib/utils';
 
 interface IProjectCardProps {
@@ -23,13 +27,61 @@ export function ProjectCard({
 }: IProjectCardProps) {
   const primaryLink = project.links[0];
   const githubLink = project.links.find((link) => link.label === 'GitHub');
+  const cardRef = useRef<HTMLElement>(null);
+  const { reduceMotion: shouldReduceMotion } = useReducedMotionPreference();
+  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const [spotlight, setSpotlight] = useState({ x: 50, y: 50 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent<HTMLElement>) => {
+      if (shouldReduceMotion) return;
+      const el = cardRef.current;
+      if (!el) return;
+
+      const rect = el.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+
+      setSpotlight({ x: x * 100, y: y * 100 });
+      setTilt({
+        rotateX: (y - 0.5) * -8,
+        rotateY: (x - 0.5) * 8,
+      });
+    },
+    [shouldReduceMotion],
+  );
+
+  const handlePointerEnter = useCallback(() => {
+    setIsHovered(true);
+  }, []);
+
+  const handlePointerLeave = useCallback(() => {
+    setIsHovered(false);
+    setTilt({ rotateX: 0, rotateY: 0 });
+  }, []);
 
   return (
     <article
+      ref={cardRef}
+      onPointerMove={handlePointerMove}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
       className={cn(
-        'group relative isolate min-h-[24rem] overflow-hidden rounded-[1.9rem] border border-white/7 bg-[#0f0f10] shadow-[0_28px_72px_rgba(0,0,0,0.36)] ring-1 ring-white/4',
+        'group relative isolate min-h-[24rem] overflow-hidden rounded-[1.9rem] border border-white/7 bg-[#0f0f10] shadow-[0_28px_72px_rgba(0,0,0,0.36)] ring-1 ring-white/4 transition-shadow duration-300 ease-out',
+        isHovered && 'shadow-[0_36px_80px_rgba(0,0,0,0.5)]',
         className,
       )}
+      style={
+        !shouldReduceMotion
+          ? {
+              transform: `perspective(800px) rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg) scale(${isHovered ? 1.01 : 1})`,
+              transition: isHovered
+                ? 'transform 0.1s ease-out, box-shadow 0.3s ease-out'
+                : 'transform 0.4s ease-out, box-shadow 0.3s ease-out',
+            }
+          : undefined
+      }
     >
       <div className="absolute inset-0">
         {renderProjectPreview(
@@ -42,6 +94,16 @@ export function ProjectCard({
       </div>
 
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.03)_0%,rgba(0,0,0,0.05)_52%,rgba(0,0,0,0.34)_100%)] transition-opacity duration-200 ease-in-out group-hover:opacity-100" />
+
+      {/* Cursor spotlight */}
+      {!shouldReduceMotion && (
+        <div
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            background: `radial-gradient(circle 280px at ${spotlight.x}% ${spotlight.y}%, rgba(255,255,255,0.08), transparent)`,
+          }}
+        />
+      )}
 
       <div className="absolute inset-x-4 bottom-4 translate-y-0 opacity-100 transition-all duration-200 ease-in-out md:translate-y-4 md:opacity-0 md:group-focus-within:translate-y-0 md:group-focus-within:opacity-100 md:group-hover:translate-y-0 md:group-hover:opacity-100">
         <div className="flex items-center gap-2">

@@ -1,8 +1,9 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import { Badge } from '@/components/ui/badge';
+import { useReducedMotionPreference } from '@/hooks/use-reduced-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { companyExperience } from '@/lib/company-experience';
 
@@ -13,8 +14,8 @@ const companyAccents = [
 ];
 
 export function CompaniesSection() {
-  const shouldReduceMotion = useReducedMotion();
-  const startValues = shouldReduceMotion
+  const { reduceMotion } = useReducedMotionPreference();
+  const startValues = reduceMotion
     ? { opacity: 1 }
     : { opacity: 0, y: 18 };
   const endValues = { opacity: 1, y: 0 };
@@ -45,7 +46,7 @@ export function CompaniesSection() {
             whileInView={endValues}
             viewport={{ once: true, amount: 0.25 }}
             transition={{
-              delay: shouldReduceMotion ? 0 : index * 0.08,
+              delay: reduceMotion ? 0 : index * 0.08,
               duration: 0.4,
             }}
           >

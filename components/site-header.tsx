@@ -1,12 +1,13 @@
 'use client';
 
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import { useIsHydrated } from '@/hooks/use-is-hydrated';
+import { useReducedMotionPreference } from '@/hooks/use-reduced-motion';
 import { cn } from '@/lib/utils';
 import { siteConfig } from '@/lib/site-config';
 
@@ -63,8 +64,8 @@ export function SiteHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
   const isHydrated = useIsHydrated();
-  const shouldReduceMotion = useReducedMotion();
-  const canAnimate = isHydrated && !shouldReduceMotion;
+  const { reduceMotion, toggleReduceMotion } = useReducedMotionPreference();
+  const canAnimate = isHydrated && !reduceMotion;
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -156,6 +157,54 @@ export function SiteHeader() {
                 );
               })}
             </div>
+
+            {/* Divider */}
+            <div
+              className="mx-0.5 h-4 w-px bg-white/[0.08]"
+              aria-hidden="true"
+            />
+
+            {/* Reduced motion toggle */}
+            <button
+              type="button"
+              onClick={toggleReduceMotion}
+              className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-white/70 transition-colors duration-200 hover:bg-white/[0.06] hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+              aria-label={
+                reduceMotion ? 'Enable animations' : 'Reduce motion'
+              }
+              title={reduceMotion ? 'Enable animations' : 'Reduce motion'}
+            >
+              {reduceMotion ? (
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="4" y1="4" x2="20" y2="20" />
+                </svg>
+              ) : (
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+              )}
+            </button>
 
             {/* Divider */}
             <div

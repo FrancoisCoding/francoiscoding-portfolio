@@ -1,8 +1,9 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import { useIsHydrated } from '@/hooks/use-is-hydrated';
+import { useReducedMotionPreference } from '@/hooks/use-reduced-motion';
 import { homeProjectTiles, projectsData } from '@/lib/projects-data';
 import { ProjectCard } from '@/components/projects/project-card';
 
@@ -12,8 +13,8 @@ const projectsBySlug = new Map(
 
 export function ProjectsSection() {
   const isHydrated = useIsHydrated();
-  const shouldReduceMotion = useReducedMotion();
-  const canAnimate = isHydrated && !shouldReduceMotion;
+  const { reduceMotion } = useReducedMotionPreference();
+  const canAnimate = isHydrated && !reduceMotion;
 
   return (
     <section id="projects" className="relative scroll-mt-24 py-2 sm:py-4">
