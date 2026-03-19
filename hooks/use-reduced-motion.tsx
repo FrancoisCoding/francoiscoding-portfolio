@@ -4,8 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
-  useState,
+  useSyncExternalStore,
 } from 'react';
 
 const STORAGE_KEY = 'reduce-motion';
@@ -20,32 +19,45 @@ const ReducedMotionContext = createContext<IReducedMotionContext>({
   toggleReduceMotion: () => {},
 });
 
+function getSnapshot() {
+  return localStorage.getItem(STORAGE_KEY) === 'true';
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
+function subscribe(callback: () => void) {
+  window.addEventListener('storage', callback);
+  return () => window.removeEventListener('storage', callback);
+}
+
 export function ReducedMotionProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [reduceMotion, setReduceMotion] = useState(false);
+  const reduceMotion = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
 
-  useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === 'true') {
-      setReduceMotion(true);
+  // Keep the class in sync with the state
+  if (typeof document !== 'undefined') {
+    if (reduceMotion) {
       document.documentElement.classList.add('reduce-motion');
+    } else {
+      document.documentElement.classList.remove('reduce-motion');
     }
-  }, []);
+  }
 
   const toggleReduceMotion = useCallback(() => {
-    setReduceMotion((prev) => {
-      const next = !prev;
-      localStorage.setItem(STORAGE_KEY, String(next));
-      if (next) {
-        document.documentElement.classList.add('reduce-motion');
-      } else {
-        document.documentElement.classList.remove('reduce-motion');
-      }
-      return next;
-    });
+    const current = localStorage.getItem(STORAGE_KEY) === 'true';
+    const next = !current;
+    localStorage.setItem(STORAGE_KEY, String(next));
+    // Dispatch storage event so useSyncExternalStore picks up the change
+    window.dispatchEvent(new StorageEvent('storage', { key: STORAGE_KEY }));
   }, []);
 
   return (
