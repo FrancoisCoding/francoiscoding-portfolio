@@ -24,22 +24,24 @@ test('contact route redirects to the homepage contact section', async ({
     page.getByRole('heading', { name: "Let's Build Something Great!" }),
   ).toBeVisible();
 
+  await expect(
+    page.getByRole('button', { name: 'View next month' }),
+  ).toBeVisible();
+
   const firstTimeButton = page
     .locator('#contact button')
     .filter({ hasText: /\d{1,2}:\d{2}/ })
     .first();
-  const hasCustomTimeSlots = (await firstTimeButton.count()) > 0;
 
-  if (hasCustomTimeSlots) {
+  if ((await firstTimeButton.count()) > 0) {
     await expect(firstTimeButton).toBeVisible();
     await firstTimeButton.click();
     await expect(page.getByRole('button', { name: 'Confirm' })).toBeVisible();
-    return;
+  } else {
+    await expect(
+      page.getByText('No available times for this day.'),
+    ).toBeVisible();
   }
-
-  await expect(
-    page.locator('iframe[title="Calendly scheduling"]'),
-  ).toBeVisible();
 });
 
 test('admin route requires authentication', async ({ page }) => {
