@@ -60,6 +60,27 @@ export const financeFlowProject: IProjectItem = {
 
 export const showcasedProjects: IProjectItem[] = [
   {
+    slug: 'tesla-usb-manager',
+    name: 'Tesla USB Manager',
+    eyebrow: 'Desktop utility for Tesla media drives',
+    summary:
+      'Windows desktop app for preparing Tesla-ready USB drives, installing audio, and extracting light show packages.',
+    description:
+      'A Tauri desktop app that helps Tesla owners prepare USB drives, install Boombox and lock chime audio, convert custom uploads with FFmpeg, and extract compatible light show packages with a guided setup flow.',
+    links: [
+      {
+        label: 'View repo',
+        href: 'https://github.com/FrancoisCoding/tesla-usb-manager',
+        external: true,
+        tone: 'primary',
+      },
+    ],
+    stack: ['Tauri', 'Rust', 'React', 'TypeScript', 'FFmpeg'],
+    preview: 'image',
+    imageSrc: '/projects/telsausbmanager.png',
+    imageAlt: 'Tesla USB Manager desktop app preview',
+  },
+  {
     slug: 'edson-prime-estates',
     name: 'Edson Prime Estates',
     eyebrow: 'Luxury real estate website',
@@ -157,6 +178,15 @@ export const homeProjectTiles: IHomeProjectTile[] = [
     cardClassName: 'min-h-[24rem] lg:min-h-[31rem]',
     imageSrc: '/projects/financeflow.png',
     imageAlt: 'FinanceFlow project preview',
+    sizes: '(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw',
+  },
+  {
+    key: 'tesla-usb-manager',
+    projectSlug: 'tesla-usb-manager',
+    className: '',
+    cardClassName: 'min-h-[24rem] lg:min-h-[31rem]',
+    imageSrc: '/projects/telsausbmanager.png',
+    imageAlt: 'Tesla USB Manager desktop app preview',
     sizes: '(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw',
   },
   {

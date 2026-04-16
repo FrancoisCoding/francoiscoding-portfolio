@@ -6,11 +6,11 @@ import { showcasedProjects } from '@/lib/projects-data';
 export const metadata: Metadata = {
   title: 'Projects',
   description:
-    'Selected web projects from Isaiah Francois, including FinanceFlow, Edson Prime Estates, Bible Jeopardy, and Bear-X.',
+    'Selected projects from Isaiah Francois, including Tesla USB Manager, Edson Prime Estates, Bible Jeopardy, and Bear-X.',
   openGraph: {
     title: 'Projects | Isaiah Francois',
     description:
-      'Selected projects, live links, and GitHub references where available.',
+      'Selected projects, product links, and GitHub references where available.',
     url: '/projects',
   },
 };
@@ -21,11 +21,12 @@ export default function ProjectsPage() {
       <div className="space-y-4 border-b border-white/8 pb-10">
         <p className="text-sm text-white/55">Work</p>
         <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-          Web projects with strong visual direction and direct product access.
+          Product-focused projects with strong visual direction and direct
+          access.
         </h1>
         <p className="max-w-2xl text-base leading-7 text-white/68">
           A concise view of selected public projects. Each card links straight
-          to the live product, with GitHub included where it is public.
+          to the product or repository, with GitHub included where it is public.
         </p>
       </div>
 
