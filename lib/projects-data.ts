@@ -69,12 +69,6 @@ export const showcasedProjects: IProjectItem[] = [
       'A Tauri desktop app that helps Tesla owners prepare USB drives, install Boombox and lock chime audio, convert custom uploads with FFmpeg, and extract compatible light show packages with a guided setup flow.',
     links: [
       {
-        label: 'View repo',
-        href: 'https://github.com/FrancoisCoding/tesla-usb-manager',
-        external: true,
-        tone: 'primary',
-      },
-      {
         label: 'GitHub',
         href: 'https://github.com/FrancoisCoding/tesla-usb-manager',
         external: true,

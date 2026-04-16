@@ -25,7 +25,7 @@ export function ProjectCard({
   sizes,
   priority,
 }: IProjectCardProps) {
-  const primaryLink = project.links[0];
+  const primaryLink = project.links.find((link) => link.tone === 'primary');
   const githubLink = project.links.find((link) => link.label === 'GitHub');
   const cardRef = useRef<HTMLElement>(null);
   const { reduceMotion: shouldReduceMotion } = useReducedMotionPreference();
