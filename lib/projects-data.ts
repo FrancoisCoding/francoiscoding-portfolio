@@ -74,6 +74,12 @@ export const showcasedProjects: IProjectItem[] = [
         external: true,
         tone: 'primary',
       },
+      {
+        label: 'GitHub',
+        href: 'https://github.com/FrancoisCoding/tesla-usb-manager',
+        external: true,
+        tone: 'secondary',
+      },
     ],
     stack: ['Tauri', 'Rust', 'React', 'TypeScript', 'FFmpeg'],
     preview: 'image',

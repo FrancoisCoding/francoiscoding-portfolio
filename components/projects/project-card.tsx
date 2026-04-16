@@ -109,7 +109,7 @@ export function ProjectCard({
         <div className="flex items-center gap-2">
           {primaryLink ? (
             <ProjectPrimaryPill
-              label={primaryLink.label}
+              projectName={project.name}
               href={primaryLink.href}
             />
           ) : null}
@@ -121,10 +121,10 @@ export function ProjectCard({
 }
 
 function ProjectPrimaryPill({
-  label,
+  projectName,
   href,
 }: {
-  label: string;
+  projectName: string;
   href: string;
 }) {
   return (
@@ -134,7 +134,7 @@ function ProjectPrimaryPill({
       rel="noreferrer"
       className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,20,0.72),rgba(18,18,20,0.58))] px-4 text-sm font-medium text-white backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-in-out hover:-translate-y-0.5 hover:bg-[linear-gradient(180deg,rgba(18,18,20,0.82),rgba(18,18,20,0.68))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
     >
-      <span>{label}</span>
+      <span>{projectName}</span>
       <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
     </a>
   );
