@@ -656,9 +656,11 @@ const coreToolNames = [
   'React',
   'Next.js',
   'Node.js',
-  'Supabase',
-  'Prisma',
+  'Python',
+  'Django',
   'PostgreSQL',
+  'Snowflake',
+  'Docker',
   'AWS',
 ] as const;
 
