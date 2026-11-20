@@ -1,12 +1,7 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
 import { useReducedMotionPreference } from '@/hooks/use-reduced-motion';
 import { cn } from '@/lib/utils';
@@ -35,7 +30,6 @@ function FloatingDockIcon({
   reduceMotion,
 }: IFloatingDockIconProps) {
   const itemRef = useRef<HTMLAnchorElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
 
   const distanceFromCursor = useTransform(mouseX, (x) => {
     const bounds = itemRef.current?.getBoundingClientRect();
@@ -68,12 +62,9 @@ function FloatingDockIcon({
       ref={itemRef}
       href={item.href}
       aria-label={item.title}
-      title={item.title}
       target={item.external ? '_blank' : undefined}
       rel={item.external ? 'noreferrer' : undefined}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="relative inline-flex items-center justify-center focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+      className="group relative inline-flex items-center justify-center focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
     >
       <motion.span
         style={
@@ -81,29 +72,22 @@ function FloatingDockIcon({
             ? { height: staticSize, width: staticSize }
             : { height: itemWidth, width: itemWidth }
         }
-        className={cn(
-          'inline-flex items-center justify-center rounded-full text-white/70 transition-colors duration-200',
-          'hover:bg-white/[0.08] hover:text-white',
-        )}
+        className="inline-flex items-center justify-center text-white/70 transition-colors duration-200 group-hover:text-white group-focus-visible:text-white"
       >
         <motion.span
-          style={reduceMotion ? undefined : { scale: iconScale }}
+          style={{ scale: reduceMotion ? 1 : iconScale }}
           className="inline-flex items-center justify-center"
         >
           {item.icon}
         </motion.span>
       </motion.span>
 
-      {isHovered && !reduceMotion ? (
-        <motion.span
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="pointer-events-none absolute -top-9 rounded-full border border-white/[0.08] bg-[#0a0a0a]/80 px-2.5 py-1 text-[0.68rem] font-medium text-white/80 shadow-[0_8px_20px_rgba(0,0,0,0.4)] backdrop-blur-2xl"
-        >
-          {item.title}
-        </motion.span>
-      ) : null}
+      <span
+        aria-hidden="true"
+        className="motion-enabled:translate-y-1 motion-enabled:transition-[opacity,translate,visibility] motion-enabled:duration-150 motion-enabled:group-hover:translate-y-0 motion-enabled:group-focus-visible:translate-y-0 pointer-events-none invisible absolute -top-9 z-10 rounded-full border border-white/[0.08] bg-[var(--surface)] px-2.5 py-1 text-[0.68rem] font-medium whitespace-nowrap text-white/80 opacity-0 group-hover:visible group-hover:opacity-100 group-focus-visible:visible group-focus-visible:opacity-100"
+      >
+        {item.title}
+      </span>
     </a>
   );
 }
@@ -114,12 +98,13 @@ export function FloatingDock({ items, className }: IFloatingDockProps) {
 
   return (
     <motion.div
-      onMouseMove={(event) => mouseX.set(event.pageX)}
-      onMouseLeave={() => mouseX.set(Number.POSITIVE_INFINITY)}
-      className={cn(
-        'flex items-end gap-1 rounded-full border border-white/[0.08] bg-white/[0.04] p-1.5 shadow-[0_2px_20px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-2xl',
-        className,
-      )}
+      onMouseMove={
+        reduceMotion ? undefined : (event) => mouseX.set(event.pageX)
+      }
+      onMouseLeave={
+        reduceMotion ? undefined : () => mouseX.set(Number.POSITIVE_INFINITY)
+      }
+      className={cn('flex items-end gap-1', className)}
     >
       {items.map((item) => (
         <FloatingDockIcon

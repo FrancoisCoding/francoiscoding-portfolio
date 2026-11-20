@@ -4,7 +4,9 @@ import Image from 'next/image';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { imageSize } from 'image-size';
+import type { CSSProperties } from 'react';
 import {
+  Accessibility,
   ArrowUpRight,
   Bot,
   Cloud,
@@ -12,28 +14,36 @@ import {
   Code2,
   Database,
   FlaskConical,
+  Ghost,
   Github,
   LayoutGrid,
   Linkedin,
+  ListOrdered,
   Rocket,
   Settings2,
   Twitter,
 } from 'lucide-react';
 import {
+  SiClaude,
   SiConfluence,
   SiCypress,
   SiDatadog,
   SiDjango,
   SiDocker,
+  SiDrizzle,
   SiExpress,
+  SiFfmpeg,
   SiFigma,
   SiFirebase,
   SiFramer,
   SiGit,
+  SiGithubactions,
   SiGitlab,
   SiGraphql,
   SiJest,
   SiJira,
+  SiKubernetes,
+  SiLighthouse,
   SiMongodb,
   SiNewrelic,
   SiNextdotjs,
@@ -45,13 +55,17 @@ import {
   SiReact,
   SiReactquery,
   SiRedux,
+  SiRust,
   SiSnowflake,
   SiStreamlit,
+  SiStripe,
   SiSupabase,
   SiTailwindcss,
+  SiTauri,
   SiTypescript,
   SiVuedotjs,
   SiVercel,
+  SiVitest,
 } from 'react-icons/si';
 
 import { AboutSideNav } from '@/components/about/about-side-nav';
@@ -112,6 +126,7 @@ const expertiseTags = [
 interface IExperienceItem {
   role: string;
   company: string;
+  href: string;
   location: string;
   timeframe: string;
   duration: string;
@@ -124,11 +139,24 @@ interface IExperienceItem {
 
 const experienceItems: IExperienceItem[] = [
   {
+    role: 'Tech Lead',
+    company: 'Synchrony Financial',
+    href: 'https://www.synchrony.com/about-us',
+    location: 'Remote',
+    timeframe: 'May 2026 - Oct 2026',
+    duration: '(6 months)',
+    logoSrc: '/expertise/synchrony.svg',
+    logoAlt: 'Synchrony Financial logo',
+    logoLabel: 'S',
+    logoClassName: 'border-[#fbc600]/30 bg-[#101113] text-[#fbc600]',
+  },
+  {
     role: 'Senior Full Stack Engineer',
     company: 'Disney',
+    href: 'https://thewaltdisneycompany.com/',
     location: 'Lake Buena Vista, FL',
-    timeframe: 'Jun 2024 - Present',
-    duration: '(1 year 9 months)',
+    timeframe: 'Jun 2024 - May 2026',
+    duration: '(2 years)',
     logoSrc: '/expertise/disney.svg',
     logoAlt: 'Disney logo',
     logoLabel: 'D',
@@ -137,6 +165,7 @@ const experienceItems: IExperienceItem[] = [
   {
     role: 'Lead Web Engineer',
     company: 'MassVirtual',
+    href: 'https://www.massvirtual.com/',
     location: 'Orlando, FL',
     timeframe: 'Apr 2023 - Jun 2024',
     duration: '(1 year 3 months)',
@@ -148,6 +177,7 @@ const experienceItems: IExperienceItem[] = [
   {
     role: 'Lead Front-End Engineer',
     company: 'SoSha',
+    href: 'https://www.sosha.co/',
     location: 'Remote',
     timeframe: 'Feb 2021 - Apr 2023',
     duration: '(2 years 3 months)',
@@ -160,6 +190,7 @@ const experienceItems: IExperienceItem[] = [
   {
     role: 'Front-End Engineer (Externship)',
     company: 'Department of Defense',
+    href: 'https://www.usa.gov/agencies/u-s-department-of-defense',
     location: 'Remote',
     timeframe: 'Oct 2020 - Dec 2020',
     duration: '(3 months)',
@@ -172,6 +203,7 @@ const experienceItems: IExperienceItem[] = [
   {
     role: 'Team Lead',
     company: 'Bloom Institute of Technology',
+    href: 'https://www.bloomtech.com/',
     location: 'Remote',
     timeframe: 'Oct 2019 - Jul 2020',
     duration: '(10 months)',
@@ -459,6 +491,111 @@ const toolLinks = [
     iconContainerClassName:
       'border-rose-300/35 bg-[linear-gradient(180deg,rgba(244,63,94,0.2),rgba(127,29,29,0.14))]',
   },
+  {
+    name: 'Jotai',
+    href: 'https://jotai.org/',
+    icon: Ghost,
+    iconColor: '#f5f5f5',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'React Native',
+    href: 'https://reactnative.dev/',
+    icon: SiReact,
+    iconColor: '#61dafb',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'Kubernetes',
+    href: 'https://kubernetes.io/',
+    icon: SiKubernetes,
+    iconColor: '#7da3ff',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'Amazon SQS',
+    href: 'https://aws.amazon.com/sqs/',
+    icon: ListOrdered,
+    iconColor: '#fbbf24',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'GitHub Actions',
+    href: 'https://github.com/features/actions',
+    icon: SiGithubactions,
+    iconColor: '#79c0ff',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'Claude',
+    href: 'https://claude.com/',
+    icon: SiClaude,
+    iconColor: '#eda486',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'Codex',
+    href: 'https://openai.com/codex/',
+    icon: SiOpenai,
+    iconColor: '#f5f5f5',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'Drizzle ORM',
+    href: 'https://orm.drizzle.team/',
+    icon: SiDrizzle,
+    iconColor: '#c5f74f',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'Stripe',
+    href: 'https://stripe.com/',
+    icon: SiStripe,
+    iconColor: '#a79aff',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'Rust',
+    href: 'https://rust-lang.org/',
+    icon: SiRust,
+    iconColor: '#f0a88b',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'Tauri',
+    href: 'https://tauri.app/',
+    icon: SiTauri,
+    iconColor: '#73ded1',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'Vitest',
+    href: 'https://vitest.dev/',
+    icon: SiVitest,
+    iconColor: '#90d162',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'FFmpeg',
+    href: 'https://ffmpeg.org/',
+    icon: SiFfmpeg,
+    iconColor: '#79d58c',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'axe-core',
+    href: 'https://github.com/dequelabs/axe-core',
+    icon: Accessibility,
+    iconColor: '#88dbe0',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
+  {
+    name: 'Lighthouse',
+    href: 'https://developer.chrome.com/docs/lighthouse/overview',
+    icon: SiLighthouse,
+    iconColor: '#ff9b89',
+    iconContainerClassName: 'border-white/12 bg-[#101113]',
+  },
 ] as const;
 
 const toolUsageByName: Record<(typeof toolLinks)[number]['name'], string> = {
@@ -497,6 +634,21 @@ const toolUsageByName: Record<(typeof toolLinks)[number]['name'], string> = {
   TypeScript: 'Typed JavaScript',
   Vercel: 'Frontend hosting',
   'Vue.js': 'Reactive interfaces',
+  Jotai: 'Atomic React state',
+  'React Native': 'Cross-platform mobile apps',
+  Kubernetes: 'Container orchestration',
+  'Amazon SQS': 'Message queues',
+  'GitHub Actions': 'CI and release automation',
+  Claude: 'Engineering automation',
+  Codex: 'Coding workflows',
+  'Drizzle ORM': 'Typed SQL queries',
+  Stripe: 'Billing and subscriptions',
+  Rust: 'Native desktop tooling',
+  Tauri: 'Desktop app framework',
+  Vitest: 'Unit testing',
+  FFmpeg: 'Media processing',
+  'axe-core': 'Accessibility testing',
+  Lighthouse: 'Performance audits',
 };
 
 const coreToolNames = [
@@ -625,29 +777,25 @@ const hobbiesCards = [
     src: '/about/travel.jpg',
     alt: 'Travel moment by the coast.',
     title: 'Travel',
-    stackClassName:
-      'z-40 -translate-x-[8rem] -rotate-[8deg] group-hover:-translate-x-[18rem] group-hover:-rotate-[5deg]',
+    stack: { offset: -8, angle: -8, openOffset: -18, openAngle: -5 },
   },
   {
     src: '/about/cooking.jpg',
     alt: 'Cooking moment.',
     title: 'Cooking',
-    stackClassName:
-      'z-30 -translate-x-[2.6rem] -rotate-[2deg] group-hover:-translate-x-[6rem] group-hover:-rotate-[1deg]',
+    stack: { offset: -2.6, angle: -2, openOffset: -6, openAngle: -1 },
   },
   {
     src: '/about/bouldering.jpg',
     alt: 'Indoor bouldering session.',
     title: 'Bouldering',
-    stackClassName:
-      'z-20 translate-x-[2.6rem] rotate-[2deg] group-hover:translate-x-[6rem] group-hover:rotate-[1deg]',
+    stack: { offset: 2.6, angle: 2, openOffset: 6, openAngle: 1 },
   },
   {
     src: '/about/volleyball.jpg',
     alt: 'Volleyball event with teammates.',
     title: 'Volleyball',
-    stackClassName:
-      'z-10 translate-x-[8rem] rotate-[8deg] group-hover:translate-x-[18rem] group-hover:rotate-[5deg]',
+    stack: { offset: 8, angle: 8, openOffset: 18, openAngle: 5 },
   },
 ] as const;
 
@@ -785,7 +933,7 @@ export default function AboutPage() {
               {experienceItems.map((item) => (
                 <article
                   key={item.company}
-                  className="rounded-[1.25rem] border border-white/10 bg-white/[0.04] px-4 py-4"
+                  className="group relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] px-4 py-4 transition-colors hover:border-white/25 hover:bg-white/[0.07]"
                 >
                   <div className="grid gap-4 md:grid-cols-[3.5rem_minmax(0,1fr)] md:items-start">
                     <div
@@ -812,9 +960,19 @@ export default function AboutPage() {
                         <h3 className="text-[1.12rem] font-semibold text-white">
                           {item.role}
                         </h3>
-                        <p className="text-[1.02rem] text-white/84">
-                          {item.company}
-                        </p>
+                        <a
+                          href={item.href}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1.5 text-[1.02rem] text-white/84 underline-offset-4 group-hover:text-white group-hover:underline after:absolute after:inset-0 after:rounded-[1.25rem] focus-visible:text-white focus-visible:underline focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-white"
+                        >
+                          <span>{item.company}</span>
+                          <ArrowUpRight
+                            aria-hidden="true"
+                            className="motion-enabled:transition-opacity size-4 shrink-0 group-focus-within:opacity-100 group-hover:opacity-100 [@media(hover:hover)]:opacity-0"
+                          />
+                          <span className="sr-only"> (opens in a new tab)</span>
+                        </a>
                         <p className="text-sm text-white/58">{item.location}</p>
                       </div>
                       <div className="text-left md:text-right">
@@ -835,34 +993,20 @@ export default function AboutPage() {
               Hobbies
             </h2>
 
-            <div className="grid gap-4 sm:hidden">
-              {hobbiesCards.map((item) => (
+            <div className="hobby-gallery mx-auto grid w-full max-w-[48rem] items-start gap-4 sm:grid-cols-2 lg:min-h-[16.5rem] lg:grid-cols-4">
+              {hobbiesCards.map((item, index) => (
                 <article
                   key={item.src}
-                  className="rounded-[1.2rem] border border-white/10 bg-[#202124] p-2.5"
-                >
-                  <div className="relative min-h-[9rem] overflow-hidden rounded-[0.95rem] border border-white/8">
-                    <Image
-                      src={item.src}
-                      alt={item.alt}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 1024px) 100vw, 33vw"
-                      quality={aboutImageQuality}
-                    />
-                  </div>
-                  <p className="font-accent px-1 pt-3 pb-1 text-center text-[1.02rem] font-medium tracking-[0.01em] text-white/90">
-                    {item.title}
-                  </p>
-                </article>
-              ))}
-            </div>
-
-            <div className="group relative mx-auto hidden h-[16.5rem] w-full max-w-[48rem] sm:block">
-              {hobbiesCards.map((item) => (
-                <article
-                  key={`${item.src}-stack`}
-                  className={`absolute top-2 left-[calc(50%-5.75rem)] w-[11.5rem] rounded-[1.2rem] border border-white/10 bg-[#202124] p-2.5 shadow-[0_20px_40px_rgba(0,0,0,0.35)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${item.stackClassName}`}
+                  className="hobby-photo rounded-[1.2rem] border border-white/10 bg-[#202124] p-2.5"
+                  style={
+                    {
+                      '--hobby-layer': hobbiesCards.length - index,
+                      '--hobby-x': `${item.stack.offset}rem`,
+                      '--hobby-rotation': `${item.stack.angle}deg`,
+                      '--hobby-open-x': `${item.stack.openOffset}rem`,
+                      '--hobby-open-rotation': `${item.stack.openAngle}deg`,
+                    } as CSSProperties
+                  }
                 >
                   <div className="relative min-h-[9.1rem] overflow-hidden rounded-[0.95rem] border border-white/8">
                     <Image
@@ -870,7 +1014,7 @@ export default function AboutPage() {
                       alt={item.alt}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 1024px) 100vw, 260px"
+                      sizes="(min-width: 1024px) 184px, (min-width: 640px) 50vw, 100vw"
                       quality={aboutImageQuality}
                     />
                   </div>
@@ -921,7 +1065,7 @@ export default function AboutPage() {
                     href={item.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="group flex min-h-[4.75rem] items-center justify-between rounded-[1.35rem] border border-white/10 bg-white/5 px-5 transition-[transform,background-color,border-color] duration-200 ease-in-out hover:-translate-y-0.5 hover:bg-white/8 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+                    className="group motion-enabled:hover:-translate-y-0.5 flex min-h-[4.75rem] items-center justify-between rounded-[1.35rem] border border-white/10 bg-white/5 px-5 transition-[translate,background-color,border-color] duration-200 ease-in-out hover:bg-white/8 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
                   >
                     <div className="flex items-center gap-4">
                       <div
@@ -942,7 +1086,7 @@ export default function AboutPage() {
                       </div>
                     </div>
                     <ArrowUpRight
-                      className="h-4 w-4 text-white/42 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      className="motion-enabled:transition-transform motion-enabled:group-hover:translate-x-0.5 motion-enabled:group-hover:-translate-y-0.5 h-4 w-4 text-white/42"
                       aria-hidden="true"
                     />
                   </a>
@@ -990,7 +1134,7 @@ export default function AboutPage() {
                         </div>
                       </div>
                       <ArrowUpRight
-                        className="h-3.5 w-3.5 text-white/38 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                        className="motion-enabled:transition-transform motion-enabled:group-hover:translate-x-0.5 motion-enabled:group-hover:-translate-y-0.5 h-3.5 w-3.5 text-white/38"
                         aria-hidden="true"
                       />
                     </a>

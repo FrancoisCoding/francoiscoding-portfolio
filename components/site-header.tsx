@@ -1,6 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -92,11 +93,10 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 bg-transparent">
       <div className="mx-auto flex w-full max-w-[68rem] items-start justify-center px-5 py-3 sm:px-6 lg:px-8">
-        <div ref={menuContainerRef} className="relative header-entry">
-          {/* ── Unified frosted glass capsule ── */}
+        <div ref={menuContainerRef} className="header-entry relative">
           <nav
             aria-label="Primary navigation"
-            className="flex items-center gap-1 rounded-full border border-white/[0.08] bg-white/[0.04] p-1 shadow-[0_2px_20px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-2xl"
+            className="flex items-center gap-1 rounded-full border border-white/[0.08] bg-[var(--surface)] p-1"
           >
             {/* Profile link */}
             <Link
@@ -132,7 +132,9 @@ export function SiteHeader() {
                     onClick={() => setIsMenuOpen(false)}
                     className={cn(
                       'relative inline-flex h-8 items-center rounded-full px-3.5 text-[0.72rem] font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
-                      isActive ? 'text-slate-950' : 'text-white/70 hover:text-white',
+                      isActive
+                        ? 'text-slate-950'
+                        : 'text-white/70 hover:text-white',
                     )}
                     aria-current={isActive ? 'page' : undefined}
                   >
@@ -169,9 +171,8 @@ export function SiteHeader() {
               type="button"
               onClick={toggleReduceMotion}
               className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-white/70 transition-colors duration-200 hover:bg-white/[0.06] hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
-              aria-label={
-                reduceMotion ? 'Enable animations' : 'Reduce motion'
-              }
+              aria-label="Reduce motion"
+              aria-pressed={reduceMotion}
               title={reduceMotion ? 'Enable animations' : 'Reduce motion'}
             >
               {reduceMotion ? (
@@ -236,20 +237,21 @@ export function SiteHeader() {
                 initial={
                   canAnimate ? { opacity: 0, y: -8, scale: 0.96 } : false
                 }
-                animate={
-                  canAnimate ? { opacity: 1, y: 0, scale: 1 } : undefined
-                }
+                animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={
                   canAnimate ? { opacity: 0, y: -6, scale: 0.96 } : undefined
                 }
-                transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                transition={{
+                  duration: canAnimate ? 0.18 : 0,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
                 className="absolute top-14 right-0 left-0 mx-auto w-[min(22rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0a0a0a]/80 p-2 shadow-[0_24px_80px_rgba(0,0,0,0.5)] backdrop-blur-2xl"
               >
                 <motion.div
                   className="grid gap-1 md:hidden"
                   initial={canAnimate ? 'closed' : false}
-                  animate={canAnimate ? 'open' : undefined}
-                  variants={menuListVariants}
+                  animate="open"
+                  variants={canAnimate ? menuListVariants : undefined}
                 >
                   {primaryLinks.map((link) => {
                     const isActive = link.match(pathname);
@@ -257,7 +259,9 @@ export function SiteHeader() {
                     return (
                       <motion.div
                         key={link.label}
-                        variants={menuItemVariants}
+                        variants={canAnimate ? menuItemVariants : undefined}
+                        animate={canAnimate ? undefined : { opacity: 1, y: 0 }}
+                        transition={canAnimate ? undefined : { duration: 0 }}
                       >
                         <Link
                           href={link.href}
@@ -282,15 +286,19 @@ export function SiteHeader() {
                 <motion.div
                   className="grid gap-1"
                   initial={canAnimate ? 'closed' : false}
-                  animate={canAnimate ? 'open' : undefined}
-                  variants={menuListVariants}
+                  animate="open"
+                  variants={canAnimate ? menuListVariants : undefined}
                 >
                   {secondaryLinks.map((link) => {
                     if (link.external) {
                       return (
                         <motion.div
                           key={link.label}
-                          variants={menuItemVariants}
+                          variants={canAnimate ? menuItemVariants : undefined}
+                          animate={
+                            canAnimate ? undefined : { opacity: 1, y: 0 }
+                          }
+                          transition={canAnimate ? undefined : { duration: 0 }}
                         >
                           <a
                             href={link.href}
@@ -309,7 +317,7 @@ export function SiteHeader() {
                           >
                             {link.label}
                             <span
-                              className="text-white/30 transition-transform duration-200 group-hover:translate-x-0.5"
+                              className="motion-enabled:transition-transform motion-enabled:duration-200 motion-enabled:group-hover:translate-x-0.5 text-white/30"
                               aria-hidden="true"
                             >
                               ↗
@@ -322,7 +330,9 @@ export function SiteHeader() {
                     return (
                       <motion.div
                         key={link.label}
-                        variants={menuItemVariants}
+                        variants={canAnimate ? menuItemVariants : undefined}
+                        animate={canAnimate ? undefined : { opacity: 1, y: 0 }}
+                        transition={canAnimate ? undefined : { duration: 0 }}
                       >
                         <Link
                           href={link.href}
@@ -331,7 +341,7 @@ export function SiteHeader() {
                         >
                           {link.label}
                           <span
-                            className="text-white/30 transition-transform duration-200 group-hover:translate-x-0.5"
+                            className="motion-enabled:transition-transform motion-enabled:duration-200 motion-enabled:group-hover:translate-x-0.5 text-white/30"
                             aria-hidden="true"
                           >
                             →
@@ -357,6 +367,11 @@ function MenuToggleIcon({
   isOpen: boolean;
   canAnimate: boolean;
 }) {
+  if (!canAnimate) {
+    const Icon = isOpen ? X : Menu;
+    return <Icon className="size-4" aria-hidden="true" />;
+  }
+
   const topLineState = isOpen
     ? { y: 5.5, rotate: 45, scaleX: 0.95 }
     : { y: 0, rotate: 0, scaleX: 1 };
@@ -371,7 +386,6 @@ function MenuToggleIcon({
     stiffness: 420,
     damping: 30,
     mass: 0.33,
-    duration: canAnimate ? undefined : 0,
   };
 
   return (
@@ -384,13 +398,7 @@ function MenuToggleIcon({
       <motion.span
         className="absolute top-[7px] left-0 h-[1.5px] w-4 rounded-full bg-current"
         animate={middleLineState}
-        transition={{
-          type: 'spring',
-          stiffness: 420,
-          damping: 34,
-          mass: 0.28,
-          duration: canAnimate ? undefined : 0,
-        }}
+        transition={{ type: 'spring', stiffness: 420, damping: 34, mass: 0.28 }}
       />
       <motion.span
         className="absolute top-[12px] left-0 h-[1.5px] w-4 rounded-full bg-current"

@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 import { useIsHydrated } from '@/hooks/use-is-hydrated';
+import { useReducedMotionPreference } from '@/hooks/use-reduced-motion';
 import { siteConfig } from '@/lib/site-config';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 
@@ -17,7 +18,8 @@ const heroHeadlineLines = [
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const isHydrated = useIsHydrated();
-  const canAnimate = isHydrated;
+  const { reduceMotion } = useReducedMotionPreference();
+  const canAnimate = isHydrated && !reduceMotion;
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start'],
@@ -35,7 +37,9 @@ export function HeroSection() {
           aria-hidden="true"
           className="absolute top-[6.5rem] left-[7%] h-[18rem] w-[18rem] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.032),transparent_66%)] blur-[120px]"
           style={
-            canAnimate ? { x: backgroundGlowX, y: backgroundGlowY } : undefined
+            canAnimate
+              ? { x: backgroundGlowX, y: backgroundGlowY }
+              : { x: 0, y: 0 }
           }
         />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_48%_60%,rgba(255,255,255,0.016),transparent_42%)]" />
@@ -44,8 +48,8 @@ export function HeroSection() {
       <div className="mx-auto grid max-w-[68rem] gap-8 lg:grid-cols-[minmax(0,35rem)_12rem] xl:grid-cols-[minmax(0,37rem)_13rem] xl:gap-14">
         <motion.div
           initial={canAnimate ? { opacity: 0, y: 16 } : false}
-          animate={canAnimate ? { opacity: 1, y: 0 } : undefined}
-          transition={{ duration: 0.45, ease: 'easeOut' }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: canAnimate ? 0.45 : 0, ease: 'easeOut' }}
           className="space-y-8"
         >
           <div className="space-y-4">
@@ -81,11 +85,11 @@ export function HeroSection() {
           <div className="ml-auto flex w-fit flex-col items-end space-y-2.5 text-right lg:pt-[7.85rem] xl:pt-[8.1rem]">
             <motion.div
               initial={canAnimate ? { opacity: 0, y: 10 } : false}
-              animate={canAnimate ? { opacity: 1, y: 0 } : undefined}
+              animate={{ opacity: 1, y: 0 }}
               transition={{
-                duration: 0.38,
+                duration: canAnimate ? 0.38 : 0,
                 ease: [0.22, 1, 0.36, 1],
-                delay: 0.16,
+                delay: canAnimate ? 0.16 : 0,
               }}
               className="flex items-center justify-end gap-2 text-[0.82rem] font-medium text-white"
             >
@@ -107,15 +111,11 @@ export function HeroSection() {
               initial={
                 canAnimate ? { opacity: 0, y: 10, filter: 'blur(6px)' } : false
               }
-              animate={
-                canAnimate
-                  ? { opacity: 1, y: 0, filter: 'blur(0px)' }
-                  : undefined
-              }
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{
-                duration: 0.48,
+                duration: canAnimate ? 0.48 : 0,
                 ease: [0.22, 1, 0.36, 1],
-                delay: 0.24,
+                delay: canAnimate ? 0.24 : 0,
               }}
               className="block text-[0.88rem] text-white/60 transition-[color,text-shadow] hover:text-white hover:[text-shadow:0_0_18px_rgba(255,255,255,0.16)] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
             >

@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@custom-variant motion-enabled (&:where(html[data-motion='full'] *));
+
 :root {
   color-scheme: dark;
   --background: #050505;
@@ -20,7 +22,7 @@
   --font-display: var(--font-manrope);
 }
 
-html {
+html[data-motion='full'] {
   scroll-behavior: smooth;
 }
 
@@ -127,17 +129,41 @@ body {
   }
 }
 
-.reduce-motion {
-  scroll-behavior: auto;
+html:not([data-motion='full']) *,
+html:not([data-motion='full']) *::before,
+html:not([data-motion='full']) *::after {
+  animation: none !important;
+  transition: none !important;
 }
 
-.reduce-motion .header-entry,
-.reduce-motion .header-entry-delay,
-.reduce-motion .page-enter {
-  animation: none;
+html:not([data-motion='full']) .text-reveal-word {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
 }
 
-.reduce-motion .status-light-core,
-.reduce-motion .status-light-glow {
-  animation: none;
+@media (min-width: 64rem) and (hover: hover) and (pointer: fine) {
+  html[data-motion='full'] .hobby-gallery {
+    position: relative;
+    display: block;
+  }
+
+  html[data-motion='full'] .hobby-photo {
+    position: absolute;
+    top: 0.5rem;
+    left: calc(50% - 5.75rem);
+    z-index: var(--hobby-layer);
+    width: 11.5rem;
+    box-shadow: 0 20px 40px rgb(0 0 0 / 35%);
+    translate: var(--hobby-x);
+    rotate: var(--hobby-rotation);
+    transition:
+      translate 500ms cubic-bezier(0.22, 1, 0.36, 1),
+      rotate 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html[data-motion='full'] .hobby-gallery:hover .hobby-photo {
+    translate: var(--hobby-open-x);
+    rotate: var(--hobby-open-rotation);
+  }
 }

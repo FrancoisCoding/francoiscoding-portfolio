@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 
+import { useReducedMotionPreference } from '@/hooks/use-reduced-motion';
 import { cn } from '@/lib/utils';
 
 interface ITextGenerateEffectProps {
@@ -23,6 +24,10 @@ export function TextGenerateEffect({
   duration = 0.56,
   isActive = true,
 }: ITextGenerateEffectProps) {
+  const { reduceMotion } = useReducedMotionPreference();
+  if (reduceMotion)
+    return <span className={cn('inline', className)}>{words}</span>;
+
   const wordsArray = words.split(' ');
 
   return (
@@ -42,7 +47,7 @@ export function TextGenerateEffect({
       {wordsArray.map((word, index) => (
         <motion.span
           key={`${word}-${index}`}
-          className={cn('inline-block', wordClassName)}
+          className={cn('text-reveal-word inline-block', wordClassName)}
           variants={{
             hidden: {
               opacity: 0,

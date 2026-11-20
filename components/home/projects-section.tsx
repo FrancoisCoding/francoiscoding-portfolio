@@ -36,11 +36,12 @@ export function ProjectsSection() {
               key={tile.key}
               className={tile.className}
               initial={canAnimate ? { opacity: 0, y: 22 } : false}
+              animate={canAnimate ? undefined : { opacity: 1, y: 0 }}
               whileInView={canAnimate ? { opacity: 1, y: 0 } : undefined}
               viewport={{ once: true, amount: 0.2 }}
               transition={{
-                duration: 0.45,
-                delay: index * 0.05,
+                duration: canAnimate ? 0.45 : 0,
+                delay: canAnimate ? index * 0.05 : 0,
                 ease: 'easeOut',
               }}
             >

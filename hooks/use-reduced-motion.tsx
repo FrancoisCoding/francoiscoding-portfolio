@@ -4,10 +4,17 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useSyncExternalStore,
 } from 'react';
 
-const STORAGE_KEY = 'reduce-motion';
+import {
+  motionPreferenceStorageKey,
+  reducedMotionQuery,
+} from '@/lib/motion-preference';
+
+const preferenceChangeEvent = 'motion-preference-change';
+let sessionPreference: boolean | undefined;
 
 interface IReducedMotionContext {
   reduceMotion: boolean;
@@ -20,7 +27,13 @@ const ReducedMotionContext = createContext<IReducedMotionContext>({
 });
 
 function getSnapshot() {
-  return localStorage.getItem(STORAGE_KEY) === 'true';
+  if (sessionPreference !== undefined) return sessionPreference;
+  try {
+    const preference = localStorage.getItem(motionPreferenceStorageKey);
+    if (preference === 'true' || preference === 'false')
+      return preference === 'true';
+  } catch {}
+  return window.matchMedia(reducedMotionQuery).matches;
 }
 
 function getServerSnapshot() {
@@ -28,8 +41,15 @@ function getServerSnapshot() {
 }
 
 function subscribe(callback: () => void) {
+  const systemMotion = window.matchMedia(reducedMotionQuery);
+  systemMotion.addEventListener('change', callback);
+  window.addEventListener(preferenceChangeEvent, callback);
   window.addEventListener('storage', callback);
-  return () => window.removeEventListener('storage', callback);
+  return () => {
+    systemMotion.removeEventListener('change', callback);
+    window.removeEventListener(preferenceChangeEvent, callback);
+    window.removeEventListener('storage', callback);
+  };
 }
 
 export function ReducedMotionProvider({
@@ -43,21 +63,18 @@ export function ReducedMotionProvider({
     getServerSnapshot,
   );
 
-  // Keep the class in sync with the state
-  if (typeof document !== 'undefined') {
-    if (reduceMotion) {
-      document.documentElement.classList.add('reduce-motion');
-    } else {
-      document.documentElement.classList.remove('reduce-motion');
-    }
-  }
+  useEffect(() => {
+    document.documentElement.dataset.motion = getSnapshot() ? 'reduce' : 'full';
+  }, [reduceMotion]);
 
   const toggleReduceMotion = useCallback(() => {
-    const current = localStorage.getItem(STORAGE_KEY) === 'true';
-    const next = !current;
-    localStorage.setItem(STORAGE_KEY, String(next));
-    // Dispatch storage event so useSyncExternalStore picks up the change
-    window.dispatchEvent(new StorageEvent('storage', { key: STORAGE_KEY }));
+    const next = !getSnapshot();
+    try {
+      localStorage.setItem(motionPreferenceStorageKey, String(next));
+    } catch {
+      sessionPreference = next;
+    }
+    window.dispatchEvent(new Event(preferenceChangeEvent));
   }, []);
 
   return (

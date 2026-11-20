@@ -5,7 +5,7 @@ import { companyExperience } from '@/lib/company-experience';
 export const metadata: Metadata = {
   title: 'Experience',
   description:
-    'Timeline of company experience spanning Disney, Department of Defense, and MassVirtual.',
+    'Engineering experience at Synchrony Financial, Disney, MassVirtual, and the Department of Defense.',
   openGraph: {
     title: 'Experience | Isaiah Francois',
     description:

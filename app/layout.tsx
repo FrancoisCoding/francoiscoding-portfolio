@@ -6,6 +6,7 @@ import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { AppProviders } from '@/components/providers/app-providers';
 import { ThemeProvider } from '@/components/providers/theme-provider';
+import { motionPreferenceScript } from '@/lib/motion-preference';
 import { siteConfig } from '@/lib/site-config';
 import './globals.css';
 
@@ -82,6 +83,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: motionPreferenceScript }} />
+      </head>
       <body
         className={`${manropeFont.variable} ${accentFont.variable} min-h-screen antialiased`}
       >

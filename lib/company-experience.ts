@@ -8,9 +8,19 @@ export interface ICompanyExperienceItem {
 
 export const companyExperience: ICompanyExperienceItem[] = [
   {
+    company: 'Synchrony Financial',
+    roleTitle: 'Tech Lead',
+    timeframe: 'May 2026 - Oct 2026',
+    impacts: [
+      'Owned architecture and technical strategy for enterprise Next.js and React applications.',
+      'Led and mentored engineers and worked with product and design to ship new features.',
+    ],
+    stack: ['React', 'Next.js'],
+  },
+  {
     company: 'Disney',
-    roleTitle: 'Full Stack Engineering',
-    timeframe: 'Timeframe available on request',
+    roleTitle: 'Senior Full Stack Engineer',
+    timeframe: 'Jun 2024 - May 2026',
     impacts: [
       'Built and shipped production-ready interfaces and backend integrations.',
       'Collaborated with cross-functional teams to deliver high-quality releases.',
