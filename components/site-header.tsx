@@ -30,6 +30,11 @@ const primaryLinks: INavigationLink[] = [
     match: (pathname) => pathname.startsWith('/about'),
   },
   {
+    href: '/resume',
+    label: 'Résumé',
+    match: (pathname) => pathname === '/resume',
+  },
+  {
     href: '/#contact',
     label: 'Contact',
     match: () => false,
@@ -37,47 +42,72 @@ const primaryLinks: INavigationLink[] = [
 ];
 
 const secondaryLinks = [
-  { href: '/resume', label: 'Resume' },
   {
     href: siteConfig.linkedinUrl,
     label: 'LinkedIn',
-    external: true,
   },
   {
     href: siteConfig.twitterUrl,
     label: 'X',
-    external: true,
   },
   {
     href: siteConfig.githubUrl,
     label: 'GitHub',
-    external: true,
   },
   {
     href: `mailto:${siteConfig.email}`,
     label: siteConfig.email,
-    external: true,
   },
 ];
 
+/** Renders the portfolio's menu bar and compact navigation. */
 export function SiteHeader() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
+  const menuPanelRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const pendingSectionFocus = useRef<string | null>(null);
   const isHydrated = useIsHydrated();
   const { reduceMotion, toggleReduceMotion } = useReducedMotionPreference();
   const canAnimate = isHydrated && !reduceMotion;
 
+  function handleMenuNavigation(href: string) {
+    setIsMenuOpen(false);
+    const [, section] = href.split('#');
+    pendingSectionFocus.current = null;
+    if (!section) return;
+
+    if (pathname === '/') {
+      document.getElementById(section)?.focus({ preventScroll: true });
+    } else {
+      pendingSectionFocus.current = section;
+    }
+  }
+
   useEffect(() => {
+    const section = pendingSectionFocus.current;
+    if (pathname === '/' && section) {
+      pendingSectionFocus.current = null;
+      document.getElementById(section)?.focus({ preventScroll: true });
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setIsMenuOpen(false);
+        if (menuPanelRef.current?.contains(document.activeElement)) {
+          menuButtonRef.current?.focus();
+        }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [isMenuOpen]);
 
   useEffect(() => {
     const handlePointerDown = (event: PointerEvent) => {
@@ -91,25 +121,25 @@ export function SiteHeader() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-transparent">
-      <div className="mx-auto flex w-full max-w-[68rem] items-start justify-center px-5 py-3 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#17171a] shadow-[0_1px_0_rgba(0,0,0,0.35)]">
+      <div className="mx-auto w-full max-w-[68rem] px-4 sm:px-6 lg:px-8">
         <div ref={menuContainerRef} className="header-entry relative">
           <nav
             aria-label="Primary navigation"
-            className="flex items-center gap-1 rounded-full border border-white/[0.08] bg-[var(--surface)] p-1"
+            className="flex min-h-12 items-center gap-1 py-1 sm:gap-2"
           >
             {/* Profile link */}
             <Link
               href="/"
-              className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+              className="relative flex size-11 shrink-0 items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
               aria-label="Go to the homepage"
             >
               <Image
                 src="/profile.jpg"
                 alt="Isaiah Francois"
                 fill
-                className="object-cover"
-                sizes="32px"
+                className="rounded-md border border-white/15 object-cover"
+                sizes="44px"
                 priority
               />
             </Link>
@@ -131,17 +161,17 @@ export function SiteHeader() {
                     href={link.href}
                     onClick={() => setIsMenuOpen(false)}
                     className={cn(
-                      'relative inline-flex h-8 items-center rounded-full px-3.5 text-[0.72rem] font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
+                      'relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-md px-3.5 text-sm font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
                       isActive
-                        ? 'text-slate-950'
-                        : 'text-white/70 hover:text-white',
+                        ? 'text-white'
+                        : 'text-white/75 hover:bg-white/8 hover:text-white',
                     )}
                     aria-current={isActive ? 'page' : undefined}
                   >
                     {isActive && (
                       <motion.span
                         layoutId={canAnimate ? 'nav-active' : undefined}
-                        className="absolute inset-0 rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.2)]"
+                        className="absolute inset-0 rounded-md border border-white/8 bg-[#303036]"
                         transition={
                           canAnimate
                             ? {
@@ -162,7 +192,7 @@ export function SiteHeader() {
 
             {/* Divider */}
             <div
-              className="mx-0.5 h-4 w-px bg-white/[0.08]"
+              className="mr-1 ml-auto h-4 w-px bg-white/10"
               aria-hidden="true"
             />
 
@@ -171,7 +201,7 @@ export function SiteHeader() {
               type="button"
               onClick={toggleReduceMotion}
               disabled={!isHydrated}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none enabled:cursor-pointer enabled:hover:bg-white/[0.06] enabled:hover:text-white"
+              className="inline-flex size-11 items-center justify-center rounded-md text-white/75 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none enabled:cursor-pointer enabled:hover:bg-white/8 enabled:hover:text-white"
               aria-label="Reduce motion"
               aria-pressed={isHydrated ? reduceMotion : undefined}
               title={
@@ -221,9 +251,10 @@ export function SiteHeader() {
 
             {/* Menu button */}
             <motion.button
+              ref={menuButtonRef}
               type="button"
               onClick={() => setIsMenuOpen((currentValue) => !currentValue)}
-              className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-white/70 transition-colors duration-200 hover:bg-white/[0.06] hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+              className="inline-flex size-11 cursor-pointer items-center justify-center rounded-md text-white/75 transition-colors duration-200 hover:bg-white/8 hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
               aria-expanded={isMenuOpen}
               aria-controls="site-header-menu"
               aria-label={
@@ -240,6 +271,7 @@ export function SiteHeader() {
             {isMenuOpen ? (
               <motion.div
                 id="site-header-menu"
+                ref={menuPanelRef}
                 initial={
                   canAnimate ? { opacity: 0, y: -8, scale: 0.96 } : false
                 }
@@ -251,7 +283,7 @@ export function SiteHeader() {
                   duration: canAnimate ? 0.18 : 0,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="absolute top-14 right-0 left-0 mx-auto w-[min(22rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0a0a0a]/80 p-2 shadow-[0_24px_80px_rgba(0,0,0,0.5)] backdrop-blur-2xl"
+                className="absolute top-[calc(100%+0.375rem)] right-0 max-h-[calc(100dvh-4.5rem)] w-[min(22rem,calc(100vw-2rem))] overflow-x-hidden overflow-y-auto overscroll-contain rounded-xl border border-white/12 bg-[#1b1b1e] p-2 shadow-[0_18px_48px_rgba(0,0,0,0.45)]"
               >
                 <motion.div
                   className="grid gap-1 md:hidden"
@@ -272,12 +304,12 @@ export function SiteHeader() {
                       >
                         <Link
                           href={link.href}
-                          onClick={() => setIsMenuOpen(false)}
+                          onNavigate={() => handleMenuNavigation(link.href)}
                           className={cn(
-                            'inline-flex min-h-10 w-full items-center rounded-xl px-3.5 text-[0.82rem] font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
+                            'inline-flex min-h-11 w-full items-center rounded-md px-3.5 text-sm font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none',
                             isActive
-                              ? 'bg-white text-slate-950'
-                              : 'text-white/80 hover:bg-white/[0.06] hover:text-white',
+                              ? 'bg-[#303036] text-white'
+                              : 'text-white/80 hover:bg-white/8 hover:text-white',
                           )}
                           aria-current={isActive ? 'page' : undefined}
                         >
@@ -297,43 +329,7 @@ export function SiteHeader() {
                   variants={canAnimate ? menuListVariants : undefined}
                 >
                   {secondaryLinks.map((link) => {
-                    if (link.external) {
-                      return (
-                        <motion.div
-                          key={link.label}
-                          className="site-header-menu-item"
-                          variants={canAnimate ? menuItemVariants : undefined}
-                          animate={
-                            canAnimate ? undefined : { opacity: 1, y: 0 }
-                          }
-                          transition={canAnimate ? undefined : { duration: 0 }}
-                        >
-                          <a
-                            href={link.href}
-                            onClick={() => setIsMenuOpen(false)}
-                            target={
-                              link.href.startsWith('mailto:')
-                                ? undefined
-                                : '_blank'
-                            }
-                            rel={
-                              link.href.startsWith('mailto:')
-                                ? undefined
-                                : 'noreferrer'
-                            }
-                            className="group inline-flex min-h-10 w-full items-center justify-between rounded-xl px-3.5 text-[0.82rem] font-medium text-white/70 transition-colors duration-200 hover:bg-white/[0.06] hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
-                          >
-                            {link.label}
-                            <span
-                              className="motion-enabled:transition-transform motion-enabled:duration-200 motion-enabled:group-hover:translate-x-0.5 text-white/30"
-                              aria-hidden="true"
-                            >
-                              ↗
-                            </span>
-                          </a>
-                        </motion.div>
-                      );
-                    }
+                    const opensInNewTab = !link.href.startsWith('mailto:');
 
                     return (
                       <motion.div
@@ -343,19 +339,21 @@ export function SiteHeader() {
                         animate={canAnimate ? undefined : { opacity: 1, y: 0 }}
                         transition={canAnimate ? undefined : { duration: 0 }}
                       >
-                        <Link
+                        <a
                           href={link.href}
                           onClick={() => setIsMenuOpen(false)}
-                          className="group inline-flex min-h-10 w-full items-center justify-between rounded-xl px-3.5 text-[0.82rem] font-medium text-white/70 transition-colors duration-200 hover:bg-white/[0.06] hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+                          target={opensInNewTab ? '_blank' : undefined}
+                          rel={opensInNewTab ? 'noreferrer' : undefined}
+                          className="group inline-flex min-h-11 w-full items-center justify-between rounded-md px-3.5 text-sm font-medium text-white/75 transition-colors duration-200 hover:bg-white/8 hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
                         >
                           {link.label}
                           <span
-                            className="motion-enabled:transition-transform motion-enabled:duration-200 motion-enabled:group-hover:translate-x-0.5 text-white/30"
+                            className="motion-enabled:transition-transform motion-enabled:duration-200 motion-enabled:group-hover:translate-x-0.5 text-white/40"
                             aria-hidden="true"
                           >
-                            →
+                            ↗
                           </span>
-                        </Link>
+                        </a>
                       </motion.div>
                     );
                   })}

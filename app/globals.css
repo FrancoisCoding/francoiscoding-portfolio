@@ -142,6 +142,62 @@ html:not([data-motion='full']) .text-reveal-word {
   filter: none !important;
 }
 
+.startup-intro {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  background: #09090a;
+  font-family: system-ui, sans-serif;
+}
+
+.startup-intro::backdrop {
+  background: transparent;
+}
+
+.startup-intro-mark {
+  padding-right: 0.09em;
+  color: #dedee3;
+  font-size: 4.75rem;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.09em;
+}
+
+.startup-intro-track {
+  width: min(8.25rem, 50vw);
+  height: 2px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #303035;
+}
+
+.startup-intro-track span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left;
+  background: #dedee3;
+}
+
+.startup-intro[open] .startup-intro-track span {
+  animation: startup-intro-progress var(--startup-intro-duration) ease-out both;
+}
+
+@keyframes startup-intro-progress {
+  from {
+    transform: scaleX(0);
+  }
+  85%,
+  to {
+    transform: scaleX(1);
+  }
+}
+
 html:not([data-motion='full']) .floating-dock-item {
   width: 36px !important;
   height: 36px !important;

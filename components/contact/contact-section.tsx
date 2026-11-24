@@ -38,7 +38,8 @@ export function ContactSection({ id }: IContactSectionProps) {
     <motion.section
       ref={sectionRef}
       id={id}
-      className="relative scroll-mt-24 border-t border-white/8 pt-9 pb-10 sm:pt-11"
+      tabIndex={-1}
+      className="relative scroll-mt-24 border-t border-white/8 pt-9 pb-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70 sm:pt-11"
       initial={canAnimate ? { opacity: 0, y: 18 } : false}
       animate={canAnimate ? undefined : { opacity: 1, y: 0 }}
       whileInView={canAnimate ? { opacity: 1, y: 0 } : undefined}

@@ -17,7 +17,11 @@ export function ProjectsSection() {
   const canAnimate = isHydrated && !reduceMotion;
 
   return (
-    <section id="projects" className="relative scroll-mt-24 py-2 sm:py-4">
+    <section
+      id="projects"
+      tabIndex={-1}
+      className="relative scroll-mt-24 py-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70 sm:py-4"
+    >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-12 mx-auto h-72 max-w-7xl rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.06),transparent_62%)] blur-[120px]"
@@ -47,6 +51,7 @@ export function ProjectsSection() {
             >
               <ProjectCard
                 project={project}
+                isFeatured
                 className={tile.cardClassName}
                 previewImageSrc={tile.imageSrc}
                 previewImageAlt={tile.imageAlt}

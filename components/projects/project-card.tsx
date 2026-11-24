@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useId } from 'react';
 import { ArrowUpRight, Github } from 'lucide-react';
 
 import type { IProjectItem } from '@/lib/projects-data';
@@ -15,8 +15,10 @@ interface IProjectCardProps {
   previewImageAlt?: string;
   sizes?: string;
   priority?: boolean;
+  isFeatured?: boolean;
 }
 
+/** Shows a project preview and its available external destinations. */
 export function ProjectCard({
   project,
   className,
@@ -24,10 +26,12 @@ export function ProjectCard({
   previewImageAlt,
   sizes,
   priority,
+  isFeatured = false,
 }: IProjectCardProps) {
   const primaryLink = project.links.find((link) => link.tone === 'primary');
   const githubLink = project.links.find((link) => link.label === 'GitHub');
   const cardRef = useRef<HTMLElement>(null);
+  const titleId = useId();
   const { reduceMotion: shouldReduceMotion } = useReducedMotionPreference();
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
   const [spotlight, setSpotlight] = useState({ x: 50, y: 50 });
@@ -64,12 +68,14 @@ export function ProjectCard({
   return (
     <article
       ref={cardRef}
+      aria-labelledby={isFeatured ? titleId : undefined}
       onPointerMove={handlePointerMove}
       onPointerEnter={handlePointerEnter}
       onPointerLeave={handlePointerLeave}
       className={cn(
         'group relative isolate min-h-[24rem] overflow-hidden rounded-[1.9rem] border border-white/7 bg-[#0f0f10] shadow-[0_28px_72px_rgba(0,0,0,0.36)] ring-1 ring-white/4 transition-shadow duration-300 ease-out',
         isHovered && 'shadow-[0_36px_80px_rgba(0,0,0,0.5)]',
+        isFeatured && 'rounded-xl border-white/12 sm:rounded-2xl',
         className,
       )}
       style={
@@ -83,7 +89,22 @@ export function ProjectCard({
           : undefined
       }
     >
-      <div className="absolute inset-0">
+      {isFeatured ? (
+        <header className="absolute inset-x-0 top-0 z-10 flex h-8 items-center justify-center border-b border-white/10 bg-[#222226] px-3 sm:h-9 sm:px-16">
+          <span
+            aria-hidden="true"
+            className="absolute left-3 hidden size-1.5 rounded-full bg-[#83838c] shadow-[10px_0_#626269,20px_0_#46464d] sm:block"
+          />
+          <h2
+            id={titleId}
+            className="truncate text-xs font-semibold text-[#e7e7ec]"
+          >
+            {project.name}
+          </h2>
+        </header>
+      ) : null}
+
+      <div className={cn('absolute inset-0', isFeatured && 'top-8 sm:top-9')}>
         {renderProjectPreview(
           project,
           previewImageSrc,
@@ -108,7 +129,8 @@ export function ProjectCard({
       <div
         className={cn(
           'absolute inset-x-4 bottom-4',
-          !shouldReduceMotion &&
+          !isFeatured &&
+            !shouldReduceMotion &&
             'motion-enabled:transition-[opacity,translate] motion-enabled:duration-200 md:motion-enabled:translate-y-4 md:motion-enabled:opacity-0 md:motion-enabled:group-focus-within:translate-y-0 md:motion-enabled:group-focus-within:opacity-100 md:motion-enabled:group-hover:translate-y-0 md:motion-enabled:group-hover:opacity-100',
         )}
       >
@@ -119,7 +141,12 @@ export function ProjectCard({
               href={primaryLink.href}
             />
           ) : null}
-          {githubLink ? <ProjectGithubPill href={githubLink.href} /> : null}
+          {githubLink ? (
+            <ProjectGithubPill
+              projectName={project.name}
+              href={githubLink.href}
+            />
+          ) : null}
         </div>
       </div>
     </article>
@@ -146,13 +173,19 @@ function ProjectPrimaryPill({
   );
 }
 
-function ProjectGithubPill({ href }: { href: string }) {
+function ProjectGithubPill({
+  projectName,
+  href,
+}: {
+  projectName: string;
+  href: string;
+}) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noreferrer"
-      aria-label="Open GitHub repository"
+      aria-label={`Open GitHub repository for ${projectName}`}
       className="motion-enabled:hover:-translate-y-0.5 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,20,0.72),rgba(18,18,20,0.58))] text-white backdrop-blur-xl transition-[background-color,color,border-color,box-shadow,translate] duration-200 ease-in-out hover:bg-[linear-gradient(180deg,rgba(18,18,20,0.82),rgba(18,18,20,0.68))] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
     >
       <Github className="h-4 w-4" aria-hidden="true" />

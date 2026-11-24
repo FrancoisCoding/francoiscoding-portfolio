@@ -10,8 +10,8 @@ function openMenu(page: Page) {
   return page.getByRole('button', { name: 'Open navigation menu' });
 }
 
-function menuResumeLink(page: Page) {
-  return page.getByRole('banner').getByRole('link', { name: 'Resume' });
+function menuGitHubLink(page: Page) {
+  return page.getByRole('banner').getByRole('link', { name: 'GitHub' });
 }
 
 function hobbyCards(page: Page) {
@@ -195,11 +195,11 @@ test('opens a static menu and shows footer hover and focus feedback immediately'
   await expectMotion(page, true);
 
   await openMenu(page).click();
-  const resume = menuResumeLink(page);
-  await expect(resume).toBeVisible();
-  await expect(resume).toHaveCSS('transition-property', 'none');
-  await resume.focus();
-  await expect(resume).toBeFocused();
+  const menuLink = menuGitHubLink(page);
+  await expect(menuLink).toBeVisible();
+  await expect(menuLink).toHaveCSS('transition-property', 'none');
+  await menuLink.focus();
+  await expect(menuLink).toBeFocused();
 
   const socialLink = page
     .getByRole('contentinfo')
@@ -235,7 +235,7 @@ test('switches motion while the menu is open and restores desktop gallery effect
   await expect(
     page.getByRole('button', { name: 'Close navigation menu' }),
   ).toBeVisible();
-  await expect(menuResumeLink(page)).toBeVisible();
+  await expect(menuGitHubLink(page)).toBeVisible();
   await expect(hobbyCards(page).first()).toHaveCSS('position', 'static');
   await expect(hobbyCards(page).first()).toHaveCSS(
     'transition-property',
@@ -244,7 +244,7 @@ test('switches motion while the menu is open and restores desktop gallery effect
 
   await motionToggle(page).click();
   await expectMotion(page, false);
-  await expect(menuResumeLink(page)).toBeVisible();
+  await expect(menuGitHubLink(page)).toBeVisible();
   await page.keyboard.press('Escape');
   const firstCard = hobbyCards(page).first();
   await expect(firstCard).toHaveCSS('position', 'absolute');
@@ -262,9 +262,9 @@ test('settles the open menu immediately when motion is switched off mid-animatio
   await page.goto('/');
   await expectMotion(page, false);
   await openMenu(page).click();
-  await expect(menuResumeLink(page)).toBeVisible();
+  await expect(menuGitHubLink(page)).toBeVisible();
   await page.getByRole('button', { name: 'Close navigation menu' }).click();
-  await expect(menuResumeLink(page)).toHaveCount(0);
+  await expect(menuGitHubLink(page)).toHaveCount(0);
 
   const toggle = await motionToggle(page).elementHandle();
   const opacity = await openMenu(page).evaluate(
