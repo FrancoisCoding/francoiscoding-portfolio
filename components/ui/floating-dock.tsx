@@ -55,8 +55,6 @@ function FloatingDockIcon({
     },
   );
 
-  const staticSize = 36;
-
   return (
     <a
       ref={itemRef}
@@ -68,15 +66,13 @@ function FloatingDockIcon({
     >
       <motion.span
         style={
-          reduceMotion
-            ? { height: staticSize, width: staticSize }
-            : { height: itemWidth, width: itemWidth }
+          reduceMotion ? undefined : { height: itemWidth, width: itemWidth }
         }
-        className="inline-flex items-center justify-center text-white/70 transition-colors duration-200 group-hover:text-white group-focus-visible:text-white"
+        className="floating-dock-item inline-flex items-center justify-center text-white/70 transition-colors duration-200 group-hover:text-white group-focus-visible:text-white"
       >
         <motion.span
-          style={{ scale: reduceMotion ? 1 : iconScale }}
-          className="inline-flex items-center justify-center"
+          style={reduceMotion ? undefined : { scale: iconScale }}
+          className="floating-dock-icon inline-flex items-center justify-center"
         >
           {item.icon}
         </motion.span>

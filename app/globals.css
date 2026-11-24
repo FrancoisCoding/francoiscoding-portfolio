@@ -142,7 +142,27 @@ html:not([data-motion='full']) .text-reveal-word {
   filter: none !important;
 }
 
-@media (min-width: 64rem) and (hover: hover) and (pointer: fine) {
+html:not([data-motion='full']) .floating-dock-item {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+html:not([data-motion='full']) .floating-dock-icon {
+  transform: none !important;
+}
+
+html:not([data-motion='full']) :is(#site-header-menu, .site-header-menu-item) {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+html:not([data-motion='full'])
+  nav:has([aria-controls='site-header-menu'][aria-expanded='false'])
+  + #site-header-menu {
+  display: none;
+}
+
+@media (min-width: 64rem) and (hover: hover) and (pointer: fine) and (not (any-pointer: coarse)) {
   html[data-motion='full'] .hobby-gallery {
     position: relative;
     display: block;

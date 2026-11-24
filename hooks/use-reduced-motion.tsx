@@ -1,20 +1,8 @@
 'use client';
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useSyncExternalStore,
-} from 'react';
+import { createContext, useContext, useSyncExternalStore } from 'react';
 
-import {
-  motionPreferenceStorageKey,
-  reducedMotionQuery,
-} from '@/lib/motion-preference';
-
-const preferenceChangeEvent = 'motion-preference-change';
-let sessionPreference: boolean | undefined;
+import { getMotionPreferenceStore } from '@/lib/motion-preference';
 
 interface IReducedMotionContext {
   reduceMotion: boolean;
@@ -27,13 +15,7 @@ const ReducedMotionContext = createContext<IReducedMotionContext>({
 });
 
 function getSnapshot() {
-  if (sessionPreference !== undefined) return sessionPreference;
-  try {
-    const preference = localStorage.getItem(motionPreferenceStorageKey);
-    if (preference === 'true' || preference === 'false')
-      return preference === 'true';
-  } catch {}
-  return window.matchMedia(reducedMotionQuery).matches;
+  return getMotionPreferenceStore().getSnapshot();
 }
 
 function getServerSnapshot() {
@@ -41,15 +23,11 @@ function getServerSnapshot() {
 }
 
 function subscribe(callback: () => void) {
-  const systemMotion = window.matchMedia(reducedMotionQuery);
-  systemMotion.addEventListener('change', callback);
-  window.addEventListener(preferenceChangeEvent, callback);
-  window.addEventListener('storage', callback);
-  return () => {
-    systemMotion.removeEventListener('change', callback);
-    window.removeEventListener(preferenceChangeEvent, callback);
-    window.removeEventListener('storage', callback);
-  };
+  return getMotionPreferenceStore().subscribe(callback);
+}
+
+function toggleReduceMotion() {
+  getMotionPreferenceStore().toggle();
 }
 
 export function ReducedMotionProvider({
@@ -62,20 +40,6 @@ export function ReducedMotionProvider({
     getSnapshot,
     getServerSnapshot,
   );
-
-  useEffect(() => {
-    document.documentElement.dataset.motion = getSnapshot() ? 'reduce' : 'full';
-  }, [reduceMotion]);
-
-  const toggleReduceMotion = useCallback(() => {
-    const next = !getSnapshot();
-    try {
-      localStorage.setItem(motionPreferenceStorageKey, String(next));
-    } catch {
-      sessionPreference = next;
-    }
-    window.dispatchEvent(new Event(preferenceChangeEvent));
-  }, []);
 
   return (
     <ReducedMotionContext.Provider value={{ reduceMotion, toggleReduceMotion }}>

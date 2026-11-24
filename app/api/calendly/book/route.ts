@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { getBookableTimes, getBookingSlotDate } from '@/lib/calendly/calendar';
 import {
   getCalendlyAvailability,
   bookCalendlyInvitee,
+  CalendlySlotConflict,
 } from '@/lib/calendly/server';
 import { enforceRateLimit } from '@/lib/rate-limit';
 import { calendlyBookingSubmissionSchema } from '@/lib/validation/calendly';
@@ -50,28 +52,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const availabilityPayload = await getCalendlyAvailability(
-      validationResult.data.startTime.slice(0, 7),
-      validationResult.data.timezone,
-    );
+    const { startTime, timezone } = validationResult.data;
+    const { dateKey, month } = getBookingSlotDate(startTime, timezone);
+    const { days } = await getCalendlyAvailability(month, timezone);
 
-    const availableDay = availabilityPayload.days.find((day) =>
-      day.startTimes.includes(validationResult.data.startTime),
-    );
-
-    if (!availableDay) {
-      return NextResponse.json(
-        {
-          error:
-            'That slot is no longer available. Please choose another time.',
-        },
-        { status: 409 },
-      );
+    if (!getBookableTimes(days, month, dateKey).includes(startTime)) {
+      throw new CalendlySlotConflict();
     }
 
     const payload = await bookCalendlyInvitee({
       ...validationResult.data,
-      timeZone: validationResult.data.timezone,
+      timeZone: timezone,
     });
 
     return NextResponse.json({
@@ -79,6 +70,10 @@ export async function POST(request: NextRequest) {
       booking: payload,
     });
   } catch (error) {
+    if (error instanceof CalendlySlotConflict) {
+      return NextResponse.json({ error: error.message }, { status: 409 });
+    }
+
     return NextResponse.json(
       {
         error:

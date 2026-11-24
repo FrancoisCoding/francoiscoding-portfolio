@@ -28,20 +28,9 @@ test('contact route redirects to the homepage contact section', async ({
     page.getByRole('button', { name: 'View next month' }),
   ).toBeVisible();
 
-  const firstTimeButton = page
-    .locator('#contact button')
-    .filter({ hasText: /\d{1,2}:\d{2}/ })
-    .first();
-
-  if ((await firstTimeButton.count()) > 0) {
-    await expect(firstTimeButton).toBeVisible();
-    await firstTimeButton.click();
-    await expect(page.getByRole('button', { name: 'Confirm' })).toBeVisible();
-  } else {
-    await expect(
-      page.getByText('No available times for this day.'),
-    ).toBeVisible();
-  }
+  await expect(page.locator('#contact').getByRole('status')).toContainText(
+    /available times? (in|on) /,
+  );
 });
 
 test('admin route requires authentication', async ({ page }) => {

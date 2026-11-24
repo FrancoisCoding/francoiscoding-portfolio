@@ -1,10 +1,11 @@
 import { Resend } from 'resend';
 
 import {
-  buildCalendarDays,
-  formatDateKeyForTimeZone,
+  buildDemoSlots,
   getCalendarRange,
+  groupBookingSlots,
   splitRangeIntoWeeklyChunks,
+  type ICalendlyAvailabilityDay,
 } from '@/lib/calendly/calendar';
 import { siteConfig } from '@/lib/site-config';
 
@@ -27,11 +28,6 @@ interface ICalendlyInviteeApiResponse {
     scheduling_url?: string;
     uri?: string;
   };
-}
-
-export interface ICalendlyAvailabilityDay {
-  date: string;
-  startTimes: string[];
 }
 
 export interface ICalendlyAvailabilityPayload {
@@ -60,6 +56,12 @@ export interface ICalendlyBookingPayload {
 }
 
 const calendlyApiBaseUrl = 'https://api.calendly.com';
+
+export class CalendlySlotConflict extends Error {
+  constructor() {
+    super('That slot is no longer available. Please choose another time.');
+  }
+}
 
 const resendClient = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
@@ -99,6 +101,13 @@ async function calendlyFetch<TResponse>(
   });
 
   if (!response.ok) {
+    if (
+      path === '/invitees' &&
+      (response.status === 404 || response.status === 409)
+    ) {
+      throw new CalendlySlotConflict();
+    }
+
     const payload = (await response.json().catch(() => null)) as {
       message?: string;
       title?: string;
@@ -119,12 +128,16 @@ export async function getCalendlyAvailability(
   const configuration = getCalendlyConfiguration();
 
   if (!hasCalendlyConfiguration()) {
-    return buildDemoAvailability(month);
+    return {
+      days: buildDemoSlots(month, timeZone),
+      eventLabel: '15 minute intro',
+      source: 'demo',
+    };
   }
 
   const { start, end } = getCalendarRange(month);
   const chunks = splitRangeIntoWeeklyChunks(start, end);
-  const availabilityMap = new Map<string, Set<string>>();
+  const startTimes: string[] = [];
   const now = new Date();
   const minimumAllowedStartTime = new Date(now.getTime() + 60_000);
 
@@ -163,19 +176,7 @@ export async function getCalendlyAvailability(
       );
 
       for (const item of payload.collection ?? []) {
-        const normalizedStartTime = normalizeCalendlyStartTime(item.start_time);
-
-        if (!normalizedStartTime) {
-          continue;
-        }
-
-        const dateKey = formatDateKeyForTimeZone(
-          new Date(normalizedStartTime),
-          timeZone,
-        );
-        const existingTimes = availabilityMap.get(dateKey) ?? new Set<string>();
-        existingTimes.add(normalizedStartTime);
-        availabilityMap.set(dateKey, existingTimes);
+        startTimes.push(item.start_time);
       }
 
       const nextPageToken = getCalendlyNextPageToken(payload.pagination);
@@ -189,12 +190,7 @@ export async function getCalendlyAvailability(
   }
 
   return {
-    days: Array.from(availabilityMap.entries())
-      .sort(([leftDate], [rightDate]) => leftDate.localeCompare(rightDate))
-      .map(([date, startTimes]) => ({
-        date,
-        startTimes: Array.from(startTimes).sort(),
-      })),
+    days: groupBookingSlots(startTimes, month, timeZone),
     eventLabel: configuration.eventLabel,
     source: 'live',
   };
@@ -240,28 +236,6 @@ export async function bookCalendlyInvitee(
   };
 }
 
-function buildDemoAvailability(month: string): ICalendlyAvailabilityPayload {
-  const availableDays = buildCalendarDays(month)
-    .filter((day) => day.isCurrentMonth)
-    .filter((day) => {
-      const dayDate = new Date(`${day.dateKey}T12:00:00Z`);
-      const dayOfWeek = dayDate.getUTCDay();
-      return dayOfWeek !== 0 && dayOfWeek !== 6;
-    })
-    .map((day) => ({
-      date: day.dateKey,
-      startTimes: ['15:00:00.000Z', '15:45:00.000Z', '16:45:00.000Z'].map(
-        (time) => `${day.dateKey}T${time}`,
-      ),
-    }));
-
-  return {
-    days: availableDays,
-    eventLabel: '15 minute intro',
-    source: 'demo',
-  };
-}
-
 function getCalendlyNextPageToken(
   pagination: ICalendlyAvailabilityApiResponse['pagination'],
 ) {
@@ -279,17 +253,6 @@ function getCalendlyNextPageToken(
   } catch {
     return '';
   }
-}
-
-function normalizeCalendlyStartTime(startTimeValue: string) {
-  const sanitizedStartTime = startTimeValue.replace(/(\.\d{3})\d+Z$/, '$1Z');
-  const parsedStartTime = new Date(sanitizedStartTime);
-
-  if (Number.isNaN(parsedStartTime.getTime())) {
-    return '';
-  }
-
-  return parsedStartTime.toISOString();
 }
 
 async function sendCalendlyLeadNotification(input: ICalendlyBookingInput) {

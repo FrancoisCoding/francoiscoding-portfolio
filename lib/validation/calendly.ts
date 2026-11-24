@@ -1,8 +1,20 @@
 import { z } from 'zod';
 
+import {
+  isBookingTimeZone,
+  isCalendarMonth,
+  normalizeBookingSlot,
+} from '@/lib/calendly/calendar';
+
+const bookingTimeZoneSchema = z
+  .string()
+  .trim()
+  .min(1, 'Timezone is required.')
+  .refine(isBookingTimeZone, 'Invalid timezone.');
+
 export const calendlyAvailabilityQuerySchema = z.object({
-  month: z.string().regex(/^\d{4}-\d{2}$/, 'Invalid month value.'),
-  timezone: z.string().trim().min(1, 'Timezone is required.'),
+  month: z.string().refine(isCalendarMonth, 'Invalid month value.'),
+  timezone: bookingTimeZoneSchema,
 });
 
 export const calendlyBookingFormSchema = z.object({
@@ -27,8 +39,21 @@ export const calendlyBookingFormSchema = z.object({
 
 export const calendlyBookingSubmissionSchema = calendlyBookingFormSchema.extend(
   {
-    startTime: z.string().trim().min(1, 'Start time is required.'),
-    timezone: z.string().trim().min(1, 'Timezone is required.'),
+    startTime: z
+      .string()
+      .trim()
+      .min(1, 'Start time is required.')
+      .transform((value, context) => {
+        const startTime = normalizeBookingSlot(value);
+
+        if (!startTime) {
+          context.addIssue({ code: 'custom', message: 'Invalid start time.' });
+          return z.NEVER;
+        }
+
+        return startTime;
+      }),
+    timezone: bookingTimeZoneSchema,
   },
 );
 

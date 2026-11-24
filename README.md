@@ -18,7 +18,7 @@ with approval-only outreach workflows.
 
 ### Public Site
 
-- Routes: `/`, `/projects`, `/experience`, `/about`, `/resume`, `/contact`
+- Routes: `/`, `/projects`, `/about`, `/resume`, `/contact`
 - Recruiter-first sections and FinanceFlow emphasis
 - Contact form with Zod validation, Turnstile verification, and in-memory rate
   limit
@@ -54,7 +54,8 @@ Copy `.env.example` to `.env.local` and configure:
 - `CALENDLY_API_TOKEN` (optional, enables live scheduling)
 - `CALENDLY_EVENT_TYPE_URI` (optional, enables live scheduling)
 - `CALENDLY_EVENT_LABEL` (optional)
-- `NEXT_PUBLIC_CALENDLY_TIMEZONE` (recommended, defaults to `America/New_York`)
+- `NEXT_PUBLIC_CALENDLY_TIMEZONE` (optional, overrides the visitor's browser
+  time zone. The fallback is `America/New_York`.)
 
 ## Local Development
 
@@ -116,10 +117,16 @@ pnpm typecheck
 pnpm build
 ```
 
-Run Playwright smoke tests:
+Run the Playwright suite with an offline Calendly fixture.
 
 ```bash
 pnpm test:e2e
+```
+
+Run the booking checks in demo mode.
+
+```bash
+PLAYWRIGHT_BOOKING_MODE=demo pnpm test:e2e booking --grep demo
 ```
 
 ## CI Overview

@@ -8,7 +8,7 @@ import {
   Loader2,
   UserPlus2,
 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,32 +21,21 @@ import {
   formatDateHeading,
   formatMonthLabel,
   formatTimeLabel,
+  getBookableTimes,
+  getBookingSlotDate,
   getCurrentMonthValue,
+  resolveBookingTimeZone,
   shiftMonthValue,
 } from '@/lib/calendly/calendar';
+import type {
+  ICalendlyAvailabilityPayload,
+  ICalendlyBookingInput,
+  ICalendlyBookingPayload,
+} from '@/lib/calendly/server';
 import {
   calendlyBookingFormSchema,
   type TCalendlyBookingFormValues,
 } from '@/lib/validation/calendly';
-
-interface ICalendlyAvailabilityDay {
-  date: string;
-  startTimes: string[];
-}
-
-interface ICalendlyAvailabilityPayload {
-  days: ICalendlyAvailabilityDay[];
-  eventLabel: string;
-  source: 'demo' | 'live';
-}
-
-interface ICalendlyBookingPayload {
-  cancelUrl?: string;
-  eventUri?: string;
-  rescheduleUrl?: string;
-  source: 'demo' | 'live';
-  startTime: string;
-}
 
 interface ICalendlyBookingResponse {
   booking: ICalendlyBookingPayload;
@@ -71,7 +60,15 @@ const defaultFormValues: TCalendlyBookingFormValues = {
 
 const configuredCalendlyTimeZone =
   process.env.NEXT_PUBLIC_CALENDLY_TIMEZONE?.trim() || '';
-const fallbackCalendlyTimeZone = 'America/New_York';
+
+class BookingRequestError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+  ) {
+    super(message);
+  }
+}
 
 async function fetchCalendlyAvailability(
   month: string,
@@ -95,16 +92,7 @@ async function fetchCalendlyAvailability(
   return payload;
 }
 
-async function submitCalendlyBooking(payload: {
-  budgetRange: string;
-  email: string;
-  guests: string[];
-  name: string;
-  notes: string;
-  startTime: string;
-  timeZone: string;
-  websiteUrl: string;
-}) {
+async function submitCalendlyBooking(payload: ICalendlyBookingInput) {
   const response = await fetch('/api/calendly/book', {
     method: 'POST',
     headers: {
@@ -128,7 +116,10 @@ async function submitCalendlyBooking(payload: {
 
   if (!response.ok) {
     const errorMessage = 'error' in result ? result.error : undefined;
-    throw new Error(errorMessage ?? 'Unable to complete booking.');
+    throw new BookingRequestError(
+      errorMessage ?? 'Unable to complete booking.',
+      response.status,
+    );
   }
 
   if (!('success' in result)) {
@@ -138,9 +129,10 @@ async function submitCalendlyBooking(payload: {
   return result.booking;
 }
 
+/** Renders availability, booking details, and confirmation on the contact page. */
 export function CalendlyPanel() {
   const isHydrated = useIsHydrated();
-  const [monthValue, setMonthValue] = useState(getCurrentMonthValue);
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
   const [selectedStartTime, setSelectedStartTime] = useState<string | null>(
     null,
@@ -150,56 +142,47 @@ export function CalendlyPanel() {
     useState<TCalendlyBookingFormValues>(defaultFormValues);
   const [guestInput, setGuestInput] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
+  const [unavailableStartTimes, setUnavailableStartTimes] = useState(
+    () => new Set<string>(),
+  );
   const [completedBooking, setCompletedBooking] =
     useState<ICalendlyBookingPayload | null>(null);
   const browserTimeZone = isHydrated
     ? Intl.DateTimeFormat().resolvedOptions().timeZone
     : '';
-  const timeZone =
-    configuredCalendlyTimeZone || browserTimeZone || fallbackCalendlyTimeZone;
+  const timeZone = resolveBookingTimeZone(
+    configuredCalendlyTimeZone,
+    browserTimeZone,
+  );
+  const monthValue = selectedMonth ?? getCurrentMonthValue(timeZone);
+  const stepHeadingRef = useRef<HTMLHeadingElement>(null);
+  const previousStepRef = useRef('calendar');
+  const calendarControlRef = useRef<HTMLButtonElement>(null);
 
   const availabilityQuery = useQuery({
     queryKey: ['calendly-availability', monthValue, timeZone],
-    enabled: true,
+    enabled: isHydrated,
     queryFn: async () => fetchCalendlyAvailability(monthValue, timeZone),
   });
-
-  const availabilityByDate = useMemo(
-    () =>
-      new Map(
-        (availabilityQuery.data?.days ?? []).map((day) => [
-          day.date,
-          day.startTimes,
-        ]),
-      ),
-    [availabilityQuery.data?.days],
-  );
-
-  const calendarDays = useMemo(
-    () => buildCalendarDays(monthValue),
-    [monthValue],
-  );
-
-  const resolvedSelectedDateKey = useMemo(() => {
-    const firstAvailableDate = availabilityQuery.data?.days[0]?.date ?? null;
-
-    if (selectedDateKey && availabilityByDate.has(selectedDateKey)) {
-      return selectedDateKey;
-    }
-
-    return firstAvailableDate;
-  }, [availabilityByDate, availabilityQuery.data?.days, selectedDateKey]);
-
+  const availabilityData = availabilityQuery.data;
+  const availableDays = availabilityData?.days ?? [];
+  const getDateTimes = (dateKey: string) =>
+    getBookableTimes(availableDays, monthValue, dateKey).filter(
+      (startTime) => !unavailableStartTimes.has(startTime),
+    );
+  const resolvedSelectedDateKey =
+    selectedDateKey ??
+    availableDays.find(({ date }) => getDateTimes(date).length > 0)?.date ??
+    null;
   const selectedDateTimes = resolvedSelectedDateKey
-    ? (availabilityByDate.get(resolvedSelectedDateKey) ?? [])
+    ? getDateTimes(resolvedSelectedDateKey)
     : [];
-
+  const activeStartTime =
+    selectedStartTime && selectedDateTimes.includes(selectedStartTime)
+      ? selectedStartTime
+      : null;
   const bookingMutation = useMutation({
-    mutationFn: async () => {
-      if (!selectedStartTime) {
-        throw new Error('Please choose a time first.');
-      }
-
+    mutationFn: async (startTime: string) => {
       const parsedGuests = guestInput
         .split(',')
         .map((guest) => guest.trim())
@@ -223,7 +206,7 @@ export function CalendlyPanel() {
 
       return submitCalendlyBooking({
         ...validationResult.data,
-        startTime: selectedStartTime,
+        startTime,
         timeZone,
       });
     },
@@ -234,19 +217,77 @@ export function CalendlyPanel() {
       setCompletedBooking(payload);
       setStatusMessage('');
     },
-    onError: (error: Error) => {
+    onError: (error: Error, startTime) => {
       setStatusMessage(error.message);
+
+      if (error instanceof BookingRequestError && error.status === 409) {
+        setUnavailableStartTimes((previous) =>
+          new Set(previous).add(startTime),
+        );
+        setSelectedStartTime(null);
+        void availabilityQuery.refetch();
+      }
     },
   });
 
-  const monthLabel = timeZone
-    ? formatMonthLabel(monthValue, timeZone)
-    : monthValue;
+  const formStartTime = bookingMutation.isPending
+    ? bookingMutation.variables
+    : activeStartTime;
+  const step = completedBooking
+    ? 'confirmation'
+    : formStartTime
+      ? 'form'
+      : 'calendar';
+  const monthLabel = formatMonthLabel(monthValue);
+  const selectedDateHeading = resolvedSelectedDateKey
+    ? formatDateHeading(resolvedSelectedDateKey)
+    : '';
+  const isLoadingAvailability = availabilityQuery.isPending;
+  const availabilityMessage = isLoadingAvailability
+    ? 'Loading available times.'
+    : availabilityQuery.isError && !availabilityData
+      ? availabilityQuery.error.message
+      : !availableDays.some(({ date }) => getDateTimes(date).length > 0)
+        ? `No available times in ${monthLabel}. Try another month.`
+        : 'No available times for this day.';
 
-  const selectedDateHeading =
-    resolvedSelectedDateKey && timeZone
-      ? formatDateHeading(resolvedSelectedDateKey, timeZone)
-      : '';
+  useEffect(() => {
+    if (previousStepRef.current !== step) {
+      stepHeadingRef.current?.focus();
+      previousStepRef.current = step;
+      return;
+    }
+
+    const calendarControl = calendarControlRef.current;
+    if (
+      step === 'calendar' &&
+      calendarControl &&
+      (document.activeElement === document.body ||
+        document.activeElement === calendarControl) &&
+      (!calendarControl.isConnected || calendarControl.disabled)
+    ) {
+      stepHeadingRef.current?.focus();
+    }
+  }, [availabilityData, step]);
+
+  if (
+    selectedStartTime &&
+    !activeStartTime &&
+    !completedBooking &&
+    !bookingMutation.isPending
+  ) {
+    setSelectedStartTime(null);
+    setStatusMessage(
+      'That slot is no longer available. Please choose another time.',
+    );
+  }
+
+  const handleChangeMonth = (monthOffset: number) => {
+    setSelectedMonth(shiftMonthValue(monthValue, monthOffset));
+    setSelectedDateKey(null);
+    setSelectedStartTime(null);
+    setStatusMessage('');
+  };
 
   const handleSelectDate = (dateKey: string) => {
     setSelectedDateKey(dateKey);
@@ -256,6 +297,8 @@ export function CalendlyPanel() {
   };
 
   const handleSelectTime = (startTime: string) => {
+    setSelectedMonth(monthValue);
+    setSelectedDateKey(resolvedSelectedDateKey);
     setSelectedStartTime(startTime);
     setCompletedBooking(null);
     setStatusMessage('');
@@ -271,7 +314,7 @@ export function CalendlyPanel() {
     }));
   };
 
-  if (availabilityQuery.isLoading) {
+  if (!isHydrated) {
     return (
       <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#0d0d0e] shadow-[0_30px_90px_rgba(0,0,0,0.42)]">
         <div className="grid gap-0 lg:grid-cols-[1.15fr_0.85fr]">
@@ -299,40 +342,27 @@ export function CalendlyPanel() {
     );
   }
 
-  if (availabilityQuery.isError) {
-    return (
-      <div className="rounded-[2rem] border border-white/10 bg-[#0d0d0e] p-6 shadow-[0_30px_90px_rgba(0,0,0,0.42)]">
-        <p className="text-sm text-white/72">
-          {availabilityQuery.error instanceof Error
-            ? availabilityQuery.error.message
-            : 'Unable to load availability right now.'}
-        </p>
-      </div>
-    );
-  }
-
-  const availabilityData = availabilityQuery.data;
-
-  if (!availabilityData) {
-    return null;
-  }
-
   if (completedBooking) {
+    const { dateKey } = getBookingSlotDate(
+      completedBooking.startTime,
+      timeZone,
+    );
     return (
       <div className="mx-auto max-w-[26rem] rounded-[2rem] border border-white/10 bg-[#111112] p-6 shadow-[0_30px_90px_rgba(0,0,0,0.42)]">
         <div className="space-y-3">
           <p className="text-sm text-white/55">Booking confirmed</p>
-          <h3 className="text-3xl font-semibold tracking-tight text-white">
+          <h3
+            ref={stepHeadingRef}
+            tabIndex={-1}
+            className="text-3xl font-semibold tracking-tight text-white"
+          >
             You&apos;re booked.
           </h3>
           <p className="text-sm leading-6 text-white/68">
-            {formatDateHeading(
-              completedBooking.startTime.slice(0, 10),
-              timeZone,
-            )}{' '}
-            at{' '}
+            {formatDateButtonLabel(dateKey)} at{' '}
             {formatTimeLabel(completedBooking.startTime, timeZone, timeFormat)}
           </p>
+          <p className="text-xs text-white/60">Times shown in {timeZone}</p>
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
@@ -362,6 +392,7 @@ export function CalendlyPanel() {
             onClick={() => {
               setCompletedBooking(null);
               setSelectedStartTime(null);
+              void availabilityQuery.refetch();
             }}
             className="rounded-xl border-white/10 bg-white/8 text-white hover:bg-white/12"
           >
@@ -372,22 +403,30 @@ export function CalendlyPanel() {
     );
   }
 
-  if (selectedStartTime) {
+  if (formStartTime) {
     return (
       <div className="mx-auto max-w-[28rem] rounded-[2rem] border border-white/10 bg-[#111112] p-6 shadow-[0_30px_90px_rgba(0,0,0,0.42)]">
         <div className="space-y-3">
           <p className="text-sm text-white/55">{selectedDateHeading}</p>
-          <h3 className="text-3xl font-semibold tracking-tight text-white">
-            {formatTimeLabel(selectedStartTime, timeZone, timeFormat)}
+          <h3
+            ref={stepHeadingRef}
+            tabIndex={-1}
+            className="text-3xl font-semibold tracking-tight text-white"
+          >
+            {formatTimeLabel(formStartTime, timeZone, timeFormat)}
           </h3>
-          <p className="text-sm text-white/58">{availabilityData.eventLabel}</p>
+          <p className="text-sm text-white/58">
+            {availabilityData?.eventLabel}
+          </p>
         </div>
 
         <form
           className="mt-6 space-y-4"
           onSubmit={(event) => {
             event.preventDefault();
-            bookingMutation.mutate();
+            if (activeStartTime && !bookingMutation.isPending) {
+              bookingMutation.mutate(activeStartTime);
+            }
           }}
         >
           <div className="space-y-2">
@@ -513,11 +552,7 @@ export function CalendlyPanel() {
           </div>
 
           {statusMessage ? (
-            <p
-              className="text-sm text-rose-300"
-              role="alert"
-              aria-live="polite"
-            >
+            <p className="text-sm text-rose-300" role="alert">
               {statusMessage}
             </p>
           ) : null}
@@ -526,7 +561,11 @@ export function CalendlyPanel() {
             <Button
               type="button"
               variant="ghost"
-              onClick={() => setSelectedStartTime(null)}
+              disabled={bookingMutation.isPending}
+              onClick={() => {
+                setSelectedStartTime(null);
+                setStatusMessage('');
+              }}
               className="rounded-xl px-0 text-white/68 hover:bg-transparent hover:text-white"
             >
               Back
@@ -553,7 +592,22 @@ export function CalendlyPanel() {
 
   return (
     <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#0d0d0e] shadow-[0_30px_90px_rgba(0,0,0,0.42)]">
-      <div className="grid lg:grid-cols-[1.18fr_0.82fr]">
+      <div
+        className="grid lg:grid-cols-[1.18fr_0.82fr]"
+        onFocusCapture={({ target }) => {
+          calendarControlRef.current =
+            target instanceof HTMLButtonElement ? target : null;
+        }}
+        onBlurCapture={({ currentTarget, relatedTarget }) => {
+          if (
+            relatedTarget &&
+            relatedTarget !== document.body &&
+            !currentTarget.contains(relatedTarget)
+          ) {
+            calendarControlRef.current = null;
+          }
+        }}
+      >
         <div className="border-b border-white/8 p-5 lg:border-r lg:border-b-0">
           <div className="flex items-center justify-between">
             <h2 className="text-[1.9rem] font-semibold tracking-tight text-white">
@@ -562,11 +616,7 @@ export function CalendlyPanel() {
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => {
-                  setMonthValue((previous) => shiftMonthValue(previous, -1));
-                  setSelectedDateKey(null);
-                  setSelectedStartTime(null);
-                }}
+                onClick={() => handleChangeMonth(-1)}
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/8 bg-white/5 text-white/58 transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
                 aria-label="View previous month"
               >
@@ -574,11 +624,7 @@ export function CalendlyPanel() {
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setMonthValue((previous) => shiftMonthValue(previous, 1));
-                  setSelectedDateKey(null);
-                  setSelectedStartTime(null);
-                }}
+                onClick={() => handleChangeMonth(1)}
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/8 bg-white/5 text-white/58 transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
                 aria-label="View next month"
               >
@@ -597,11 +643,8 @@ export function CalendlyPanel() {
               </span>
             ))}
 
-            {calendarDays.map((day) => {
-              const dayDate = new Date(`${day.dateKey}T12:00:00Z`);
-              const dayOfWeek = dayDate.getUTCDay();
-              const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-              const isDateSelectable = day.isCurrentMonth && !isWeekend;
+            {buildCalendarDays(monthValue).map((day) => {
+              const isDateSelectable = getDateTimes(day.dateKey).length > 0;
               const isSelected = resolvedSelectedDateKey === day.dateKey;
 
               return (
@@ -610,7 +653,8 @@ export function CalendlyPanel() {
                   type="button"
                   onClick={() => handleSelectDate(day.dateKey)}
                   disabled={!isDateSelectable}
-                  aria-label={formatDateButtonLabel(day.dateKey, timeZone)}
+                  aria-label={formatDateButtonLabel(day.dateKey)}
+                  aria-pressed={isSelected}
                   className={[
                     'relative inline-flex h-10 w-full items-center justify-center rounded-2xl border text-[0.92rem] font-medium transition-colors focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none sm:h-12 sm:text-sm',
                     isSelected
@@ -637,11 +681,15 @@ export function CalendlyPanel() {
         <div className="p-5">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <h3 className="text-2xl font-semibold tracking-tight text-white">
+              <h3
+                ref={stepHeadingRef}
+                tabIndex={-1}
+                className="text-2xl font-semibold tracking-tight text-white"
+              >
                 {selectedDateHeading || 'Select a day'}
               </h3>
               <p className="mt-1 text-sm text-white/48">
-                {availabilityData.eventLabel}
+                {availabilityData?.eventLabel}
               </p>
               <p className="mt-1 text-xs text-white/40">
                 Times shown in {timeZone}
@@ -678,8 +726,25 @@ export function CalendlyPanel() {
           </div>
 
           <div className="mt-6 space-y-3">
-            {selectedDateTimes.length > 0 ? (
-              selectedDateTimes.map((startTime) => (
+            {statusMessage ? (
+              <p className="text-sm text-rose-300" role="alert">
+                {statusMessage}
+              </p>
+            ) : null}
+            <div
+              role="status"
+              className={
+                selectedDateTimes.length > 0
+                  ? 'sr-only'
+                  : 'rounded-2xl border border-white/8 bg-white/5 px-4 py-5 text-sm text-white/58'
+              }
+            >
+              {selectedDateTimes.length > 0 && resolvedSelectedDateKey
+                ? `${selectedDateTimes.length} available ${selectedDateTimes.length === 1 ? 'time' : 'times'} on ${formatDateButtonLabel(resolvedSelectedDateKey)}.`
+                : availabilityMessage}
+            </div>
+            <div className="space-y-3 empty:hidden" aria-live="polite">
+              {selectedDateTimes.map((startTime) => (
                 <button
                   key={startTime}
                   type="button"
@@ -688,12 +753,8 @@ export function CalendlyPanel() {
                 >
                   {formatTimeLabel(startTime, timeZone, timeFormat)}
                 </button>
-              ))
-            ) : (
-              <div className="rounded-2xl border border-white/8 bg-white/5 px-4 py-5 text-sm text-white/58">
-                No available times for this day.
-              </div>
-            )}
+              ))}
+            </div>
           </div>
         </div>
       </div>

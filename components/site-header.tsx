@@ -170,41 +170,47 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={toggleReduceMotion}
-              className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-white/70 transition-colors duration-200 hover:bg-white/[0.06] hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+              disabled={!isHydrated}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none enabled:cursor-pointer enabled:hover:bg-white/[0.06] enabled:hover:text-white"
               aria-label="Reduce motion"
-              aria-pressed={reduceMotion}
-              title={reduceMotion ? 'Enable animations' : 'Reduce motion'}
+              aria-pressed={isHydrated ? reduceMotion : undefined}
+              title={
+                isHydrated
+                  ? reduceMotion
+                    ? 'Enable animations'
+                    : 'Reduce motion'
+                  : undefined
+              }
             >
-              {reduceMotion ? (
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="4" y1="4" x2="20" y2="20" />
-                </svg>
-              ) : (
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <polygon points="5 3 19 12 5 21 5 3" />
-                </svg>
-              )}
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="motion-enabled:hidden"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="4" y1="4" x2="20" y2="20" />
+              </svg>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="motion-enabled:block hidden"
+                aria-hidden="true"
+              >
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
             </button>
 
             {/* Divider */}
@@ -259,6 +265,7 @@ export function SiteHeader() {
                     return (
                       <motion.div
                         key={link.label}
+                        className="site-header-menu-item"
                         variants={canAnimate ? menuItemVariants : undefined}
                         animate={canAnimate ? undefined : { opacity: 1, y: 0 }}
                         transition={canAnimate ? undefined : { duration: 0 }}
@@ -294,6 +301,7 @@ export function SiteHeader() {
                       return (
                         <motion.div
                           key={link.label}
+                          className="site-header-menu-item"
                           variants={canAnimate ? menuItemVariants : undefined}
                           animate={
                             canAnimate ? undefined : { opacity: 1, y: 0 }
@@ -330,6 +338,7 @@ export function SiteHeader() {
                     return (
                       <motion.div
                         key={link.label}
+                        className="site-header-menu-item"
                         variants={canAnimate ? menuItemVariants : undefined}
                         animate={canAnimate ? undefined : { opacity: 1, y: 0 }}
                         transition={canAnimate ? undefined : { duration: 0 }}
