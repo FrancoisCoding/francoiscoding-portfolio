@@ -11,7 +11,7 @@ previews carry that style through the public site.
 - Play once per tab, when the tab opens directly on the homepage without a section link.
   Refreshes, navigation within the site, and links such as `/resume` and `/#contact` go straight
   to their destination.
-- Render the homepage underneath and cap the full intro, including the reveal, at 700 ms from
+- Render the homepage underneath and cap the full intro, including the reveal, at 1,200 ms from
   the moment it appears. The monogram and progress line use inline assets so the intro can appear
   independently of image and font downloads.
 - Dismiss immediately when the visitor activates **Skip intro** or presses Escape. If focus is
@@ -36,7 +36,7 @@ previews carry that style through the public site.
 
 ## Acceptance Checks
 
-- A fresh tab opening `/` shows the intro and reveals the homepage within 700 ms. Refreshing that
+- A fresh tab opening `/` shows the intro for 1,200 ms unless dismissed first. Refreshing that
   tab, using the home link, or returning through browser history goes straight to the content.
 - A fresh tab opening `/resume`, `/projects`, `/about`, `/#projects`, or `/#contact` reaches the
   requested destination immediately.

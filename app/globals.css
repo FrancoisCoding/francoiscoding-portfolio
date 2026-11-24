@@ -218,7 +218,7 @@ html:not([data-motion='full'])
   display: none;
 }
 
-@media (min-width: 64rem) and (hover: hover) and (pointer: fine) and (not (any-pointer: coarse)) {
+@media (min-width: 64rem) and (any-hover: hover) and (any-pointer: fine) {
   html[data-motion='full'] .hobby-gallery {
     position: relative;
     display: block;

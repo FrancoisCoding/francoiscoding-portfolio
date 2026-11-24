@@ -12,7 +12,7 @@ async function pausePageTime(page: Page) {
 
 test.use({ contextOptions: { reducedMotion: 'no-preference' } });
 
-test('a fresh homepage shows the startup intro and reveals the page by 700 ms', async ({
+test('a fresh homepage shows the startup intro for 1,200 ms', async ({
   page,
 }) => {
   await pausePageTime(page);
@@ -22,7 +22,9 @@ test('a fresh homepage shows the startup intro and reveals the page by 700 ms', 
   await expect(intro).toBeVisible();
   await expect(intro.getByRole('button', { name: 'Skip intro' })).toBeVisible();
 
-  await page.clock.runFor(700);
+  await page.clock.runFor(1_199);
+  await expect(intro).toBeVisible();
+  await page.clock.runFor(1);
   await expect(intro).toBeHidden();
   await expect(page.getByRole('main')).toBeVisible();
   await expect(page.getByRole('main')).not.toBeFocused();
@@ -49,7 +51,7 @@ for (const action of ['pointer', 'keyboard', 'Escape', 'timeout'] as const) {
       await page.keyboard.press('Tab');
       await expect(skip).toBeFocused();
       if (action === 'keyboard') await page.keyboard.press('Enter');
-      else await page.clock.runFor(700);
+      else await page.clock.runFor(1_200);
     }
 
     await expect(intro).toBeHidden();

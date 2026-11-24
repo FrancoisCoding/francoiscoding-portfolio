@@ -302,15 +302,15 @@ for (const { name, isMobile, viewport } of [
   test.describe(`${name} touch gallery`, () => {
     test.use({ hasTouch: true, isMobile, viewport });
 
-    test('shows all hobby photos with motion enabled and no hover', async ({
+    test('shows all hobby photos on touch-only devices with motion enabled', async ({
       page,
     }) => {
       await page.emulateMedia({ reducedMotion: 'no-preference' });
       await page.goto('/about');
       await expectMotion(page, false);
       expect(
-        await page.evaluate(() => matchMedia('(any-pointer: coarse)').matches),
-      ).toBe(true);
+        await page.evaluate(() => matchMedia('(any-hover: hover)').matches),
+      ).toBe(false);
       await expect(hobbyCards(page)).toHaveCount(4);
       for (const card of await hobbyCards(page).all()) {
         await expect(card.getByRole('img')).toBeVisible();

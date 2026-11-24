@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 
-const duration = 700;
+const duration = 1_200;
 const entryKey = 'portfolio-startup-intro';
 
 function playStartupIntro(duration: number, entryKey: string) {

@@ -71,7 +71,7 @@ where this spec describes a behavior change.
     so that I still have control.
 24. As a visitor with motion off, I want hover and focus feedback to appear instantly and the
     hamburger to open without movement, so that the controls remain usable.
-25. As a visitor with motion off or using a touchscreen, I want all hobby photos visible without
+25. As a visitor with motion off or on a device without hover, I want all hobby photos visible without
     hovering, so that I can see the whole gallery.
 26. As a visitor who turns motion back on, I want the existing effects to return, so that I can
     choose either experience.
